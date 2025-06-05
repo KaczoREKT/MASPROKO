@@ -1,13 +1,86 @@
 package Model;
 
+import utils.ObjectPlus;
+
 import java.util.Date;
 
-public class SortingJob {
-    private Long id;
+/**
+ * Klasa SortingJob – zadanie sortowania książek w danym sektorze.
+ * Pola: startDate, endDate.
+ * Relacje:
+ *   - jeden (SortingJob) do wielu (brak, w diagramie jednokierunkowo do Librarian i do Sector)
+ *   - relacja wiele-do-jednego z Librarian (każde zadanie jest przypisane do jednej osoby)
+ *   - relacja wiele-do-jednego z Sector (po jakim sektorze dana osoba sortuje)
+ */
+public class SortingJob extends ObjectPlus {
+    private static final long serialVersionUID = 1L;
 
     private Date startDate;
     private Date endDate;
 
     private Librarian librarian;
     private Sector sector;
+
+    public SortingJob(Date startDate, Date endDate) {
+        super();
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    // Gettery / settery
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Librarian getLibrarian() {
+        return librarian;
+    }
+
+    /**
+     * Ustawia, który bibliotekarz (Librarian) ma to zadanie.
+     */
+    public void setLibrarian(Librarian librarian) {
+        if (this.librarian != null) {
+            this.librarian.getSortingJobs().remove(this);
+        }
+        this.librarian = librarian;
+        if (librarian != null && !librarian.getSortingJobs().contains(this)) {
+            librarian.addSortingJob(this);
+        }
+    }
+
+    public Sector getSector() {
+        return sector;
+    }
+
+    /**
+     * Ustawia, w którym sektorze realizowane jest to zadanie.
+     */
+    public void setSector(Sector sector) {
+        if (this.sector != null) {
+            this.sector.getSortingJobs().remove(this);
+        }
+        this.sector = sector;
+        if (sector != null && !sector.getSortingJobs().contains(this)) {
+            sector.addSortingJob(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SortingJob[from=%s, to=%s]", startDate, endDate);
+    }
 }
