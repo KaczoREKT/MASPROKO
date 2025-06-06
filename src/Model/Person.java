@@ -1,36 +1,28 @@
 package Model;
 
+import utils.AutoIdEntity;
 import utils.ObjectPlus;
 
 /**
  * Klasa abstrakcyjna Person – zawiera wspólne atrybuty WSZYSTKICH osób w systemie (klienci, pracownicy, itd.).
  * Każda instancja Person jest automatycznie rejestrowana w ekstensji Person.
  */
-public abstract class Person extends ObjectPlus {
+public abstract class Person extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
 
-    private long id;
     private String firstName;
     private String lastName;
     private Gender gender;
 
-    public Person(long id, String firstName, String lastName, Gender gender) {
-        super();  // zapis do ekstensji
-        this.id = id;
+    public Person(String firstName, String lastName, Gender gender) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
     }
 
+
     // Gettery / settery
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -58,6 +50,6 @@ public abstract class Person extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("Person[id=%d, name=%s %s, plec=%s]", id, firstName, lastName, gender);
+        return String.format("Person[id=%d, name=%s %s, plec=%s]", getId(), firstName, lastName, gender);
     }
 }

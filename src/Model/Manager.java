@@ -8,8 +8,8 @@ public class Manager extends Employee {
 
     private double bonus;
 
-    public Manager(long id, String firstName, String lastName, Gender gender, double salary, double bonus) {
-        super(id, firstName, lastName, gender, salary);
+    public Manager(String firstName, String lastName, Gender gender, double salary, double bonus) {
+        super(firstName, lastName, gender, salary);
         this.bonus = bonus;
     }
 
@@ -23,7 +23,7 @@ public class Manager extends Employee {
 
     @Override
     public String toString() {
-        return String.format("Manager[id=%d, name=%s %s, salary=%.2f, bonus=%.2f]",
-                getId(), getFirstName(), getLastName(), getSalary(), bonus);
+        return String.format("Manager[id=%s, name=%s %s, salary=%.2f, bonus=%.2f]",
+                getPublicId(), getFirstName(), getLastName(), getSalary(), bonus);
     }
 }

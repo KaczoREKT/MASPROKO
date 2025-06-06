@@ -4,24 +4,24 @@ import java.util.*;
 public class SampleData {
     public static void addSampleData() {
         // ===== 1. Tworzymy sektory =====
-        Sector sectorA_C = new Sector("A", "C");
-        Sector sectorD_F = new Sector("D", "F");
+        Sector sectorA_C = new Sector('A', 'C');
+        Sector sectorD_F = new Sector('D', 'F');
 
         // ===== 2. Tworzymy kilka książek i przypisujemy je do sektorów =====
-        Book book1 = new Book(1001, "Alchemik", "Powieść", "Paulo Coelho", BookStatus.DOSTEPNA);
+        Book book1 = new Book("Alchemik", "Powieść", "Paulo Coelho");
         book1.setSector(sectorA_C);
 
-        Book book2 = new Book(1002, "Cień wiatru", "Thriller", "Carlos Ruiz Zafón", BookStatus.DOSTEPNA);
+        Book book2 = new Book("Cień wiatru", "Thriller", "Carlos Ruiz Zafón");
         book2.setSector(sectorA_C);
 
-        Book book3 = new Book(2001, "Dotyk Crossa", "Akcja", "James Patterson", BookStatus.DOSTEPNA);
+        Book book3 = new Book("Dotyk Crossa", "Akcja", "James Patterson");
         book3.setSector(sectorD_F);
 
-        Book book4 = new Book(2002, "Forteca zatracenia", "Horror", "Stephen King", BookStatus.DOSTEPNA);
+        Book book4 = new Book("Forteca zatracenia", "Horror", "Stephen King");
         book4.setSector(sectorD_F);
 
         // ===== 3. Tworzymy bibliotekarza i przypisujemy mu zadanie sortowania =====
-        Librarian librarian = new Librarian(5001L, "Anna", "Nowak", Gender.WOMAN, 3500.00, "Powieść");
+        Librarian librarian = new Librarian("Anna", "Nowak", Gender.WOMAN, 3500.00, "Powieść");
         // Zadanie sortowania dla sektora A–C
         Calendar cal1 = Calendar.getInstance();
         cal1.set(2023, Calendar.MARCH, 1);
@@ -33,18 +33,18 @@ public class SampleData {
         job1.setSector(sectorA_C);
 
         // ===== 4. Tworzymy managera i recepcjonistkę =====
-        Manager manager = new Manager(6001L, "Krzysztof", "Wiśniewski", Gender.MAN, 5500.00, 1200.00);
-        Receptionist receptionist = new Receptionist(7001L, "Magdalena", "Kowalczyk", Gender.WOMAN, 3000.00);
+        Manager manager = new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 5500.00, 1200.00);
+        Receptionist receptionist = new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3000.00);
 
         // ===== 5. Tworzymy klienta, kartę klienta, rezerwację i mandat =====
-        Client client1 = new Client(8001L, "Jan", "Kowalski", Gender.MAN,
+        Client client1 = new Client("Jan", "Kowalski", Gender.MAN,
                 "jan.kowalski@example.com", "123-456-789");
 
         // Karta klienta - ważna do końca 2024.12.31
         Calendar cal2 = Calendar.getInstance();
         cal2.set(2024, Calendar.DECEMBER, 31);
         Date expiry = cal2.getTime();
-        ClientCard card1 = new ClientCard(9001L, expiry, false);
+        ClientCard card1 = new ClientCard(expiry, false);
         card1.setClient(client1);
 
         // Rezerwacja książki "Cień wiatru" (book2) od 2023.04.10 do 2023.04.20
@@ -53,7 +53,7 @@ public class SampleData {
         Date resStart = cal3.getTime();
         cal3.set(2023, Calendar.APRIL, 20);
         Date resEnd = cal3.getTime();
-        Reservation reservation1 = new Reservation(10001L, resStart, resEnd);
+        Reservation reservation1 = new Reservation(resStart, resEnd);
         reservation1.setBook(book2);
         reservation1.setClient(client1);
 
@@ -63,11 +63,11 @@ public class SampleData {
 
         // ===== 6. Tworzymy dodatkowe przykładowe obiekty (opcjonalnie) =====
         // - Drugi klient z pustą kartą (wygasłą od 2022.01.01)
-        Client client2 = new Client(8002L, "Alicja", "Zielińska", Gender.WOMAN,
+        Client client2 = new Client( "Alicja", "Zielińska", Gender.WOMAN,
                 "alicia.zielinska@example.com", "987-654-321");
         Calendar cal4 = Calendar.getInstance();
         cal4.set(2022, Calendar.JANUARY, 1);
-        ClientCard card2 = new ClientCard(9002L, cal4.getTime(), true);
+        ClientCard card2 = new ClientCard(cal4.getTime(), true);
         card2.setClient(client2);
 
         // - Rezerwacja dla Alicji: książka "Forteca zatracenia" (book4) od 2023.05.01 do 2023.05.10
@@ -76,7 +76,7 @@ public class SampleData {
         Date resStart2 = cal5.getTime();
         cal5.set(2023, Calendar.MAY, 10);
         Date resEnd2 = cal5.getTime();
-        Reservation reservation2 = new Reservation(10002L, resStart2, resEnd2);
+        Reservation reservation2 = new Reservation(resStart2, resEnd2);
         reservation2.setBook(book4);
         reservation2.setClient(client2);
 

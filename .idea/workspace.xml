@@ -5,27 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708ce410-c670-4278-9c45-99ac5c2c3ecd" name="Changes" comment="comm">
-      <change afterPath="$PROJECT_DIR$/src/View/MainFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/ObjectPlus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/SampleData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/EmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/LibrarianController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/SectorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/CatalogBookDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/UpdateBookDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Panel/LoginPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/AutoIdEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MASPROKO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MASPROKO.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Book.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ClientCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ClientCard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Fine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Fine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Gender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Librarian.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ObjectPlus.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Person.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Receptionist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Receptionist.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reservation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Sector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Sector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/SortingJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/SortingJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ObjectPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ObjectPlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/SampleData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SampleData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +75,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -87,12 +94,25 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="View.Dialogs" />
+      <recent name="Controller" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/Model" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/Model" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="MASPROKO" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -117,6 +137,9 @@
       <workItem from="1749093421764" duration="172000" />
       <workItem from="1749093600087" duration="43000" />
       <workItem from="1749093647595" duration="1077000" />
+      <workItem from="1749158366839" duration="149000" />
+      <workItem from="1749158529816" duration="11050000" />
+      <workItem from="1749170612779" duration="5629000" />
     </task>
     <servers />
   </component>

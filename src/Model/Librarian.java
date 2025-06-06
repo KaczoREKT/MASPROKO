@@ -14,9 +14,9 @@ public class Librarian extends Employee {
     // zestaw zadań sortowania przypisanych temu bibliotekarzowi
     private Set<SortingJob> sortingJobs = new HashSet<>();
 
-    public Librarian(long id, String firstName, String lastName, Gender gender,
+    public Librarian(String firstName, String lastName, Gender gender,
                      double salary, String genreSpecialization) {
-        super(id, firstName, lastName, gender, salary);
+        super(firstName, lastName, gender, salary);
         this.genreSpecialization = genreSpecialization;
     }
 
@@ -54,8 +54,8 @@ public class Librarian extends Employee {
 
     @Override
     public String toString() {
-        return String.format("Librarian[id=%d, name=%s %s, salary=%.2f, spec=%s, tasks=%d]",
-                getId(), getFirstName(), getLastName(), getSalary(),
+        return String.format("Librarian[id=%s, name=%s %s, salary=%.2f, spec=%s, tasks=%d]",
+                getPublicId(), getFirstName(), getLastName(), getSalary(),
                 genreSpecialization, sortingJobs.size());
     }
 }

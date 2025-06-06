@@ -1,5 +1,10 @@
+import Controller.BookController;
+import Controller.EmployeeController;
+import Controller.SectorController;
 import Model.Book;
 import Model.Librarian;
+import View.MainFrame;
+import utils.AutoIdEntity;
 import utils.ObjectPlus;
 import Model.Sector;
 import utils.SampleData;
@@ -10,7 +15,7 @@ import Model.*;
 import static utils.SampleData.addSampleData;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public void handleObjectPlus(){
         String file = "extents.bin";
         List<Class<?>> extentClasses = Arrays.asList(
                 // Osoby i ich podklasy
@@ -28,24 +33,17 @@ public class Main {
                 Sector.class
         );
 
-        boolean shouldSave = false;
-
         // Próbujemy wczytać ekstensje z pliku
         File extFile = new File(file);
         if (extFile.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-                ObjectPlus.readExtents(in);
-                System.out.println("[INFO] Wczytano ekstensje z pliku " + file + ".");
-            } catch (Exception e) {
-                System.out.println("[WARN] Nie udało się wczytać ekstensji z pliku, utworzę nowe dane.");
-                addSampleData();
-                shouldSave = true;
-            }
+            ObjectPlus.loadFromFile(file);
+            AutoIdEntity.recalculateNextId(Book.class);
+            AutoIdEntity.recalculateNextId(Client.class);
+            AutoIdEntity.recalculateNextId(Manager.class);
         } else {
-            // Pliku nie ma, więc tworzymy przykładowe dane i zapisujemy
-            System.out.println("[INFO] Tworzę przykładowe dane do pliku " + file + ".");
+            System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
-            shouldSave = true;
+            ObjectPlus.saveToFile(file);
         }
 
         // Pokazujemy ekstensje dla wszystkich klas
@@ -58,14 +56,25 @@ public class Main {
             }
             System.out.println("--------------------------------");
         }
+    }
+    public void testFunctions(EmployeeController employeeController){
+        System.out.println(employeeController.getEmployeeList());
+    }
+    public static void main(String[] args) throws Exception {
+        // =============MAIN=============
+        Main main = new Main();
+        main.handleObjectPlus();
 
-        // Zapisujemy tylko jeśli generowaliśmy nowe dane (czyli nie było pliku lub był uszkodzony)
-        if (shouldSave) {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-                ObjectPlus.writeExtents(out);
-                System.out.println("[INFO] Zapisano ekstensje do pliku.");
-            }
-        }
+        // =============CONTROLLERS=============
+        EmployeeController employeeController = new EmployeeController();
+        BookController bookController = new BookController();
+        SectorController sectorController = new SectorController();
+        // =============TESTING=============
+        main.testFunctions(employeeController);
+
+
+        // =============GUI=============
+        new MainFrame(employeeController, bookController, sectorController);
 
     }
 }

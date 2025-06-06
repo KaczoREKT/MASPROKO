@@ -9,8 +9,8 @@ public abstract class Employee extends Person {
 
     private double salary;
 
-    public Employee(long id, String firstName, String lastName, Gender gender, double salary) {
-        super(id, firstName, lastName, gender);
+    public Employee(String firstName, String lastName, Gender gender, double salary) {
+        super(firstName, lastName, gender);
         this.salary = salary;
     }
 

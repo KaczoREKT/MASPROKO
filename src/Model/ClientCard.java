@@ -1,5 +1,6 @@
 package Model;
 
+import utils.AutoIdEntity;
 import utils.ObjectPlus;
 
 import java.util.Date;
@@ -8,24 +9,20 @@ import java.util.Date;
  * Klasa ClientCard – przypisana do klienta (jedno do jednego).
  * Zawiera datę wygaśnięcia i flagę expired.
  */
-public class ClientCard extends ObjectPlus {
+public class ClientCard extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
-
-    private long id;               // unikalny identyfikator karty
-    private Date expirationDate;   // data wygaśnięcia
-    private boolean expired;       // flaga czy karta już wygasła
-
-    // wskazanie, do którego Client-a należy ta karta
+    private static long nextId = 1;
+    private long id;
+    private Date expirationDate;
+    private boolean expired;
     private Client client;
 
-    public ClientCard(long id, Date expirationDate, boolean expired) {
+    public ClientCard(Date expirationDate, boolean expired) {
         super();
-        this.id = id;
+        this.id = nextId++;
         this.expirationDate = expirationDate;
         this.expired = expired;
     }
-
-    // Gettery / settery
 
     public long getId() {
         return id;
@@ -70,7 +67,7 @@ public class ClientCard extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("ClientCard[id=%d, expires=%s, expired=%b]",
-                id, expirationDate, expired);
+        return String.format("ClientCard[id=%s, expires=%s, expired=%b]",
+                getPublicId(), expirationDate, expired);
     }
 }

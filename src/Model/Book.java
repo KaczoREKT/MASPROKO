@@ -1,5 +1,6 @@
 package Model;
 
+import utils.AutoIdEntity;
 import utils.ObjectPlus;
 
 import java.util.*;
@@ -11,15 +12,13 @@ import java.util.*;
  *   - relacja jeden-do-wielu z Rezerwacją (Reservation) – jedna książka może mieć wiele rezerwacji.
  *   - relacja wiele-do-jednego z Sector – jedna książka należy do dokładnie jednego sektora.
  */
-public class Book extends ObjectPlus {
+public class Book extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
-
-    private int id;
     private String title;
     private String genre;
     private String author;
 
-    private BookStatus status;
+    private BookStatus status = BookStatus.DOSTEPNA;
 
     // Rezerwacje na tę książkę
     private List<Reservation> reservations = new ArrayList<>();
@@ -27,24 +26,14 @@ public class Book extends ObjectPlus {
     // Do jakiego sektora należy
     private Sector sector;
 
-    public Book(int id, String title, String genre, String author, BookStatus status) {
+    public Book(String title, String genre, String author) {
         super();
-        this.id = id;
         this.title = title;
         this.genre = genre;
         this.author = author;
-        this.status = status;
     }
 
     // Gettery / settery
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -119,7 +108,11 @@ public class Book extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("Book[id=%d, title=%s, genre=%s, author=%s, status=%s]",
-                id, title, genre, author, status);
+        return String.format("Book[id=%s, title=%s, genre=%s, author=%s, status=%s]",
+                getPublicId(),
+                title,
+                genre,
+                author,
+                status);
     }
 }

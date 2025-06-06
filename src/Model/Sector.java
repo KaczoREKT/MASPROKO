@@ -8,19 +8,19 @@ import java.util.*;
  * Klasa Sector – dzieli książki na sektory w zależności od przedziału liter.
  * Pola: startLetter, endLetter (np. od "A" do "C").
  * Relacje:
- *   - jeden (Sector) do wielu (Book)
- *   - jeden (Sector) do wielu (SortingJob)
+ * - jeden (Sector) do wielu (Book)
+ * - jeden (Sector) do wielu (SortingJob)
  */
 public class Sector extends ObjectPlus {
     private static final long serialVersionUID = 1L;
 
-    private String startLetter;
-    private String endLetter;
+    private char startLetter;
+    private char endLetter;
 
     private Set<Book> books = new HashSet<>();
     private Set<SortingJob> sortingJobs = new HashSet<>();
 
-    public Sector(String startLetter, String endLetter) {
+    public Sector(char startLetter, char endLetter) {
         super();
         this.startLetter = startLetter;
         this.endLetter = endLetter;
@@ -28,20 +28,21 @@ public class Sector extends ObjectPlus {
 
     // Gettery / settery
 
-    public String getStartLetter() {
+    public char getStartLetter() {
         return startLetter;
     }
-
-    public void setStartLetter(String startLetter) {
-        this.startLetter = startLetter;
-    }
-
-    public String getEndLetter() {
+    public void setStartLetter(char startLetter) {this.startLetter = startLetter; }
+    public char getEndLetter() {
         return endLetter;
     }
-
-    public void setEndLetter(String endLetter) {
+    public void setEndLetter(char endLetter) {
         this.endLetter = endLetter;
+    }
+
+
+    public boolean containsLetter(char letter) {
+        letter = Character.toUpperCase(letter);
+        return letter >= startLetter && letter <= endLetter;
     }
 
     public Set<Book> getBooks() {

@@ -7,13 +7,13 @@ package Model;
 public class Receptionist extends Employee {
     private static final long serialVersionUID = 1L;
 
-    public Receptionist(long id, String firstName, String lastName, Gender gender, double salary) {
-        super(id, firstName, lastName, gender, salary);
+    public Receptionist(String firstName, String lastName, Gender gender, double salary) {
+        super(firstName, lastName, gender, salary);
     }
 
     @Override
     public String toString() {
-        return String.format("Receptionist[id=%d, name=%s %s, salary=%.2f]",
-                getId(), getFirstName(), getLastName(), getSalary());
+        return String.format("Receptionist[id=%s, name=%s %s, salary=%.2f]",
+                getPublicId(), getFirstName(), getLastName(), getSalary());
     }
 }

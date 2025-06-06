@@ -9,27 +9,19 @@ import java.util.*;
  */
 public class Client extends Person {
     private static final long serialVersionUID = 1L;
-
     private String email;
-    private String telefon;
-
-    // Karta klienta (jedna na jednego)
+    private String phoneNumber;
     private ClientCard clientCard;
-
-    // Zestaw rezerwacji przez tego klienta
     private Set<Reservation> reservations = new HashSet<>();
 
-    // Zestaw opłat (mandatów) przez tego klienta
     private Set<Fine> fines = new HashSet<>();
 
-    public Client(long id, String firstName, String lastName, Gender gender,
+    public Client(String firstName, String lastName, Gender gender,
                   String email, String telefon) {
-        super(id, firstName, lastName, gender);
+        super(firstName, lastName, gender);
         this.email = email;
-        this.telefon = telefon;
+        this.phoneNumber = telefon;
     }
-
-    // Gettery / settery
 
     public String getEmail() {
         return email;
@@ -39,12 +31,12 @@ public class Client extends Person {
         this.email = email;
     }
 
-    public String getTelefon() {
-        return telefon;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public ClientCard getClientCard() {
@@ -113,7 +105,11 @@ public class Client extends Person {
 
     @Override
     public String toString() {
-        return String.format("Client[id=%d, name=%s %s, email=%s, telefon=%s]",
-                getId(), getFirstName(), getLastName(), email, telefon);
+        return String.format("Client[id=%s, name=%s %s, email=%s, telefon=%s]",
+                getPublicId(),
+                getFirstName(),
+                getLastName(),
+                email,
+                phoneNumber);
     }
 }

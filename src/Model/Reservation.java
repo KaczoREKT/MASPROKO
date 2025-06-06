@@ -1,7 +1,6 @@
 package Model;
 
-import utils.ObjectPlus;
-
+import utils.AutoIdEntity;
 import java.util.Date;
 
 /**
@@ -9,9 +8,9 @@ import java.util.Date;
  * Pola: id (unikalne), data rozpoczęcia, data zakończenia.
  * Relacje: wiele do jednego z Client, wiele do jednego z Book.
  */
-public class Reservation extends ObjectPlus {
+public class Reservation extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
-
+    private static long nextId = 1;
     private long id;
     private Date startDate;
     private Date endDate;
@@ -22,9 +21,9 @@ public class Reservation extends ObjectPlus {
     // Kto wykonał tę rezerwację
     private Client client;
 
-    public Reservation(long id, Date startDate, Date endDate) {
+    public Reservation(Date startDate, Date endDate) {
         super();
-        this.id = id;
+        this.id = nextId++;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -91,8 +90,8 @@ public class Reservation extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("Reservation[id=%d, klient=%s, bookID=%s, from=%s, to=%s]",
-                id,
+        return String.format("Reservation[id=%s, klient=%s, bookID=%s, from=%s, to=%s]",
+                getPublicId(),
                 (client != null ? client.getId() : "null"),
                 (book != null ? book.getId() : "null"),
                 startDate, endDate);

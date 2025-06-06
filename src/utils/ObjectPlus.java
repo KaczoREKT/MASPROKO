@@ -42,4 +42,25 @@ public abstract class ObjectPlus implements Serializable {
     public static void readExtents(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         allExtents = (Map<Class<? extends ObjectPlus>, List<ObjectPlus>>) stream.readObject();
     }
+
+    public static void saveToFile(String fileName) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            writeExtents(out);
+            System.out.println("[INFO] Zapisano ekstensje do pliku " + fileName + ".");
+        } catch (IOException e) {
+            System.err.println("[BŁĄD] Nie udało się zapisać ekstensji do pliku " + fileName);
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadFromFile(String fileName) {
+        File file = new File(fileName);
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
+            readExtents(in);
+            System.out.println("[INFO] Wczytano ekstensje z pliku " + fileName + ".");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("[BŁĄD] Nie udało się wczytać ekstensji z pliku " + fileName);
+            e.printStackTrace();
+        }
+    }
 }
