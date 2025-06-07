@@ -1,5 +1,7 @@
 package Model;
 
+import utils.AutoIdEntity;
+
 import java.util.*;
 
 /**
@@ -60,11 +62,11 @@ public class Client extends Person {
     }
 
     public Set<Reservation> getReservations() {
-        return Collections.unmodifiableSet(reservations);
+        return reservations;
     }
 
     public Set<Fine> getFines() {
-        return Collections.unmodifiableSet(fines);
+        return fines;
     }
 
     /**
@@ -108,11 +110,24 @@ public class Client extends Person {
 
     @Override
     public String toString() {
-        return String.format("Client[id=%s, name=%s %s, email=%s, telefon=%s]",
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Client[id=%s, name=%s %s, email=%s, telefon=%s]",
                 getPublicId(),
                 getFirstName(),
                 getLastName(),
                 email,
-                phoneNumber);
+                phoneNumber));
+        if (!reservations.isEmpty()) {
+            sb.append(", reservations=[");
+            String joined = reservations.stream()
+                    .map(AutoIdEntity::getPublicId)
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("");
+            sb.append(joined).append("]");
+        } else {
+            sb.append(", reservations=[]");
+        }
+        return sb.toString();
     }
+
 }

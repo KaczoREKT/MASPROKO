@@ -35,4 +35,21 @@ public class ReservationController {
             b.setReservation(reservation);
         }
     }
+
+    public void changeReservation(Reservation selectedReservation, LocalDate dateFrom, LocalDate dateTo) throws Exception {
+        if (selectedReservation == null) throw new Exception("Nie wybrano rezerwacji do zmiany!");
+        if (dateFrom == null || dateTo == null) throw new Exception("Daty nie mogą być puste!");
+        if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
+
+        // Możesz dodać dodatkową walidację, np. czy nowy termin nie koliduje z innymi rezerwacjami danej książki/klienta
+
+        selectedReservation.setStartDate(dateFrom);
+        selectedReservation.setEndDate(dateTo);
+    }
+
+    public void cancelReservation(Reservation reservation) throws Exception {
+        if (reservation == null) throw new Exception("Nie wybrano rezerwacji do anulowania!");
+        reservation.cancel();
+    }
+
 }

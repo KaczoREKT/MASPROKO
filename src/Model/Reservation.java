@@ -1,6 +1,7 @@
 package Model;
 
 import utils.AutoIdEntity;
+import utils.ObjectPlus;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -87,6 +88,16 @@ public class Reservation extends AutoIdEntity {
             client.addReservation(this);
         }
     }
+    public void cancel() {
+        if (client != null) client.removeReservation(this);
+        if (books != null) {
+            for (Book b : books) {
+                b.removeReservation(this);
+            }
+        }
+        ObjectPlus.removeFromExtent(this);
+    }
+
 
     @Override
     public String toString() {

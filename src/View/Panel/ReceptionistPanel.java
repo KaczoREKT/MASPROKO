@@ -5,6 +5,8 @@ import Controller.ClientController;
 import Controller.ReservationController;
 import Model.Client;
 import View.Dialogs.Receptionist.AddNewClientDialog;
+import View.Dialogs.Receptionist.CancelReservationDialog;
+import View.Dialogs.Receptionist.ChangeReservationDialog;
 import View.Dialogs.Receptionist.ReserveBookDialog;
 
 import javax.swing.*;
@@ -28,23 +30,14 @@ public class ReceptionistPanel extends JPanel {
         btnRegisterClient.addActionListener(e -> {
             new AddNewClientDialog(clientController);
         });
-        btnShowBooks.addActionListener(e -> {
-            // Kod do wyświetlenia listy książek
-        });
-        btnShowAvailableBooks.addActionListener(e -> {
-            // Kod do wyświetlenia dostępnych książek
-        });
-        btnShowHistory.addActionListener(e -> {
-            // Kod do wyświetlenia historii rezerwacji klienta
-        });
         btnReserveBook.addActionListener(e -> {
            new ReserveBookDialog(bookController, clientController, reservationController);
         });
         btnCancelReservation.addActionListener(e -> {
-            // Kod do anulowania rezerwacji książki
+            new CancelReservationDialog(clientController, reservationController);
         });
         btnChangeReservation.addActionListener(e -> {
-            // Kod do zmiany terminu rezerwacji książki
+            new ChangeReservationDialog(clientController, reservationController);
         });
 
         add(btnRegisterClient);

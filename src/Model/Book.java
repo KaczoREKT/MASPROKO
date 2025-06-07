@@ -76,6 +76,12 @@ public class Book extends AutoIdEntity {
         setStatus(r != null ? BookStatus.WYPOZYCZONA : BookStatus.DOSTEPNA);
     }
 
+    public void removeReservation(Reservation r) {
+        if (this.reservation == r) {
+            this.reservation = null;
+            setStatus(BookStatus.DOSTEPNA);
+        }
+    }
 
     public Sector getSector() {
         return sector;
