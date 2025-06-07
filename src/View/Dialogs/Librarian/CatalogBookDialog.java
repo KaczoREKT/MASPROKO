@@ -1,4 +1,4 @@
-package View.Dialogs;
+package View.Dialogs.Librarian;
 
 import Controller.BookController;
 import Controller.SectorController;
@@ -61,7 +61,7 @@ public class CatalogBookDialog extends JDialog {
 
             bookController.addBook(title, author, genre, matchedSector);
 
-            JOptionPane.showMessageDialog(this, "Książka dodana do sektora: " + matchedSector);
+            JOptionPane.showMessageDialog(this, "Książka dodana do sektora: " + matchedSector.getName());
             dispose();
 
         });

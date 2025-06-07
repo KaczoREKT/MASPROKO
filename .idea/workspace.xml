@@ -5,33 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708ce410-c670-4278-9c45-99ac5c2c3ecd" name="Changes" comment="comm">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/BookController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/EmployeeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/LibrarianController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/SectorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/CatalogBookDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/UpdateBookDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Panel/LoginPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/AutoIdEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Librarian/DeleteBookDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ClientCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ClientCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Librarian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Receptionist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Receptionist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reservation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BookController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Sector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Sector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/ObjectPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/ObjectPlus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/SampleData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SampleData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/CatalogBookDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Librarian/CatalogBookDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/UpdateBookDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Librarian/UpdateBookDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

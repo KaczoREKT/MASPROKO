@@ -1,4 +1,4 @@
-package View.Dialogs;
+package View.Dialogs.Librarian;
 
 import Controller.SectorController;
 import Model.Book;
@@ -13,64 +13,70 @@ public class UpdateBookDialog extends JDialog {
     public UpdateBookDialog(SectorController sectorController) {
         setTitle("Aktualizacja książki");
         setModal(true);
-        setSize(500, 350);
-        setLayout(new GridBagLayout());
+        setSize(420, 320);
         setLocationRelativeTo(null);
 
+        JPanel content = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.insets = new Insets(8, 10, 8, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
 
-        JLabel sectorLabel = new JLabel("Sektor:");
-        add(sectorLabel, gbc);
+        int row = 0;
 
-        // PRZEKAZYWANIE SEKTORÓW
-        java.util.List<Sector> sectors = sectorController.getAllSectors();
+        // Sektor
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        content.add(new JLabel("Sektor:"), gbc);
+
+        List<Sector> sectors = sectorController.getAllSectors();
         JComboBox<Sector> sectorBox = new JComboBox<>(sectors.toArray(new Sector[0]));
-        gbc.gridx = 1;
-        add(sectorBox, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(sectorBox, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
-        JLabel bookLabel = new JLabel("Książka:");
-        add(bookLabel, gbc);
-
+        // Książka
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        content.add(new JLabel("Książka:"), gbc);
         JComboBox<Book> bookBox = new JComboBox<>();
-        gbc.gridx = 1;
-        add(bookBox, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(bookBox, gbc);
 
-        // Pola do edycji
-        gbc.gridx = 0; gbc.gridy++;
-        add(new JLabel("Tytuł:"), gbc);
+        // Tytuł
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        content.add(new JLabel("Tytuł:"), gbc);
         JTextField titleField = new JTextField(15);
-        gbc.gridx = 1;
-        add(titleField, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(titleField, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
-        add(new JLabel("Autor:"), gbc);
+        // Autor
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        content.add(new JLabel("Autor:"), gbc);
         JTextField authorField = new JTextField(15);
-        gbc.gridx = 1;
-        add(authorField, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(authorField, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
-        add(new JLabel("Gatunek:"), gbc);
+        // Gatunek
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        content.add(new JLabel("Gatunek:"), gbc);
         JTextField genreField = new JTextField(15);
-        gbc.gridx = 1;
-        add(genreField, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(genreField, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
-        add(new JLabel("Status:"), gbc);
+        // Status
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        content.add(new JLabel("Status:"), gbc);
         JComboBox<BookStatus> statusBox = new JComboBox<>(BookStatus.values());
-        gbc.gridx = 1;
-        add(statusBox, gbc);
+        gbc.gridx = 1; gbc.weightx = 0.7;
+        content.add(statusBox, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
-        gbc.gridwidth = 2;
+        // Przycisk
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE; gbc.weightx = 1;
         JButton btnSave = new JButton("Zapisz");
-        add(btnSave, gbc);
+        content.add(btnSave, gbc);
 
         // --- LOGIKA WYBORU ---
 
-        // Funkcja do wypełniania książek po zmianie sektora
         Runnable updateBookList = () -> {
             Sector selectedSector = (Sector) sectorBox.getSelectedItem();
             bookBox.removeAllItems();
@@ -81,7 +87,6 @@ public class UpdateBookDialog extends JDialog {
             }
         };
 
-        // Funkcja do wypełniania pól po wyborze książki
         Runnable updateBookFields = () -> {
             Book selectedBook = (Book) bookBox.getSelectedItem();
             if (selectedBook != null) {
@@ -102,11 +107,8 @@ public class UpdateBookDialog extends JDialog {
             updateBookFields.run();
         });
 
-        bookBox.addActionListener(e -> {
-            updateBookFields.run();
-        });
+        bookBox.addActionListener(e -> updateBookFields.run());
 
-        // Zapisz zmiany
         btnSave.addActionListener(e -> {
             Book selectedBook = (Book) bookBox.getSelectedItem();
             if (selectedBook == null) {
@@ -133,13 +135,14 @@ public class UpdateBookDialog extends JDialog {
             dispose();
         });
 
-        // Wstępne wypełnienie listy książek i pól (dla domyślnego sektora)
+        // Inicjalizacja
         if (sectorBox.getItemCount() > 0) {
             sectorBox.setSelectedIndex(0);
             updateBookList.run();
             updateBookFields.run();
         }
 
+        setContentPane(content);
         setVisible(true);
     }
 }

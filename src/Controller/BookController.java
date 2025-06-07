@@ -17,7 +17,7 @@ public class BookController {
         return books;
     }
     public void addBook(String title, String genre, String author, Sector sector) {
-        Book book = new Book(title, genre, author); // Zakładam taki konstruktor
+        Book book = new Book(title, genre, author);
         sector.addBook(book);
     }
 }

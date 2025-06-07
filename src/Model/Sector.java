@@ -3,6 +3,7 @@ package Model;
 import utils.ObjectPlus;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Klasa Sector – dzieli książki na sektory w zależności od przedziału liter.
@@ -39,14 +40,21 @@ public class Sector extends ObjectPlus {
         this.endLetter = endLetter;
     }
 
-
+    public String getName(){
+        return String.format("Sector [%c, %c]", startLetter, endLetter);
+    }
     public boolean containsLetter(char letter) {
         letter = Character.toUpperCase(letter);
         return letter >= startLetter && letter <= endLetter;
     }
 
     public Set<Book> getBooks() {
-        return Collections.unmodifiableSet(books);
+        return books;
+    }
+    public Set<String> getBooksTitles() {
+        return books.stream()
+                .map(Book::getTitle)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -91,6 +99,6 @@ public class Sector extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("Sector[%s–%s]", startLetter, endLetter);
+        return "Sector[" +  startLetter + "," + endLetter + "], books: " + getBooksTitles();
     }
 }

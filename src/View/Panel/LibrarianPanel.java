@@ -1,8 +1,9 @@
 package View.Panel;
 import Controller.BookController;
 import Controller.SectorController;
-import View.Dialogs.CatalogBookDialog;
-import View.Dialogs.UpdateBookDialog;
+import View.Dialogs.Librarian.CatalogBookDialog;
+import View.Dialogs.Librarian.DeleteBookDialog;
+import View.Dialogs.Librarian.UpdateBookDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class LibrarianPanel extends JPanel {
             new UpdateBookDialog(sectorController);
         });
         btnDeleteBook.addActionListener(e -> {
-            /* kod */
+            new DeleteBookDialog();
         });
 
         add(btnCatalogBook);
