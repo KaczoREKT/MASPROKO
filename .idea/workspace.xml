@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708ce410-c670-4278-9c45-99ac5c2c3ecd" name="Changes" comment="comm">
+      <change afterPath="$PROJECT_DIR$/src/Controller/SortingJobController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReservationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reservation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/CancelReservationDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/CancelReservationDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/ChangeReservationDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/ChangeReservationDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/LibrarianController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LibrarianController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/AssignWorkDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/AssignWorkDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +120,7 @@
       <workItem from="1749158529816" duration="11050000" />
       <workItem from="1749170612779" duration="5629000" />
       <workItem from="1749261403693" duration="7630000" />
-      <workItem from="1749332150221" duration="5185000" />
+      <workItem from="1749332150221" duration="6334000" />
     </task>
     <task id="LOCAL-00001" summary="comm">
       <option name="closed" value="true" />
@@ -132,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749336113328</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="comm">
+      <option name="closed" value="true" />
+      <created>1749337603960</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749337603960</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

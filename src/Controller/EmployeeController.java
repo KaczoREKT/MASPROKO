@@ -65,4 +65,8 @@ public class EmployeeController {
         }
         return ids;
     }
+    public void deleteEmployee(Employee employee) throws Exception {
+        if (employee == null) throw new Exception("Brak pracownika do usunięcia!");
+        ObjectPlus.removeFromExtent(employee);
+    }
 }
