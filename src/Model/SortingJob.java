@@ -2,6 +2,7 @@ package Model;
 
 import utils.ObjectPlus;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -15,13 +16,13 @@ import java.util.Date;
 public class SortingJob extends ObjectPlus {
     private static final long serialVersionUID = 1L;
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private Librarian librarian;
     private Sector sector;
 
-    public SortingJob(Date startDate, Date endDate) {
+    public SortingJob(LocalDate startDate, LocalDate endDate) {
         super();
         this.startDate = startDate;
         this.endDate = endDate;
@@ -29,19 +30,19 @@ public class SortingJob extends ObjectPlus {
 
     // Gettery / settery
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

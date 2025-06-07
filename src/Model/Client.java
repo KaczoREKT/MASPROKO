@@ -42,6 +42,9 @@ public class Client extends Person {
     public ClientCard getClientCard() {
         return clientCard;
     }
+    public String getClientCardId() {
+        return clientCard.getPublicId();
+    }
 
     /**
      * Ustawia kartę klienta; relacja jeden-do-jednego.

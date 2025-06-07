@@ -25,10 +25,10 @@ public class LibrarianPanel extends JPanel {
             new CatalogBookDialog(bookController, sectorController);
         });
         btnUpdateBook.addActionListener(e -> {
-            new UpdateBookDialog(sectorController);
+            new UpdateBookDialog(sectorController, bookController);
         });
         btnDeleteBook.addActionListener(e -> {
-            new DeleteBookDialog();
+            new DeleteBookDialog(sectorController, bookController);
         });
 
         add(btnCatalogBook);

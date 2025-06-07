@@ -1,11 +1,18 @@
 package View.Panel;
 
+import Controller.BookController;
+import Controller.ClientController;
+import Controller.ReservationController;
+import Model.Client;
+import View.Dialogs.Receptionist.AddNewClientDialog;
+import View.Dialogs.Receptionist.ReserveBookDialog;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class ReceptionistPanel extends JPanel {
 
-    public ReceptionistPanel() {
+    public ReceptionistPanel(BookController bookController, ClientController clientController, ReservationController reservationController) {
         setLayout(new GridLayout(0, 1, 10, 10));
 
         add(new JLabel("Panel Recepcjonisty", SwingConstants.CENTER));
@@ -19,7 +26,7 @@ public class ReceptionistPanel extends JPanel {
 
         // Dodaj obsługę przycisków tutaj (np. wywołania metod, przełączanie paneli itd.)
         btnRegisterClient.addActionListener(e -> {
-            // Kod do rejestracji klienta
+            new AddNewClientDialog(clientController);
         });
         btnShowBooks.addActionListener(e -> {
             // Kod do wyświetlenia listy książek
@@ -31,7 +38,7 @@ public class ReceptionistPanel extends JPanel {
             // Kod do wyświetlenia historii rezerwacji klienta
         });
         btnReserveBook.addActionListener(e -> {
-            // Kod do rezerwacji książki
+           new ReserveBookDialog(bookController, clientController, reservationController);
         });
         btnCancelReservation.addActionListener(e -> {
             // Kod do anulowania rezerwacji książki

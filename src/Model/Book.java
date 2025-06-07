@@ -20,10 +20,8 @@ public class Book extends AutoIdEntity {
 
     private BookStatus status = BookStatus.DOSTEPNA;
 
-    // Rezerwacje na tę książkę
-    private List<Reservation> reservations = new ArrayList<>();
+    private Reservation reservation;
 
-    // Do jakiego sektora należy
     private Sector sector;
 
     public Book(String title, String genre, String author) {
@@ -67,27 +65,17 @@ public class Book extends AutoIdEntity {
         this.status = status;
     }
 
-    public List<Reservation> getReservations() {
-        return Collections.unmodifiableList(reservations);
-    }
-
     /**
      * Dodaje rezerwację do książki – relacja jeden-do-wielu (Book -> Reservation).
      */
-    public void addReservation(Reservation r) {
-        if (r != null && !reservations.contains(r)) {
-            reservations.add(r);
-            if (r.getBook() != this) {
-                r.setBook(this);
-            }
+    public void setReservation(Reservation r) {
+        if (this.reservation != null && r != null && this.reservation != r) {
+            throw new IllegalStateException("Książka jest już zarezerwowana!");
         }
+        this.reservation = r;
+        setStatus(r != null ? BookStatus.WYPOZYCZONA : BookStatus.DOSTEPNA);
     }
 
-    public void removeReservation(Reservation r) {
-        if (r != null && reservations.remove(r)) {
-            r.setBook(null);
-        }
-    }
 
     public Sector getSector() {
         return sector;

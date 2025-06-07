@@ -13,9 +13,12 @@ public class ManagerPanel extends JPanel {
         JButton btnFireEmployee = new JButton("Zwolnienie pracownika");
         JButton btnAssignWork = new JButton("Przypisanie pracy bibliotekarzowi");
 
-        btnRegisterEmployee.addActionListener(e -> {/* kod */});
-        btnFireEmployee.addActionListener(e -> {/* kod */});
-        btnAssignWork.addActionListener(e -> {/* kod */});
+        btnRegisterEmployee.addActionListener(e -> {
+            /* kod */});
+        btnFireEmployee.addActionListener(e -> {
+            /* kod */});
+        btnAssignWork.addActionListener(e -> {
+            /* kod */});
 
         add(btnRegisterEmployee);
         add(btnFireEmployee);

@@ -1,6 +1,4 @@
-import Controller.BookController;
-import Controller.EmployeeController;
-import Controller.SectorController;
+import Controller.*;
 import Model.Book;
 import Model.Librarian;
 import View.MainFrame;
@@ -40,6 +38,8 @@ public class Main {
             AutoIdEntity.recalculateNextId(Book.class);
             AutoIdEntity.recalculateNextId(Client.class);
             AutoIdEntity.recalculateNextId(Manager.class);
+            AutoIdEntity.recalculateNextId(ClientCard.class);
+            AutoIdEntity.recalculateNextId(Reservation.class);
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
@@ -57,8 +57,11 @@ public class Main {
             System.out.println("--------------------------------");
         }
     }
-    public void testFunctions(EmployeeController employeeController){
+    public void testFunctions(EmployeeController employeeController, ClientController clientController) {
         System.out.println(employeeController.getEmployeeList());
+        for (Client c : clientController.getClientList()) {
+            System.out.println(c.getClientCardId());
+        };
     }
     public static void main(String[] args) throws Exception {
         // =============MAIN=============
@@ -69,12 +72,14 @@ public class Main {
         EmployeeController employeeController = new EmployeeController();
         BookController bookController = new BookController();
         SectorController sectorController = new SectorController();
+        ClientController clientController = new ClientController();
+        ReservationController reservationController = new ReservationController();
         // =============TESTING=============
-        main.testFunctions(employeeController);
+        main.testFunctions(employeeController, clientController);
 
 
         // =============GUI=============
-        new MainFrame(employeeController, bookController, sectorController);
+        new MainFrame(employeeController, bookController, sectorController, clientController, reservationController);
 
     }
 }

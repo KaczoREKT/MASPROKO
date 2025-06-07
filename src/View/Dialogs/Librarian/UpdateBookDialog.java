@@ -1,16 +1,19 @@
 package View.Dialogs.Librarian;
 
+import Controller.BookController;
 import Controller.SectorController;
 import Model.Book;
 import Model.BookStatus;
 import Model.Sector;
+import View.ComboBox.BookJComboBox;
+import View.ComboBox.SectorJComboBox;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class UpdateBookDialog extends JDialog {
-    public UpdateBookDialog(SectorController sectorController) {
+    public UpdateBookDialog(SectorController sectorController, BookController bookController) {
         setTitle("Aktualizacja książki");
         setModal(true);
         setSize(420, 320);
@@ -21,23 +24,21 @@ public class UpdateBookDialog extends JDialog {
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
 
         int row = 0;
 
         // Sektor
         gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
         content.add(new JLabel("Sektor:"), gbc);
-
         List<Sector> sectors = sectorController.getAllSectors();
-        JComboBox<Sector> sectorBox = new JComboBox<>(sectors.toArray(new Sector[0]));
+        JComboBox<Sector> sectorBox = new SectorJComboBox(sectors);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(sectorBox, gbc);
 
         // Książka
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Książka:"), gbc);
-        JComboBox<Book> bookBox = new JComboBox<>();
+        JComboBox<Book> bookBox = new BookJComboBox();
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(bookBox, gbc);
 
@@ -65,7 +66,11 @@ public class UpdateBookDialog extends JDialog {
         // Status
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Status:"), gbc);
-        JComboBox<BookStatus> statusBox = new JComboBox<>(BookStatus.values());
+        BookStatus[] allowedStatuses = {
+                BookStatus.DOSTEPNA,
+                BookStatus.WSTRZYMANA
+        };
+        JComboBox<BookStatus> statusBox = new JComboBox<>(allowedStatuses);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(statusBox, gbc);
 
@@ -82,7 +87,9 @@ public class UpdateBookDialog extends JDialog {
             bookBox.removeAllItems();
             if (selectedSector != null) {
                 for (Book b : selectedSector.getBooks()) {
-                    bookBox.addItem(b);
+                    if (!(b.getStatus() == BookStatus.WYPOZYCZONA)){
+                        bookBox.addItem(b);
+                    }
                 }
             }
         };
@@ -125,11 +132,8 @@ public class UpdateBookDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "Wszystkie pola muszą być wypełnione!", "Błąd", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            bookController.updateBook(selectedBook, newTitle, newAuthor, newGenre, newStatus);
 
-            selectedBook.setTitle(newTitle);
-            selectedBook.setAuthor(newAuthor);
-            selectedBook.setGenre(newGenre);
-            selectedBook.setStatus(newStatus);
 
             JOptionPane.showMessageDialog(this, "Książka zaktualizowana!");
             dispose();

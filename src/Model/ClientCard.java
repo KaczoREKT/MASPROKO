@@ -3,6 +3,7 @@ package Model;
 import utils.AutoIdEntity;
 import utils.ObjectPlus;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -13,15 +14,19 @@ public class ClientCard extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
     private static long nextId = 1;
     private long id;
-    private Date expirationDate;
+    private LocalDate expirationDate;
     private boolean expired;
     private Client client;
 
-    public ClientCard(Date expirationDate, boolean expired) {
+    public ClientCard(Client client) {
         super();
         this.id = nextId++;
-        this.expirationDate = expirationDate;
-        this.expired = expired;
+        this.client = client;
+        this.expirationDate = LocalDate.now().plusYears(2);
+        this.expired = false;
+        if (client != null) {
+            client.setClientCard(this);
+        }
     }
 
     public long getId() {
@@ -32,11 +37,11 @@ public class ClientCard extends AutoIdEntity {
         this.id = id;
     }
 
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 

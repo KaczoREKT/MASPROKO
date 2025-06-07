@@ -63,4 +63,12 @@ public abstract class ObjectPlus implements Serializable {
             e.printStackTrace();
         }
     }
+    public static void removeFromExtent(ObjectPlus object) {
+        if (object == null) return;
+        Class<? extends ObjectPlus> theClass = object.getClass();
+        List<ObjectPlus> extent = allExtents.get(theClass);
+        if (extent != null) {
+            extent.remove(object);
+        }
+    }
 }

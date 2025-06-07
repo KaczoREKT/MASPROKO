@@ -1,7 +1,9 @@
 package Model;
 
 import utils.AutoIdEntity;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Klasa Reservation – rezerwacja konkretnej książki przez klienta.
@@ -12,20 +14,25 @@ public class Reservation extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
     private static long nextId = 1;
     private long id;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    // Do jakiej książki się odnosi rezerwacja
-    private Book book;
+    private Set<Book> books;
 
-    // Kto wykonał tę rezerwację
     private Client client;
 
-    public Reservation(Date startDate, Date endDate) {
+    public Reservation(LocalDate startDate, LocalDate endDate, Set<Book> books) {
         super();
-        this.id = nextId++;
+        if (books == null || books.isEmpty()) {
+            throw new IllegalArgumentException("Rezerwacja musi zawierać przynajmniej jedną książkę.");
+        }
         this.startDate = startDate;
         this.endDate = endDate;
+        this.books = books;
+        // Dodajemy rezerwację do wszystkich książek
+        for (Book book : this.books) {
+            book.setReservation(this); // dodaje rezerwację i zmienia status
+        }
     }
 
     // Gettery / settery
@@ -38,37 +45,30 @@ public class Reservation extends AutoIdEntity {
         this.id = id;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public Book getBook() {
-        return book;
+    public Set<Book> getBooks() {
+        return books;
     }
 
     /**
      * Ustawia relację Reservation -> Book (wiele-do-jednego).
      */
-    public void setBook(Book book) {
-        if (this.book != null) {
-            this.book.getReservations().remove(this);
-        }
-        this.book = book;
-        if (book != null && !book.getReservations().contains(this)) {
-            book.addReservation(this);
-        }
+    public void setBooks(List<Book> books) {
     }
 
     public Client getClient() {
@@ -90,10 +90,23 @@ public class Reservation extends AutoIdEntity {
 
     @Override
     public String toString() {
-        return String.format("Reservation[id=%s, klient=%s, bookID=%s, from=%s, to=%s]",
+        StringBuilder booksInfo = new StringBuilder();
+        for (Book book : books) {
+            booksInfo.append(book.getTitle())
+                    .append(" ")
+                    .append(book.getId())
+                    .append("], ");
+        }
+        // Usunięcie przecinka na końcu jeśli są książki
+        if (!booksInfo.isEmpty()) {
+            booksInfo.setLength(booksInfo.length() - 2);
+        }
+
+        return String.format("Reservation[id=%s, client=%s, books=[%s], from=%s, to=%s]",
                 getPublicId(),
                 (client != null ? client.getId() : "null"),
-                (book != null ? book.getId() : "null"),
+                booksInfo,
                 startDate, endDate);
     }
+
 }

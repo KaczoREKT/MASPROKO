@@ -1,8 +1,6 @@
 package View;
 
-import Controller.BookController;
-import Controller.EmployeeController;
-import Controller.SectorController;
+import Controller.*;
 import View.Panel.LibrarianPanel;
 import View.Panel.LoginPanel;
 import View.Panel.ManagerPanel;
@@ -20,13 +18,17 @@ public class MainFrame extends JFrame {
     private JPanel cardsPanel;
     private CardLayout cardLayout;
     private EmployeeController employeeController;
-    BookController bookController;
-    SectorController sectorController;
+    private BookController bookController;
+    private SectorController sectorController;
+    private ClientController clientController;
+    private ReservationController reservationController;
 
-    public MainFrame(EmployeeController employeeController, BookController bookController,  SectorController sectorController) {
+    public MainFrame(EmployeeController employeeController, BookController bookController,  SectorController sectorController, ClientController clientController, ReservationController reservationController) {
         this.employeeController = employeeController;
         this.bookController = bookController;
         this.sectorController = sectorController;
+        this.clientController = clientController;
+        this.reservationController = reservationController;
         setTitle("Aplikacja Biblioteka");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 400);
@@ -49,8 +51,8 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
         cardsPanel.add(new LoginPanel(this, this.employeeController), "Login");
-        cardsPanel.add(new ReceptionistPanel(), "ReceptionistPanel");
-        cardsPanel.add(new LibrarianPanel(bookController, sectorController), "LibrarianPanel");
+        cardsPanel.add(new ReceptionistPanel(this.bookController, this.clientController, this.reservationController), "ReceptionistPanel");
+        cardsPanel.add(new LibrarianPanel(this.bookController, this.sectorController), "LibrarianPanel");
         cardsPanel.add(new ManagerPanel(), "ManagerPanel");
         add(cardsPanel, BorderLayout.CENTER);
 
