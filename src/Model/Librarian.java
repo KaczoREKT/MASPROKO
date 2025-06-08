@@ -58,4 +58,8 @@ public class Librarian extends Employee {
                 getPublicId(), getFirstName(), getLastName(), getSalary(),
                 genreSpecialization, sortingJobs.size());
     }
+    @Override
+    public String getPrefix() {
+        return "L";
+    }
 }

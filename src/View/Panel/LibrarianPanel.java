@@ -1,38 +1,32 @@
 package View.Panel;
+
 import Controller.BookController;
+import Controller.ClientController;
+import Controller.ReservationController;
 import Controller.SectorController;
 import View.Dialogs.Librarian.CatalogBookDialog;
-import View.Dialogs.Librarian.DeleteBookDialog;
 import View.Dialogs.Librarian.UpdateBookDialog;
+import View.Dialogs.Librarian.DeleteBookDialog;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class LibrarianPanel extends JPanel {
-    BookController bookController;
-    SectorController sectorController;
-    public LibrarianPanel(BookController bookController, SectorController sectorController) {
-        this.bookController = bookController;
-        this.sectorController = sectorController;
-        setLayout(new GridLayout(0, 1, 10, 10));
+public class LibrarianPanel extends EmployeePanel {
+    public LibrarianPanel(BookController bookController, ClientController clientController, ReservationController reservationController, SectorController sectorController) {
+        super(bookController, clientController, reservationController, "Bibliotekarzu!");
 
-        add(new JLabel("Panel Bibliotekarza", SwingConstants.CENTER));
-        JButton btnCatalogBook = new JButton("Katalogowanie nowej książki");
-        JButton btnUpdateBook = new JButton("Aktualizacja danych książki");
-        JButton btnDeleteBook = new JButton("Usunięcie książki");
+        // Dodaj swoje przyciski do panelu „Twoja praca”
+        JPanel workButtonsPanel = getWorkButtonsPanel();
 
-        btnCatalogBook.addActionListener(e -> {
-            new CatalogBookDialog(bookController, sectorController);
-        });
-        btnUpdateBook.addActionListener(e -> {
-            new UpdateBookDialog(sectorController, bookController);
-        });
-        btnDeleteBook.addActionListener(e -> {
-            new DeleteBookDialog(sectorController, bookController);
-        });
+        JButton btnAddBook = new JButton("Dodaj książkę");
+        JButton btnUpdateBook = new JButton("Aktualizuj książkę");
+        JButton btnDeleteBook = new JButton("Usuń książkę");
 
-        add(btnCatalogBook);
-        add(btnUpdateBook);
-        add(btnDeleteBook);
+        btnAddBook.addActionListener(e -> new CatalogBookDialog(bookController, sectorController));
+        btnUpdateBook.addActionListener(e -> new UpdateBookDialog(sectorController, bookController));
+        btnDeleteBook.addActionListener(e -> new DeleteBookDialog(sectorController, bookController));
+
+        workButtonsPanel.add(btnAddBook);
+        workButtonsPanel.add(btnUpdateBook);
+        workButtonsPanel.add(btnDeleteBook);
     }
 }

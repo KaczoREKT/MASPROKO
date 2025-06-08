@@ -3,42 +3,72 @@ package View.Panel;
 import Controller.BookController;
 import Controller.ClientController;
 import Controller.ReservationController;
+import View.Dialogs.Employee.ShowAvailableBooksDialog;
+import View.Dialogs.Employee.ShowBooksDialog;
+import View.Dialogs.Employee.ShowReservationHistoryDialog;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class EmployeePanel extends JPanel {
+    protected JPanel leftPanel;
+    protected JPanel rightPanel;
+    protected JLabel welcomeLabel;
+    protected JPanel workButtonsPanel;
 
-    public EmployeePanel(BookController bookController, ClientController clientController, ReservationController reservationController) {
-        setLayout(new GridLayout(0, 1, 10, 10));
+    public EmployeePanel(BookController bookController, ClientController clientController, ReservationController reservationController, String roleName) {
+        setLayout(new BorderLayout());
 
-        add(new JLabel("Panel Recepcjonisty", SwingConstants.CENTER));
-        JButton btnRegisterClient = new JButton("Rejestracja nowego klienta");
+        // Nagłówek
+        welcomeLabel = new JLabel("Witaj " + roleName, SwingConstants.CENTER);
+        welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(Font.BOLD, 20f));
+        add(welcomeLabel, BorderLayout.NORTH);
+
+        // Panel po lewej
+        leftPanel = new JPanel();
+        leftPanel.setLayout(new BorderLayout());
+        JPanel employeeButtonsPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+
         JButton btnShowBooks = new JButton("Wyświetl listę książek");
         JButton btnShowAvailableBooks = new JButton("Wyświetl dostępne książki");
-        JButton btnShowHistory = new JButton("Wyświetl historię rezerwacji klienta");
-        JButton btnReserveBook = new JButton("Rezerwacja książki");
-        JButton btnCancelReservation = new JButton("Anulowanie rezerwacji książki");
-        JButton btnChangeReservation = new JButton("Zmiana terminu rezerwacji książki");
+        JButton btnShowReservationHistory = new JButton("Wyświetl historię rezerwacji klienta");
 
-        // Dodaj obsługę przycisków tutaj (np. wywołania metod, przełączanie paneli itd.)
         btnShowBooks.addActionListener(e -> {
-            // Kod do wyświetlenia listy książek
+            new ShowBooksDialog(bookController);
         });
         btnShowAvailableBooks.addActionListener(e -> {
-            // Kod do wyświetlenia dostępnych książek
+            new ShowAvailableBooksDialog(bookController);
         });
-        btnShowHistory.addActionListener(e -> {
-            // Kod do wyświetlenia historii rezerwacji klienta
+        btnShowReservationHistory.addActionListener(e -> {
+            new ShowReservationHistoryDialog(clientController);
         });
+        employeeButtonsPanel.add(btnShowBooks);
+        employeeButtonsPanel.add(btnShowAvailableBooks);
+        employeeButtonsPanel.add(btnShowReservationHistory);
 
-        add(btnRegisterClient);
-        add(btnShowBooks);
-        add(btnShowAvailableBooks);
-        add(btnShowHistory);
-        add(btnReserveBook);
-        add(btnCancelReservation);
-        add(btnChangeReservation);
+        JLabel leftLabel = new JLabel("Funkcje pracownicze:", SwingConstants.CENTER);
+        leftLabel.setFont(leftLabel.getFont().deriveFont(Font.PLAIN, 14f));
+
+        leftPanel.add(leftLabel, BorderLayout.NORTH);
+        leftPanel.add(employeeButtonsPanel, BorderLayout.CENTER);
+
+        // Panel po prawej
+        rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+
+        JLabel rightLabel = new JLabel("Twoja praca:", SwingConstants.CENTER);
+        rightLabel.setFont(rightLabel.getFont().deriveFont(Font.PLAIN, 14f));
+        rightPanel.add(rightLabel, BorderLayout.NORTH);
+
+        // TO JEST PANEL NA TWOJE PRZYCISKI!
+        workButtonsPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+        rightPanel.add(workButtonsPanel, BorderLayout.CENTER);
+
+        add(leftPanel, BorderLayout.WEST);
+        add(rightPanel, BorderLayout.CENTER);
+    }
+
+    protected JPanel getWorkButtonsPanel() {
+        return workButtonsPanel;
     }
 }
-

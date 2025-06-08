@@ -1,5 +1,6 @@
 package Model;
 
+import utils.AutoIdEntity;
 import utils.ObjectPlus;
 
 import java.time.LocalDate;
@@ -9,11 +10,11 @@ import java.util.Date;
  * Klasa SortingJob – zadanie sortowania książek w danym sektorze.
  * Pola: startDate, endDate.
  * Relacje:
- *   - jeden (SortingJob) do wielu (brak, w diagramie jednokierunkowo do Librarian i do Sector)
- *   - relacja wiele-do-jednego z Librarian (każde zadanie jest przypisane do jednej osoby)
- *   - relacja wiele-do-jednego z Sector (po jakim sektorze dana osoba sortuje)
+ * - jeden (SortingJob) do wielu (brak, w diagramie jednokierunkowo do Librarian i do Sector)
+ * - relacja wiele-do-jednego z Librarian (każde zadanie jest przypisane do jednej osoby)
+ * - relacja wiele-do-jednego z Sector (po jakim sektorze dana osoba sortuje)
  */
-public class SortingJob extends ObjectPlus {
+public class SortingJob extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
 
     private LocalDate startDate;
@@ -84,4 +85,9 @@ public class SortingJob extends ObjectPlus {
     public String toString() {
         return String.format("SortingJob[from=%s, to=%s]", startDate, endDate);
     }
+    @Override
+    public String getPrefix() {
+        return "SJ";
+    }
+
 }

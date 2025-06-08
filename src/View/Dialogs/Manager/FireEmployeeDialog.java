@@ -23,23 +23,22 @@ public class FireEmployeeDialog extends JDialog {
         int row = 0;
 
         // 1. Lista pracowników
-        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3; gbc.gridwidth = 1;
         content.add(new JLabel("Pracownik:"), gbc);
 
         List<Employee> employees = employeeController.getEmployeeList();
         JComboBox<Employee> employeeBox = new JComboBox<>(employees.toArray(new Employee[0]));
-        gbc.gridx = 1; gbc.weightx = 0.7;
+        gbc.gridx = 1; gbc.weightx = 0.7; gbc.gridwidth = 1;
         content.add(employeeBox, gbc);
 
-        // 2. Przycisk "Zwolnij"
-        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.CENTER;
+        // 2. Panel z przyciskami (jeden panel, oba przyciski obok siebie)
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         JButton btnFire = new JButton("Zwolnij");
-        content.add(btnFire, gbc);
-
-        // 3. Przycisk "Anuluj"
-        gbc.gridx = 1;
         JButton btnCancel = new JButton("Anuluj");
-        content.add(btnCancel, gbc);
+        buttonPanel.add(btnFire);
+        buttonPanel.add(btnCancel);
+        content.add(buttonPanel, gbc);
 
         // --- Logika ---
         btnFire.addActionListener(e -> {

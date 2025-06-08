@@ -16,4 +16,8 @@ public class Receptionist extends Employee {
         return String.format("Receptionist[id=%s, name=%s %s, salary=%.2f]",
                 getPublicId(), getFirstName(), getLastName(), getSalary());
     }
+    @Override
+    public String getPrefix() {
+        return "RE";
+    }
 }

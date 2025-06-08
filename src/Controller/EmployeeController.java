@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Employee;
-import Model.Manager;
-import Model.Librarian;
-import Model.Receptionist;
+import Model.*;
 import utils.ObjectPlus;
 
 import java.util.ArrayList;
@@ -68,5 +65,14 @@ public class EmployeeController {
     public void deleteEmployee(Employee employee) throws Exception {
         if (employee == null) throw new Exception("Brak pracownika do usunięcia!");
         ObjectPlus.removeFromExtent(employee);
+    }
+    public Librarian addLibrarian(String firstName, String lastName, Gender gender, double salary, String specialization) {
+        return new Librarian(firstName, lastName, gender, salary, specialization);
+    }
+    public Manager addManager(String firstName, String lastName, Gender gender, double salary, double bonus) {
+        return new Manager(firstName, lastName, gender, salary, bonus);
+    }
+    public Receptionist addReceptionist(String firstName, String lastName, Gender gender, double salary) {
+        return new Receptionist(firstName, lastName, gender, salary);
     }
 }

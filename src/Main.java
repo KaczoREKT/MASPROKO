@@ -40,6 +40,9 @@ public class Main {
             AutoIdEntity.recalculateNextId(Manager.class);
             AutoIdEntity.recalculateNextId(ClientCard.class);
             AutoIdEntity.recalculateNextId(Reservation.class);
+            AutoIdEntity.recalculateNextId(Receptionist.class);
+            AutoIdEntity.recalculateNextId(Manager.class);
+            AutoIdEntity.recalculateNextId(Librarian.class);
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
@@ -59,11 +62,8 @@ public class Main {
     }
     public void testFunctions(EmployeeController employeeController, ClientController clientController) {
         System.out.println(employeeController.getEmployeeList());
-        for (Client c : clientController.getClientList()) {
-            System.out.println(c.getClientCardId());
-        };
     }
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // =============MAIN=============
         Main main = new Main();
         main.handleObjectPlus();
@@ -74,12 +74,14 @@ public class Main {
         SectorController sectorController = new SectorController();
         ClientController clientController = new ClientController();
         ReservationController reservationController = new ReservationController();
+        LibrarianController librarianController = new LibrarianController();
+        SortingJobController sortingJobController = new SortingJobController();
         // =============TESTING=============
         main.testFunctions(employeeController, clientController);
 
 
         // =============GUI=============
-        new MainFrame(employeeController, bookController, sectorController, clientController, reservationController);
+        new MainFrame(employeeController, bookController, sectorController, clientController, reservationController, librarianController, sortingJobController);
 
     }
 }

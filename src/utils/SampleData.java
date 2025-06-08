@@ -5,85 +5,111 @@ import java.util.*;
 
 public class SampleData {
     public static void addSampleData() {
-        // ===== 1. Tworzymy sektory =====
-        Sector sectorA_C = new Sector('A', 'C');
-        Sector sectorD_F = new Sector('D', 'F');
+        // 1. Sektory
+        List<Sector> sectors = new ArrayList<>();
+        for (char start = 'A'; start <= 'J'; start += 2) {
+            sectors.add(new Sector(start, (char)(start+1)));
+        }
 
-        // ===== 2. Tworzymy kilka książek i przypisujemy je do sektorów =====
-        Book book1 = new Book("Alchemik", "Powieść", "Paulo Coelho");
-        book1.setSector(sectorA_C);
+        // 2. Książki
+        List<String> genres = List.of("Powieść", "Thriller", "Fantasy", "Sci-Fi", "Horror", "Romans", "Akcja", "Dramat");
+        List<String> authors = List.of(
+                "Paulo Coelho", "Carlos Ruiz Zafón", "James Patterson", "Stephen King",
+                "J.K. Rowling", "George R.R. Martin", "Remigiusz Mróz", "Andrzej Sapkowski"
+        );
+        List<Book> books = new ArrayList<>();
+        int bookCount = 40;
+        Random rand = new Random(1337);
+        for (int i = 1; i <= bookCount; i++) {
+            String title = "Książka #" + i;
+            String genre = genres.get(rand.nextInt(genres.size()));
+            String author = authors.get(rand.nextInt(authors.size()));
+            Book book = new Book(title, genre, author);
+            Sector sector = sectors.get(rand.nextInt(sectors.size()));
+            book.setSector(sector);
+            books.add(book);
+        }
 
-        Book book2 = new Book("Cień wiatru", "Thriller", "Carlos Ruiz Zafón");
-        book2.setSector(sectorA_C);
+        // 3. Pracownicy
+        List<Librarian> librarians = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            librarians.add(new Librarian("Librarian" + i, "Nowak", Gender.WOMAN, 3400 + 120*i, genres.get(rand.nextInt(genres.size()))));
+        }
+        Manager manager = new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 6000.00, 2000.00);
+        Receptionist receptionist = new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3100.00);
 
-        Book book3 = new Book("Dotyk Crossa", "Akcja", "James Patterson");
-        book3.setSector(sectorD_F);
+        // 4. Klienci i karty
+        List<Client> clients = new ArrayList<>();
+        List<ClientCard> cards = new ArrayList<>();
+        for (int i = 1; i <= 20; i++) {
+            String imie = "Jan" + i;
+            String nazwisko = "Kowalski" + i;
+            Gender gender = (i % 2 == 0) ? Gender.MAN : Gender.WOMAN;
+            String mail = "user" + i + "@example.com";
+            String phone = "123-456-" + String.format("%03d", i);
+            Client client = new Client(imie, nazwisko, gender, mail, phone);
+            ClientCard card = new ClientCard(client);
+            // Część kart przeterminowana
+            if (i % 7 == 0) {
+                card.setExpirationDate(LocalDate.now().minusYears(1));
+            }
+            clients.add(client);
+            cards.add(card);
+        }
 
-        Book book4 = new Book("Forteca zatracenia", "Horror", "Stephen King");
-        book4.setSector(sectorD_F);
+        // 5. Rezerwacje i mandaty
+        Set<Book> alreadyReservedBooks = new HashSet<>();
+        int reservationId = 1;
+        for (Client client : clients) {
+            int ileRezerwacji = rand.nextInt(3) + 1;
+            for (int k = 0; k < ileRezerwacji; k++) {
+                // WYBIERZ KSIĄŻKI, KTÓRE NIE SĄ JUŻ ZAREZERWOWANE
+                List<Book> availableBooks = new ArrayList<>();
+                for (Book b : books) {
+                    if (!alreadyReservedBooks.contains(b)) {
+                        availableBooks.add(b);
+                    }
+                }
+                if (availableBooks.isEmpty()) break; // Nie ma już dostępnych książek!
 
-        // ===== 3. Tworzymy bibliotekarza i przypisujemy mu zadanie sortowania =====
-        Librarian librarian = new Librarian("Anna", "Nowak", Gender.WOMAN, 3500.00, "Powieść");
-        // Zadanie sortowania dla sektora A–C
-        LocalDate startSort = LocalDate.of(2023, 3, 1); // marzec = 3
-        LocalDate endSort = LocalDate.of(2023, 3, 5);
-        SortingJob job1 = new SortingJob(startSort, endSort);
-        job1.setLibrarian(librarian);
-        job1.setSector(sectorA_C);
+                LocalDate from = LocalDate.now().minusDays(rand.nextInt(100));
+                LocalDate to = from.plusDays(rand.nextInt(15) + 3);
 
-        // ===== 4. Tworzymy managera i recepcjonistkę =====
-        Manager manager = new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 5500.00, 1200.00);
-        Receptionist receptionist = new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3000.00);
+                Set<Book> reservedBooks = new HashSet<>();
+                int ileBooks = 1 + rand.nextInt(2);
+                for (int z = 0; z < ileBooks && !availableBooks.isEmpty(); z++) {
+                    Book b = availableBooks.remove(rand.nextInt(availableBooks.size()));
+                    reservedBooks.add(b);
+                    alreadyReservedBooks.add(b);
+                }
+                if (reservedBooks.isEmpty()) continue;
 
-        // ===== 5. Tworzymy klienta, kartę klienta, rezerwację i mandat =====
-        Client client1 = new Client("Jan", "Kowalski", Gender.MAN,
-                "jan.kowalski@example.com", "123-456-789");
+                Reservation reservation = new Reservation(from, to, reservedBooks);
+                reservation.setClient(client);
 
-        // Karta klienta
-        ClientCard card1 = new ClientCard(client1);
+                // 50% szans na mandat
+                if (rand.nextBoolean()) {
+                    Fine fine = new Fine(10.0 + rand.nextInt(50), "Zwłoka " + reservationId, rand.nextInt(2));
+                    fine.setClient(client);
+                }
+                reservationId++;
+            }
+        }
 
-        // Rezerwacja książki "Cień wiatru" (book2) od 2023-04-10 do 2023-04-20
-        LocalDate resStart = LocalDate.of(2023, 4, 10);
-        LocalDate resEnd = LocalDate.of(2023, 4, 20);
-        Reservation reservation1 = new Reservation(resStart, resEnd, new HashSet<>(List.of(book1)));
-        reservation1.setClient(client1);
+        // 6. Zadania sortowania
+        for (int i = 0; i < 10; i++) {
+            LocalDate from = LocalDate.of(2023, rand.nextInt(12)+1, rand.nextInt(20)+1);
+            LocalDate to = from.plusDays(rand.nextInt(6)+1);
+            SortingJob job = new SortingJob(from, to);
+            job.setLibrarian(librarians.get(rand.nextInt(librarians.size())));
+            job.setSector(sectors.get(rand.nextInt(sectors.size())));
+        }
 
-        // Mandat dla klienta, np. zwłoka w oddaniu książki (status 0 = nieopłacony)
-        Fine fine1 = new Fine(25.50, "Przekroczenie terminu", 0);
-        fine1.setClient(client1);
-
-        // ===== 6. Tworzymy dodatkowe przykładowe obiekty (opcjonalnie) =====
-        // - Drugi klient z pustą kartą (wygasłą od 2022-01-01)
-        Client client2 = new Client( "Alicja", "Zielińska", Gender.WOMAN,
-                "alicia.zielinska@example.com", "987-654-321");
-        ClientCard card2 = new ClientCard(client2);
-
-        // - Rezerwacja dla Alicji: książka "Forteca zatracenia" (book4) od 2023-05-01 do 2023-05-10
-        LocalDate resStart2 = LocalDate.of(2023, 5, 1);
-        LocalDate resEnd2 = LocalDate.of(2023, 5, 10);
-        Reservation reservation2 = new Reservation(resStart2, resEnd2, new HashSet<>(List.of(book2, book3)));
-        reservation2.setClient(client2);
-
-        // - Kolejne zadanie sortowania dla sektora D–F przez tego samego bibliotekarza
-        LocalDate startSort2 = LocalDate.of(2023, 6, 1);
-        LocalDate endSort2 = LocalDate.of(2023, 6, 3);
-        SortingJob job2 = new SortingJob(startSort2, endSort2);
-        job2.setLibrarian(librarian);
-        job2.setSector(sectorD_F);
-
-        // ===== 7. (Opcjonalnie) Przykładowa tabela: wypisz na koniec, co utworzyliśmy =====
-        System.out.println("\n[DEBUG] Utworzono następujące obiekty przykładowe:");
-        System.out.println(" - Sektory: " + sectorA_C + ", " + sectorD_F);
-        System.out.println(" - Książki w sektorze A–C: " + book1 + ", " + book2);
-        System.out.println(" - Książki w sektorze D–F: " + book3 + ", " + book4);
-        System.out.println(" - Bibliotekarz: " + librarian);
-        System.out.println(" - Manager: " + manager);
-        System.out.println(" - Recepcjonistka: " + receptionist);
-        System.out.println(" - Klient 1: " + client1 + ", karta: " + card1);
-        System.out.println("   • Rezerwacja: " + reservation1);
-        System.out.println("   • Mandat: " + fine1);
-        System.out.println(" - Klient 2: " + client2 + ", karta: " + card2);
-        System.out.println("   • Rezerwacja: " + reservation2);
-        System.out.println(" - Zadania sortowania: " + job1 + " (A–C), " + job2 + " (D–F)\n");
+        // 7. Debug – podsumowanie
+        System.out.println("[DEBUG] Dodano przykładowych sektorów: " + sectors.size());
+        System.out.println("[DEBUG] Dodano przykładowych książek: " + books.size());
+        System.out.println("[DEBUG] Dodano bibliotekarzy: " + librarians.size());
+        System.out.println("[DEBUG] Dodano klientów: " + clients.size());
+        System.out.println("[DEBUG] Dodano kart: " + cards.size());
     }
 }

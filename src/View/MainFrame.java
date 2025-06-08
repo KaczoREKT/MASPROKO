@@ -14,24 +14,28 @@ import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     private JPanel menuPanel;
-    private JButton btnLogout;      // Przycisk wylogowania jako pole
+    private JButton btnLogout;
     private JPanel cardsPanel;
     private CardLayout cardLayout;
     private EmployeeController employeeController;
     private BookController bookController;
+    private LibrarianController librarianController;
+    private SortingJobController sortingJobController;
     private SectorController sectorController;
     private ClientController clientController;
     private ReservationController reservationController;
 
-    public MainFrame(EmployeeController employeeController, BookController bookController,  SectorController sectorController, ClientController clientController, ReservationController reservationController) {
+    public MainFrame(EmployeeController employeeController, BookController bookController,  SectorController sectorController, ClientController clientController, ReservationController reservationController, LibrarianController librarianController, SortingJobController sortingJobController) {
         this.employeeController = employeeController;
         this.bookController = bookController;
         this.sectorController = sectorController;
         this.clientController = clientController;
         this.reservationController = reservationController;
+        this.librarianController = librarianController;
+        this.sortingJobController = sortingJobController;
         setTitle("Aplikacja Biblioteka");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 400);
+        setSize(700, 700);
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
@@ -52,8 +56,8 @@ public class MainFrame extends JFrame {
         cardsPanel = new JPanel(cardLayout);
         cardsPanel.add(new LoginPanel(this, this.employeeController), "Login");
         cardsPanel.add(new ReceptionistPanel(this.bookController, this.clientController, this.reservationController), "ReceptionistPanel");
-        cardsPanel.add(new LibrarianPanel(this.bookController, this.sectorController), "LibrarianPanel");
-        cardsPanel.add(new ManagerPanel(), "ManagerPanel");
+        cardsPanel.add(new LibrarianPanel(this.bookController, this.clientController, this.reservationController, this.sectorController), "LibrarianPanel");
+        cardsPanel.add(new ManagerPanel(this.bookController, this.clientController, this.reservationController, this.employeeController, this.librarianController, this.sectorController, this.sortingJobController), "ManagerPanel");
         add(cardsPanel, BorderLayout.CENTER);
 
         // Domyślnie ukryj przycisk wylogowania

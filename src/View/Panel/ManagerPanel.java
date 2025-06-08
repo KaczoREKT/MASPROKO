@@ -1,27 +1,36 @@
 package View.Panel;
 
+import Controller.BookController;
+import Controller.ClientController;
+import Controller.ReservationController;
+import Controller.EmployeeController;
+import Controller.LibrarianController;
+import Controller.SectorController;
+import Controller.SortingJobController;
+import View.Dialogs.Manager.RegisterEmployeeDialog;
+import View.Dialogs.Manager.FireEmployeeDialog;
+import View.Dialogs.Manager.AssignWorkDialog;
+
 import javax.swing.*;
-import java.awt.*;
 
-// PANEL DLA MANAGERA
-public class ManagerPanel extends JPanel {
-    public ManagerPanel() {
-        setLayout(new GridLayout(0, 1, 10, 10));
+public class ManagerPanel extends EmployeePanel {
+    public ManagerPanel(BookController bookController, ClientController clientController, ReservationController reservationController,
+                        EmployeeController employeeController, LibrarianController librarianController, SectorController sectorController,
+                        SortingJobController sortingJobController) {
+        super(bookController, clientController, reservationController, "Menedżerze!");
 
-        add(new JLabel("Panel Managera", SwingConstants.CENTER));
-        JButton btnRegisterEmployee = new JButton("Rejestracja nowego pracownika");
-        JButton btnFireEmployee = new JButton("Zwolnienie pracownika");
-        JButton btnAssignWork = new JButton("Przypisanie pracy bibliotekarzowi");
+        JPanel workButtonsPanel = getWorkButtonsPanel();
 
-        btnRegisterEmployee.addActionListener(e -> {
-            /* kod */});
-        btnFireEmployee.addActionListener(e -> {
-            /* kod */});
-        btnAssignWork.addActionListener(e -> {
-            /* kod */});
+        JButton btnRegisterEmployee = new JButton("Zarejestruj pracownika");
+        JButton btnFireEmployee = new JButton("Zwolnij pracownika");
+        JButton btnAssignWork = new JButton("Przypisz zadanie");
 
-        add(btnRegisterEmployee);
-        add(btnFireEmployee);
-        add(btnAssignWork);
+        btnRegisterEmployee.addActionListener(e -> new RegisterEmployeeDialog(employeeController));
+        btnFireEmployee.addActionListener(e -> new FireEmployeeDialog(employeeController));
+        btnAssignWork.addActionListener(e -> new AssignWorkDialog(librarianController, sectorController, sortingJobController));
+
+        workButtonsPanel.add(btnRegisterEmployee);
+        workButtonsPanel.add(btnFireEmployee);
+        workButtonsPanel.add(btnAssignWork);
     }
 }

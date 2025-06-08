@@ -75,4 +75,8 @@ public class ClientCard extends AutoIdEntity {
         return String.format("ClientCard[id=%s, expires=%s, expired=%b]",
                 getPublicId(), expirationDate, expired);
     }
+    @Override
+    public String getPrefix() {
+        return "CC";
+    }
 }

@@ -5,11 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708ce410-c670-4278-9c45-99ac5c2c3ecd" name="Changes" comment="comm">
-      <change afterPath="$PROJECT_DIR$/src/Controller/SortingJobController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowAvailableBooksDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowBooksDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowReservationHistoryDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/LibrarianController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LibrarianController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/AssignWorkDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/AssignWorkDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ClientCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ClientCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Librarian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Receptionist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Receptionist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/SortingJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/SortingJob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/RegisterEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/RegisterEmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Panel/EmployeePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/EmployeePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/SampleData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SampleData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
