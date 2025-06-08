@@ -3,9 +3,7 @@ package Model;
 import Model.utils.AutoIdEntity;
 
 import java.io.Serial;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class SortingJob extends AutoIdEntity {
     @Serial

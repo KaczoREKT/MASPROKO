@@ -72,9 +72,10 @@ public class Fine extends AutoIdEntity {
     @Override
     public String toString() {
         return String.format(
-                "Fine[price=%.2f, reason=%s, status=%s, date=%s, client=%s]",
-                price, reason, status, date,
+                "Fine[id=%s, price=%.2f, reason=%s, status=%s, date=%s, client=%s]",
+                getPublicId(), price, reason, status, date,
                 client != null ? client.getPublicId() : "Brak"
         );
     }
+
 }

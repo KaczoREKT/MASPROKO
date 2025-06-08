@@ -78,7 +78,7 @@ public class Reservation extends AutoIdEntity {
     @Override
     public String toString() {
         return String.format(
-                "Reservation[%s, client: %s %s, books: %d, from: %s, to: %s, status: %s]",
+                "Reservation[id=%s, client: %s %s, books: %d, from: %s, to: %s, status: %s]",
                 getPublicId(),
                 (client != null ? client.getFirstName() : "brak"),
                 (client != null ? client.getLastName() : ""),

@@ -21,8 +21,8 @@ public class Main {
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
-            ObjectPlus.saveToFile(file);
             recalculateID();
+            ObjectPlus.saveToFile(file);
         }
     }
     public void recalculateID(){

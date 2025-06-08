@@ -21,8 +21,7 @@ public class LibrarianJComboBox extends JComboBox<Librarian> {
                     boolean isSelected,
                     boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof Librarian) {
-                    Librarian lib = (Librarian) value;
+                if (value instanceof Librarian lib) {
                     setText(lib.getFirstName() + " " + lib.getLastName());
                 }
                 return this;

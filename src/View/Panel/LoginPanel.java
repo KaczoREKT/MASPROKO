@@ -17,7 +17,7 @@ public class LoginPanel extends JPanel {
         JTextField idField = new JTextField(15);
         JButton loginBtn = new JButton("Zaloguj");
 
-        loginBtn.addActionListener(e -> {
+        loginBtn.addActionListener(_ -> {
             String id = idField.getText().trim();
             if (!id.isEmpty()) {
                 String className = employeeController.loginEmployee(id);
