@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Enum.Gender;
+
 import java.util.*;
 
 /**

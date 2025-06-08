@@ -1,7 +1,7 @@
 package View.Dialogs.Receptionist;
 
 import Controller.ClientController;
-import Model.Gender;
+import Model.Enum.Gender;
 
 import javax.swing.*;
 import java.awt.*;

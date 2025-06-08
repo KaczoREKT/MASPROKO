@@ -1,7 +1,7 @@
 package Model;
 
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
+import Model.Enum.Gender;
+import Model.utils.AutoIdEntity;
 
 /**
  * Klasa abstrakcyjna Person – zawiera wspólne atrybuty WSZYSTKICH osób w systemie (klienci, pracownicy, itd.).

@@ -2,15 +2,14 @@ import Controller.*;
 import Model.Book;
 import Model.Librarian;
 import View.MainFrame;
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
+import Model.utils.AutoIdEntity;
+import Model.utils.ObjectPlus;
 import Model.Sector;
-import utils.SampleData;
 
 import java.io.*;
 import java.util.*;
 import Model.*;
-import static utils.SampleData.addSampleData;
+import static Model.utils.SampleData.addSampleData;
 
 public class Main {
     public void handleObjectPlus(){
@@ -43,21 +42,12 @@ public class Main {
             AutoIdEntity.recalculateNextId(Receptionist.class);
             AutoIdEntity.recalculateNextId(Manager.class);
             AutoIdEntity.recalculateNextId(Librarian.class);
+            AutoIdEntity.recalculateNextId(SortingJob.class);
+            AutoIdEntity.recalculateNextId(Sector.class);
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
             ObjectPlus.saveToFile(file);
-        }
-
-        // Pokazujemy ekstensje dla wszystkich klas
-        System.out.println("\n=== EKSTENSJE WSZYSTKICH KLAS ===");
-        for (Class<?> clazz : extentClasses) {
-            try {
-                ObjectPlus.showExtent(clazz);
-            } catch (Exception e) {
-                System.out.println("[INFO] Brak ekstensji dla klasy " + clazz.getSimpleName());
-            }
-            System.out.println("--------------------------------");
         }
     }
     public void testFunctions(EmployeeController employeeController, ClientController clientController) {
@@ -76,9 +66,9 @@ public class Main {
         ReservationController reservationController = new ReservationController();
         LibrarianController librarianController = new LibrarianController();
         SortingJobController sortingJobController = new SortingJobController();
+        reservationController.generateFinesForExpiredReservations();
         // =============TESTING=============
         main.testFunctions(employeeController, clientController);
-
 
         // =============GUI=============
         new MainFrame(employeeController, bookController, sectorController, clientController, reservationController, librarianController, sortingJobController);

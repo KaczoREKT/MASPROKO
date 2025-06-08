@@ -1,26 +1,29 @@
 package Model;
 
-import utils.ObjectPlus;
+import Model.Enum.FineStatus;
+import Model.utils.AutoIdEntity;
+
+import java.io.Serial;
 
 /**
  * Klasa Fine (mandat) wystawiana klientowi.
  * Pola: price (kwota), reason (powód), status (np. 0 = nieopłacony, 1 = opłacony itp.).
  * Relacja: wiele-do-jednego z Client.
  */
-public class Fine extends ObjectPlus {
+public class Fine extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private double price;
     private String reason;
-    private int status;
+    private FineStatus status = FineStatus.NIEOPLACONO;
 
     private Client client;
 
-    public Fine(double price, String reason, int status) {
+    public Fine(double price, String reason) {
         super();
         this.price = price;
         this.reason = reason;
-        this.status = status;
     }
 
     // Gettery / settery
@@ -41,14 +44,14 @@ public class Fine extends ObjectPlus {
         this.reason = reason;
     }
 
-    public int getStatus() {
+    public FineStatus getStatus() {
         return status;
     }
 
     /**
      * Ustawia status mandatu (np. 0 = nieopłacony, 1 = opłacony).
      */
-    public void setStatus(int status) {
+    public void setStatus(FineStatus status) {
         this.status = status;
     }
 
@@ -71,6 +74,12 @@ public class Fine extends ObjectPlus {
 
     @Override
     public String toString() {
-        return String.format("Fine[price=%.2f, reason=%s, status=%d]", price, reason, status);
+        return String.format(
+                "Fine[price=%.2f, reason=%s, status=%s, client=%s]",
+                price, reason, status,
+                client != null ? client.getPublicId() : "Brak"
+        );
     }
+
+
 }

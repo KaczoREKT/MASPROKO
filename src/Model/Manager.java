@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Enum.Gender;
+
 /**
  * Klasa Manager – dziedziczy po Employee, dodaje pole bonus.
  */

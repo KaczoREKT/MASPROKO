@@ -1,4 +1,4 @@
-package utils;
+package Model.utils;
 import java.util.HashMap;
 import java.util.Map;
 

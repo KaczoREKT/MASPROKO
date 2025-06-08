@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Enum.Gender;
+
 /**
  * Klasa Receptionist – dziedziczy po Employee.
  * Nie ma dodatkowych atrybutów (zgodnie z diagramem).

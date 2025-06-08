@@ -1,10 +1,8 @@
 package Model;
 
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
+import Model.utils.AutoIdEntity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Klasa ClientCard – przypisana do klienta (jedno do jednego).

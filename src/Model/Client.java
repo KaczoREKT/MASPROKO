@@ -1,6 +1,8 @@
 package Model;
 
-import utils.AutoIdEntity;
+import Model.Enum.Gender;
+import Model.utils.AutoIdEntity;
+import Model.utils.ObjectPlus;
 
 import java.util.*;
 
@@ -87,6 +89,7 @@ public class Client extends Person {
     public void removeReservation(Reservation r) {
         if (r != null && reservations.remove(r)) {
             r.setClient(null);
+            ObjectPlus.removeFromExtent(r);
         }
     }
 

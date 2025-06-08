@@ -18,14 +18,57 @@ public class ReserveBookDialog extends JDialog {
     public ReserveBookDialog(BookController bookController, ClientController clientController, ReservationController reservationController) {
         setTitle("Rezerwacja książki");
         setModal(true);
-        setSize(480, 350);
+        setSize(550, 380);
         setLocationRelativeTo(null);
 
-        // Panel kroków (będzie podmieniany)
         JPanel stepPanel = new JPanel(new CardLayout());
 
-        // ==== Krok 1: Wybór książki ====
-        JPanel bookStep = new JPanel(new GridBagLayout());
+        // ==== Krok 1: WYSZUKIWANIE i WYBÓR KSIĄŻKI ====
+        JPanel bookStep = new JPanel(new BorderLayout(10, 10));
+        JPanel searchPanel = new JPanel(new BorderLayout(5,5));
+        searchPanel.add(new JLabel("Szukaj książki:"), BorderLayout.WEST);
+        JTextField searchField = new JTextField();
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        bookStep.add(searchPanel, BorderLayout.NORTH);
+
+        DefaultListModel<Book> bookListModel = new DefaultListModel<>();
+        JList<Book> bookList = new JList<>(bookListModel);
+        bookList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane bookScroll = new JScrollPane(bookList);
+        bookScroll.setPreferredSize(new Dimension(510, 120));
+        bookStep.add(bookScroll, BorderLayout.CENTER);
+
+        JButton btnNextToCard = new JButton("Dalej");
+        JPanel btnPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnPanel1.add(btnNextToCard);
+        bookStep.add(btnPanel1, BorderLayout.SOUTH);
+
+        List<Book> availableBooks = bookController.getAvailableBooks();
+        Runnable updateBookList = () -> {
+            String query = searchField.getText().trim().toLowerCase();
+            bookListModel.clear();
+            List<Book> filtered = availableBooks.stream()
+                    .filter(b -> query.isEmpty()
+                            || b.getTitle().toLowerCase().contains(query)
+                            || b.getAuthor().toLowerCase().contains(query)
+                            || b.getGenre().toLowerCase().contains(query)
+                    )
+                    .toList();
+            if (filtered.isEmpty()) {
+                bookListModel.addElement(null); // albo wyświetl tekst np. "Brak wyników"
+            } else {
+                for (Book b : filtered) bookListModel.addElement(b);
+            }
+        };
+        updateBookList.run();
+        searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { updateBookList.run(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { updateBookList.run(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { updateBookList.run(); }
+        });
+
+        // ==== Krok 2: NUMER KARTY KLIENTA ====
+        JPanel cardStep = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.anchor = GridBagConstraints.WEST;
@@ -33,25 +76,7 @@ public class ReserveBookDialog extends JDialog {
         gbc.weightx = 1;
         int row = 0;
 
-        bookStep.add(new JLabel("Książka:"), gbc);
-        List<Book> availableBooks = bookController.getAvailableBooks();
-        JComboBox<Book> bookBox = new JComboBox<>(availableBooks.toArray(new Book[0]));
-        gbc.gridx = 1;
-        bookStep.add(bookBox, gbc);
-
-        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
-        JButton btnNextToCard = new JButton("Dalej");
-        bookStep.add(btnNextToCard, gbc);
-
-        // ==== Krok 2: Wprowadź numer karty ====
-        JPanel cardStep = new JPanel(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10);
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        row = 0;
-
+        gbc.gridx = 0; gbc.gridy = row;
         cardStep.add(new JLabel("Numer karty klienta:"), gbc);
         JTextField cardNumberField = new JTextField(15);
         gbc.gridx = 1;
@@ -70,7 +95,7 @@ public class ReserveBookDialog extends JDialog {
         btnNextToSummary.setEnabled(false);
         cardStep.add(btnNextToSummary, gbc);
 
-        // ==== Krok 3: Podsumowanie i rezerwacja ====
+        // ==== Krok 3: PODSUMOWANIE ====
         JPanel summaryStep = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -79,7 +104,6 @@ public class ReserveBookDialog extends JDialog {
         gbc.weightx = 1;
         row = 0;
 
-        // Terminy rezerwacji
         summaryStep.add(new JLabel("Data rozpoczęcia:"), gbc);
         JTextField dateFromField = new JTextField(LocalDate.now().toString(), 10);
         gbc.gridx = 1;
@@ -91,12 +115,10 @@ public class ReserveBookDialog extends JDialog {
         gbc.gridx = 1;
         summaryStep.add(dateToField, gbc);
 
-        // Podsumowanie
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         JLabel summaryLabel = new JLabel();
         summaryStep.add(summaryLabel, gbc);
 
-        // Przycisk rezerwuj i anuluj
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1;
         JButton btnReserve = new JButton("Rezerwuj");
         summaryStep.add(btnReserve, gbc);
@@ -105,28 +127,26 @@ public class ReserveBookDialog extends JDialog {
         JButton btnCancel = new JButton("Anuluj");
         summaryStep.add(btnCancel, gbc);
 
-        // Dodaj panele do CardLayout
+        // === Dodaj panele kroków do CardLayout ===
         stepPanel.add(bookStep, "BOOK");
         stepPanel.add(cardStep, "CARD");
         stepPanel.add(summaryStep, "SUMMARY");
 
         setContentPane(stepPanel);
 
-        // === Logika kroków ===
-
         CardLayout cardLayout = (CardLayout) stepPanel.getLayout();
 
-        // Krok 1 -> Krok 2
+        // --- Krok 1 -> Krok 2 ---
         btnNextToCard.addActionListener(e -> {
-            selectedBook = (Book) bookBox.getSelectedItem();
+            selectedBook = bookList.getSelectedValue();
             if (selectedBook == null) {
-                JOptionPane.showMessageDialog(this, "Wybierz książkę!", "Błąd", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Wybierz książkę z listy!", "Błąd", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             cardLayout.show(stepPanel, "CARD");
         });
 
-        // Krok 2 - Szukaj klienta po numerze karty
+        // --- Krok 2: Szukanie klienta ---
         btnFindClient.addActionListener(e -> {
             String cardNumber = cardNumberField.getText().trim();
             Client client = clientController.findClientByCardNumber(cardNumber);
@@ -146,7 +166,7 @@ public class ReserveBookDialog extends JDialog {
             }
         });
 
-        // Krok 2 -> Krok 3 (podsumowanie)
+        // --- Krok 2 -> Krok 3 (podsumowanie) ---
         btnNextToSummary.addActionListener(e -> {
             String dateFrom = dateFromField.getText().trim();
             String dateTo = dateToField.getText().trim();
@@ -164,7 +184,7 @@ public class ReserveBookDialog extends JDialog {
             cardLayout.show(stepPanel, "SUMMARY");
         });
 
-        // Rezerwacja
+        // --- Rezerwacja ---
         btnReserve.addActionListener(e -> {
             try {
                 LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
@@ -177,7 +197,7 @@ public class ReserveBookDialog extends JDialog {
             }
         });
 
-        // Anuluj
+        // --- Anuluj ---
         btnCancel.addActionListener(e -> dispose());
 
         setVisible(true);

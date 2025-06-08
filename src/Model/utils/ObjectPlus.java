@@ -1,4 +1,4 @@
-package utils;
+package Model.utils;
 
 import java.io.*;
 import java.util.*;
@@ -71,4 +71,20 @@ public abstract class ObjectPlus implements Serializable {
             extent.remove(object);
         }
     }
+
+
+    public static String getExtentString(Class<?> cls) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        Iterable<?> extent = getExtent(cls);
+        boolean empty = true;
+        for (Object o : extent) {
+            sb.append("  ").append(o).append("\n");
+            empty = false;
+        }
+        if (empty) {
+            sb.append("  [Brak obiektów]\n");
+        }
+        return sb.toString();
+    }
+
 }

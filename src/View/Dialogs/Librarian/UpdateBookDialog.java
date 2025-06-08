@@ -3,7 +3,7 @@ package View.Dialogs.Librarian;
 import Controller.BookController;
 import Controller.SectorController;
 import Model.Book;
-import Model.BookStatus;
+import Model.Enum.BookStatus;
 import Model.Sector;
 import View.ComboBox.BookJComboBox;
 import View.ComboBox.SectorJComboBox;

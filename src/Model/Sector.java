@@ -1,6 +1,7 @@
 package Model;
 
-import utils.ObjectPlus;
+import Model.utils.AutoIdEntity;
+import Model.utils.ObjectPlus;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
  * - jeden (Sector) do wielu (Book)
  * - jeden (Sector) do wielu (SortingJob)
  */
-public class Sector extends ObjectPlus {
+public class Sector extends AutoIdEntity {
     private static final long serialVersionUID = 1L;
 
     private char startLetter;

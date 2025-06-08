@@ -1,10 +1,8 @@
 package Model;
 
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
+import Model.utils.AutoIdEntity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Klasa SortingJob – zadanie sortowania książek w danym sektorze.
@@ -83,8 +81,14 @@ public class SortingJob extends AutoIdEntity {
 
     @Override
     public String toString() {
-        return String.format("SortingJob[from=%s, to=%s]", startDate, endDate);
+        return String.format("SortingJob[id=%s, from=%s, to=%s, librarian=%s, sector=%s]",
+                getPublicId(),
+                startDate,
+                endDate,
+                (librarian != null ? librarian.getFirstName() + " " + librarian.getLastName() : "brak"),
+                (sector != null ? sector.getPrefix() : "brak"));
     }
+
     @Override
     public String getPrefix() {
         return "SJ";

@@ -1,12 +1,11 @@
 package Controller;
 
 import Model.Book;
-import Model.BookStatus;
+import Model.Enum.BookStatus;
 import Model.Sector;
-import utils.ObjectPlus;
+import Model.utils.ObjectPlus;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class BookController {
@@ -16,7 +15,7 @@ public class BookController {
             for (Book b : ObjectPlus.getExtent(Book.class)) {
                 books.add(b);
             }
-        } catch (Exception e) {}
+        } catch (Exception _) {}
         return books;
     }
     public List<Book> getAvailableBooks() {

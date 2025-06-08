@@ -2,11 +2,10 @@ package Controller;
 
 import Model.Client;
 import Model.ClientCard;
-import Model.Gender;
-import utils.ObjectPlus;
+import Model.Enum.Gender;
+import Model.utils.ObjectPlus;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class ClientController {

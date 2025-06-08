@@ -5,25 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708ce410-c670-4278-9c45-99ac5c2c3ecd" name="Changes" comment="comm">
-      <change afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowAvailableBooksDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowBooksDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowReservationHistoryDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/Accountant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/Enum/FineStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/Enum/ReservationStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/ReturnBookDialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/View/Panel/AccountantPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BookController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/LibrarianController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LibrarianController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ReservationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ReservationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SectorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SectorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/BookStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Enum/BookStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ClientCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ClientCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Fine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Fine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Gender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Enum/Gender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Librarian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Librarian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Person.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Receptionist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Receptionist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Reservation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Sector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Sector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/SortingJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/SortingJob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/FireEmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowAvailableBooksDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowAvailableBooksDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowBooksDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowBooksDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowReservationHistoryDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Employee/ShowReservationHistoryDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Librarian/UpdateBookDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Librarian/UpdateBookDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Manager/RegisterEmployeeDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Manager/RegisterEmployeeDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/AddNewClientDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Dialogs/Receptionist/AddNewClientDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Panel/EmployeePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/EmployeePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/LibrarianPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/ManagerPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Panel/ReceptionistPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/SampleData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SampleData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/AutoIdEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/utils/AutoIdEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/ObjectPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/utils/ObjectPlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/SampleData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/utils/SampleData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +54,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -157,6 +179,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="comm" />

@@ -1,7 +1,8 @@
 package Controller;
 
 import Model.*;
-import utils.ObjectPlus;
+import Model.Enum.Gender;
+import Model.utils.ObjectPlus;
 
 import java.util.ArrayList;
 import java.util.List;

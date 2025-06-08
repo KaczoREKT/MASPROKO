@@ -1,8 +1,10 @@
 package Model;
 
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
+import Model.Enum.ReservationStatus;
+import Model.utils.AutoIdEntity;
+import Model.utils.ObjectPlus;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -12,9 +14,10 @@ import java.util.*;
  * Relacje: wiele do jednego z Client, wiele do jednego z Book.
  */
 public class Reservation extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private static long nextId = 1;
     private long id;
+    private ReservationStatus status = ReservationStatus.TRWAJĄCA;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -88,36 +91,33 @@ public class Reservation extends AutoIdEntity {
             client.addReservation(this);
         }
     }
+    public ReservationStatus getStatus() { return status; }
+
+    public void setStatus(ReservationStatus status) { this.status = status; }
+
     public void cancel() {
-        if (client != null) client.removeReservation(this);
+        setStatus(ReservationStatus.ZAKOŃCZONA);
+        // Zwolnij książki (ale nie usuwaj rezerwacji z klienta!)
         if (books != null) {
             for (Book b : books) {
                 b.removeReservation(this);
             }
         }
-        ObjectPlus.removeFromExtent(this);
     }
 
 
     @Override
     public String toString() {
-        StringBuilder booksInfo = new StringBuilder();
-        for (Book book : books) {
-            booksInfo.append(book.getTitle())
-                    .append(" ")
-                    .append(book.getId())
-                    .append("], ");
-        }
-        // Usunięcie przecinka na końcu jeśli są książki
-        if (!booksInfo.isEmpty()) {
-            booksInfo.setLength(booksInfo.length() - 2);
-        }
-
-        return String.format("Reservation[id=%s, client=%s, books=[%s], from=%s, to=%s]",
+        return String.format(
+                "Reservation[%s, client: %s %s, books: %d, from: %s, to: %s, status: %s]",
                 getPublicId(),
-                (client != null ? client.getId() : "null"),
-                booksInfo,
-                startDate, endDate);
+                (client != null ? client.getFirstName() : "brak"),
+                (client != null ? client.getLastName() : ""),
+                (books != null ? books.size() : 0),
+                startDate,
+                endDate,
+                status
+        );
     }
 
 }

@@ -1,9 +1,9 @@
 package Controller;
 
-import Model.Book;
-import Model.BookStatus;
-import Model.Client;
-import Model.Reservation;
+import Model.*;
+import Model.Enum.BookStatus;
+import Model.utils.ObjectPlus;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +50,32 @@ public class ReservationController {
     public void cancelReservation(Reservation reservation) throws Exception {
         if (reservation == null) throw new Exception("Nie wybrano rezerwacji do anulowania!");
         reservation.cancel();
+    }
+    // ReservationController.java
+    public void generateFinesForExpiredReservations() {
+        try {
+            Iterable<Reservation> reservations = ObjectPlus.getExtent(Reservation.class);
+            for (Reservation reservation : reservations) {
+                LocalDate endDate = reservation.getEndDate();
+                if (endDate.isBefore(LocalDate.now())) {
+                    Client client = reservation.getClient();
+                    if (client != null) {
+                        boolean alreadyFined = client.getFines().stream()
+                                .anyMatch(f -> f.getReason() != null && f.getReason().contains("rezerwacja " + reservation.getPublicId()));
+                        if (alreadyFined) continue;
+
+                        long daysLate = java.time.temporal.ChronoUnit.DAYS.between(endDate, LocalDate.now());
+                        if (daysLate > 0) {
+                            double price = daysLate * 0.50;
+                            Fine fine = new Fine(price, "Opóźnienie za rezerwacja " + reservation.getPublicId());
+                            fine.setClient(client);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

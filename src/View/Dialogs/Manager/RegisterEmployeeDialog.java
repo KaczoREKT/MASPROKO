@@ -2,10 +2,7 @@ package View.Dialogs.Manager;
 
 import Controller.EmployeeController;
 import Model.Employee;
-import Model.Gender;
-import Model.Librarian;
-import Model.Manager;
-import Model.Receptionist;
+import Model.Enum.Gender;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,14 +104,14 @@ public class RegisterEmployeeDialog extends JDialog {
         });
 
         // Przycisk Zarejestruj
-        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         JButton btnRegister = new JButton("Zarejestruj");
-        content.add(btnRegister, gbc);
-
-        // Przycisk Anuluj
-        gbc.gridx = 1;
         JButton btnCancel = new JButton("Anuluj");
-        content.add(btnCancel, gbc);
+        btnPanel.add(btnRegister);
+        btnPanel.add(btnCancel);
+        content.add(btnPanel, gbc);
+
 
         btnRegister.addActionListener(e -> {
             String firstName = firstNameField.getText().trim();

@@ -1,9 +1,7 @@
 package Model;
 
-import utils.AutoIdEntity;
-import utils.ObjectPlus;
-
-import java.util.*;
+import Model.Enum.BookStatus;
+import Model.utils.AutoIdEntity;
 
 /**
  * Klasa Book – każda instancja to jedna książka.

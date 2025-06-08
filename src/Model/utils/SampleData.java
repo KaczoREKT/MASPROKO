@@ -1,5 +1,7 @@
-package utils;
+package Model.utils;
 import Model.*;
+import Model.Enum.Gender;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,17 +13,28 @@ public class SampleData {
             sectors.add(new Sector(start, (char)(start+1)));
         }
 
-        // 2. Książki
+        // 2. Książki – różne tytuły!
+        List<String> adjectives = List.of(
+                "Tajemniczy", "Ostatni", "Mroczny", "Ukryty", "Cichy", "Złoty", "Zaginiony", "Szkarłatny", "Wielki", "Mały", "Złowrogi"
+        );
+        List<String> nouns = List.of(
+                "Las", "Zamek", "Krąg", "Księżyc", "Król", "Skrzat", "Klucz", "Demon", "Skarb", "Zakon", "Statek", "Bractwo", "Wilk", "Wiatr"
+        );
+        List<String> endings = List.of(
+                "Przeznaczenia", "z Bagien", "i Siedem Wzgórz", "Ze Wschodu", "Zza Lustra", "Krainy Cieni", "Bez Twarzy", "Wieczności"
+        );
         List<String> genres = List.of("Powieść", "Thriller", "Fantasy", "Sci-Fi", "Horror", "Romans", "Akcja", "Dramat");
         List<String> authors = List.of(
                 "Paulo Coelho", "Carlos Ruiz Zafón", "James Patterson", "Stephen King",
                 "J.K. Rowling", "George R.R. Martin", "Remigiusz Mróz", "Andrzej Sapkowski"
         );
         List<Book> books = new ArrayList<>();
-        int bookCount = 40;
+        int bookCount = 60;
         Random rand = new Random(1337);
         for (int i = 1; i <= bookCount; i++) {
-            String title = "Książka #" + i;
+            String title = adjectives.get(rand.nextInt(adjectives.size())) + " " +
+                    nouns.get(rand.nextInt(nouns.size())) + " " +
+                    endings.get(rand.nextInt(endings.size()));
             String genre = genres.get(rand.nextInt(genres.size()));
             String author = authors.get(rand.nextInt(authors.size()));
             Book book = new Book(title, genre, author);
@@ -35,17 +48,27 @@ public class SampleData {
         for (int i = 1; i <= 5; i++) {
             librarians.add(new Librarian("Librarian" + i, "Nowak", Gender.WOMAN, 3400 + 120*i, genres.get(rand.nextInt(genres.size()))));
         }
-        Manager manager = new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 6000.00, 2000.00);
-        Receptionist receptionist = new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3100.00);
+        new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 6000.00, 2000.00);
+        new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3100.00);
 
         // 4. Klienci i karty
+        List<String> imiona = List.of(
+                "Jan", "Anna", "Michał", "Katarzyna", "Adam", "Agnieszka", "Bartosz", "Natalia", "Marek", "Ewa",
+                "Łukasz", "Oliwia", "Mateusz", "Magda", "Piotr", "Karolina", "Paweł", "Julia", "Tomasz", "Monika",
+                "Grzegorz", "Zuzanna", "Marcin", "Aleksandra", "Kamil", "Joanna", "Patryk", "Sandra", "Maciej", "Wiktoria"
+        );
+        List<String> nazwiska = List.of(
+                "Kowalski", "Nowak", "Wiśniewski", "Wójcik", "Kowalczyk", "Kamińska", "Lewandowski", "Woźniak", "Zielińska", "Szymański",
+                "Dąbrowski", "Mazur", "Krawczyk", "Piotrowska", "Grabowski", "Jankowski", "Pawłowska", "Michalski", "Król", "Wieczorek"
+        );
+
         List<Client> clients = new ArrayList<>();
         List<ClientCard> cards = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
-            String imie = "Jan" + i;
-            String nazwisko = "Kowalski" + i;
-            Gender gender = (i % 2 == 0) ? Gender.MAN : Gender.WOMAN;
-            String mail = "user" + i + "@example.com";
+            String imie = imiona.get(rand.nextInt(imiona.size()));
+            String nazwisko = nazwiska.get(rand.nextInt(nazwiska.size()));
+            Gender gender = (imie.endsWith("a")) ? Gender.WOMAN : Gender.MAN;
+            String mail = imie.toLowerCase() + "." + nazwisko.toLowerCase() + i + "@example.com";
             String phone = "123-456-" + String.format("%03d", i);
             Client client = new Client(imie, nazwisko, gender, mail, phone);
             ClientCard card = new ClientCard(client);
@@ -57,23 +80,46 @@ public class SampleData {
             cards.add(card);
         }
 
-        // 5. Rezerwacje i mandaty
+        // 5. Rezerwacje i mandaty (z losową datą: część przeterminowana, część aktualna/przyszła)
         Set<Book> alreadyReservedBooks = new HashSet<>();
-        int reservationId = 1;
+        List<Book> notReservedBooks = new ArrayList<>(books); // na koniec będziesz mieć dostępne książki
+
+// Ustal, ile książek chcesz zostawić wolnych, np. 20%
+        int freeBooks = (int) (books.size() * 0.2);
+        if (freeBooks > 0) {
+            // Losowo wybierz książki, które zostaną wolne
+            Collections.shuffle(notReservedBooks, rand);
+            notReservedBooks = notReservedBooks.subList(0, freeBooks);
+            // Usuwamy je z puli możliwych do rezerwacji
+            books.removeAll(notReservedBooks);
+        }
+
+// Teraz books = książki, które mogą być rezerwowane
+
         for (Client client : clients) {
             int ileRezerwacji = rand.nextInt(3) + 1;
             for (int k = 0; k < ileRezerwacji; k++) {
-                // WYBIERZ KSIĄŻKI, KTÓRE NIE SĄ JUŻ ZAREZERWOWANE
                 List<Book> availableBooks = new ArrayList<>();
                 for (Book b : books) {
                     if (!alreadyReservedBooks.contains(b)) {
                         availableBooks.add(b);
                     }
                 }
-                if (availableBooks.isEmpty()) break; // Nie ma już dostępnych książek!
+                if (availableBooks.isEmpty()) break;
 
-                LocalDate from = LocalDate.now().minusDays(rand.nextInt(100));
-                LocalDate to = from.plusDays(rand.nextInt(15) + 3);
+                boolean expired = rand.nextBoolean();
+                LocalDate from, to;
+                if (expired) {
+                    from = LocalDate.now().minusDays(rand.nextInt(80) + 20);
+                    to = from.plusDays(rand.nextInt(5) + 2);
+                    if (!to.isBefore(LocalDate.now())) {
+                        to = LocalDate.now().minusDays(rand.nextInt(10) + 1);
+                        from = to.minusDays(rand.nextInt(8) + 2);
+                    }
+                } else {
+                    from = LocalDate.now().minusDays(rand.nextInt(10));
+                    to = from.plusDays(rand.nextInt(15) + 3);
+                }
 
                 Set<Book> reservedBooks = new HashSet<>();
                 int ileBooks = 1 + rand.nextInt(2);
@@ -86,13 +132,6 @@ public class SampleData {
 
                 Reservation reservation = new Reservation(from, to, reservedBooks);
                 reservation.setClient(client);
-
-                // 50% szans na mandat
-                if (rand.nextBoolean()) {
-                    Fine fine = new Fine(10.0 + rand.nextInt(50), "Zwłoka " + reservationId, rand.nextInt(2));
-                    fine.setClient(client);
-                }
-                reservationId++;
             }
         }
 
