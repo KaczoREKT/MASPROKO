@@ -32,6 +32,9 @@ public class LoginPanel extends JPanel {
                         case "Receptionist":
                             frame.showPanel("ReceptionistPanel");
                             break;
+                        case "Accountant":
+                            frame.showPanel("AccountantPanel");
+                            break;
                         default:
                             JOptionPane.showMessageDialog(frame, "Nieobsługiwany typ pracownika: " + className, "Błąd", JOptionPane.ERROR_MESSAGE);
                     }

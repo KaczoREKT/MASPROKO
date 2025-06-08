@@ -16,7 +16,6 @@ public class ShowAvailableBooksDialog extends JDialog {
 
         JPanel content = new JPanel(new BorderLayout(10,10));
 
-        // Panel górny: nagłówek + pole wyszukiwania
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
         JLabel label = new JLabel("Dostępne książki w bibliotece:", SwingConstants.LEFT);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 16f));
@@ -28,14 +27,12 @@ public class ShowAvailableBooksDialog extends JDialog {
 
         content.add(topPanel, BorderLayout.NORTH);
 
-        // Panel środkowy: lista dostępnych książek
         DefaultListModel<String> bookListModel = new DefaultListModel<>();
         JList<String> bookList = new JList<>(bookListModel);
         JScrollPane scrollPane = new JScrollPane(bookList);
 
         List<Book> books = bookController.getAvailableBooks();
 
-        // Funkcja do aktualizacji listy wg filtra
         Runnable updateList = () -> {
             String query = searchField.getText().trim().toLowerCase();
             bookListModel.clear();

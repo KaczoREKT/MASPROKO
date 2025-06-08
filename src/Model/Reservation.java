@@ -2,26 +2,19 @@ package Model;
 
 import Model.Enum.ReservationStatus;
 import Model.utils.AutoIdEntity;
-import Model.utils.ObjectPlus;
 
 import java.io.Serial;
 import java.time.LocalDate;
 import java.util.*;
 
-/**
- * Klasa Reservation – rezerwacja konkretnej książki przez klienta.
- * Pola: id (unikalne), data rozpoczęcia, data zakończenia.
- * Relacje: wiele do jednego z Client, wiele do jednego z Book.
- */
 public class Reservation extends AutoIdEntity {
     @Serial
     private static final long serialVersionUID = 1L;
-    private long id;
-    private ReservationStatus status = ReservationStatus.TRWAJĄCA;
+    private ReservationStatus status = ReservationStatus.TRWAJACA;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private Set<Book> books;
+    private final Set<Book> books;
 
     private Client client;
 
@@ -33,20 +26,9 @@ public class Reservation extends AutoIdEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.books = books;
-        // Dodajemy rezerwację do wszystkich książek
         for (Book book : this.books) {
-            book.setReservation(this); // dodaje rezerwację i zmienia status
+            book.setReservation(this);
         }
-    }
-
-    // Gettery / settery
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public LocalDate getStartDate() {
@@ -69,41 +51,28 @@ public class Reservation extends AutoIdEntity {
         return books;
     }
 
-    /**
-     * Ustawia relację Reservation -> Book (wiele-do-jednego).
-     */
-    public void setBooks(List<Book> books) {
-    }
-
     public Client getClient() {
         return client;
     }
 
-    /**
-     * Ustawia relację Reservation -> Client (wiele-do-jednego).
-     */
     public void setClient(Client client) {
-        if (this.client != null) {
-            this.client.getReservations().remove(this);
-        }
+        if (this.client == client) return;
+        if (this.client != null) this.client.getReservations().remove(this);
         this.client = client;
-        if (client != null && !client.getReservations().contains(this)) {
-            client.addReservation(this);
-        }
+        if (client != null) client.addReservation(this);
     }
+
     public ReservationStatus getStatus() { return status; }
 
     public void setStatus(ReservationStatus status) { this.status = status; }
 
     public void cancel() {
-        setStatus(ReservationStatus.ZAKOŃCZONA);
-        // Zwolnij książki (ale nie usuwaj rezerwacji z klienta!)
+        setStatus(ReservationStatus.ZAKONCZONA);
         if (books != null) {
-            for (Book b : books) {
-                b.removeReservation(this);
-            }
+            books.forEach(b -> b.removeReservation(this));
         }
     }
+
 
 
     @Override

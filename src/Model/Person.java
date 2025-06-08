@@ -3,11 +3,10 @@ package Model;
 import Model.Enum.Gender;
 import Model.utils.AutoIdEntity;
 
-/**
- * Klasa abstrakcyjna Person – zawiera wspólne atrybuty WSZYSTKICH osób w systemie (klienci, pracownicy, itd.).
- * Każda instancja Person jest automatycznie rejestrowana w ekstensji Person.
- */
+import java.io.Serial;
+
 public abstract class Person extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String firstName;
@@ -20,9 +19,6 @@ public abstract class Person extends AutoIdEntity {
         this.lastName = lastName;
         this.gender = gender;
     }
-
-
-    // Gettery / settery
 
     public String getFirstName() {
         return firstName;

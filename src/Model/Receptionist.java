@@ -2,11 +2,10 @@ package Model;
 
 import Model.Enum.Gender;
 
-/**
- * Klasa Receptionist – dziedziczy po Employee.
- * Nie ma dodatkowych atrybutów (zgodnie z diagramem).
- */
+import java.io.Serial;
+
 public class Receptionist extends Employee {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public Receptionist(String firstName, String lastName, Gender gender, double salary) {

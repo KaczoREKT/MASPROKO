@@ -1,26 +1,20 @@
 package Model;
 
 import Model.utils.AutoIdEntity;
-import Model.utils.ObjectPlus;
 
+import java.io.Serial;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Klasa Sector – dzieli książki na sektory w zależności od przedziału liter.
- * Pola: startLetter, endLetter (np. od "A" do "C").
- * Relacje:
- * - jeden (Sector) do wielu (Book)
- * - jeden (Sector) do wielu (SortingJob)
- */
 public class Sector extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private char startLetter;
-    private char endLetter;
+    private final char startLetter;
+    private final char endLetter;
 
-    private Set<Book> books = new HashSet<>();
-    private Set<SortingJob> sortingJobs = new HashSet<>();
+    private final Set<Book> books = new HashSet<>();
+    private final Set<SortingJob> sortingJobs = new HashSet<>();
 
     public Sector(char startLetter, char endLetter) {
         super();
@@ -28,17 +22,11 @@ public class Sector extends AutoIdEntity {
         this.endLetter = endLetter;
     }
 
-    // Gettery / settery
-
     public char getStartLetter() {
         return startLetter;
     }
-    public void setStartLetter(char startLetter) {this.startLetter = startLetter; }
     public char getEndLetter() {
         return endLetter;
-    }
-    public void setEndLetter(char endLetter) {
-        this.endLetter = endLetter;
     }
 
     public String getName(){
@@ -58,9 +46,6 @@ public class Sector extends AutoIdEntity {
                 .collect(Collectors.toSet());
     }
 
-    /**
-     * Dodaje książkę do sektora – relacja jeden-do-wielu.
-     */
     public void addBook(Book b) {
         if (b != null) {
             books.add(b);
@@ -80,21 +65,9 @@ public class Sector extends AutoIdEntity {
         return Collections.unmodifiableSet(sortingJobs);
     }
 
-    /**
-     * Dodaje SortingJob do sektora – relacja jeden-do-wielu.
-     */
     public void addSortingJob(SortingJob job) {
-        if (job != null) {
-            sortingJobs.add(job);
-            if (job.getSector() != this) {
-                job.setSector(this);
-            }
-        }
-    }
-
-    public void removeSortingJob(SortingJob job) {
-        if (job != null && sortingJobs.remove(job)) {
-            job.setSector(null);
+        if (job != null && sortingJobs.add(job) && job.getSector() != this) {
+            job.setSector(this);
         }
     }
 
@@ -102,4 +75,11 @@ public class Sector extends AutoIdEntity {
     public String toString() {
         return "Sector[" +  startLetter + "," + endLetter + "], books: " + getBooksTitles();
     }
+
+    public boolean shouldContainBook(Book book) {
+        if (book == null || book.getTitle() == null || book.getTitle().isEmpty()) return false;
+        char firstLetter = Character.toUpperCase(book.getTitle().charAt(0));
+        return firstLetter >= startLetter && firstLetter <= endLetter;
+    }
+
 }

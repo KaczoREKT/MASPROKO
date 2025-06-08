@@ -123,11 +123,6 @@ public class ReserveBookDialog extends JDialog {
         JButton btnReserve = new JButton("Rezerwuj");
         summaryStep.add(btnReserve, gbc);
 
-        gbc.gridx = 1;
-        JButton btnCancel = new JButton("Anuluj");
-        summaryStep.add(btnCancel, gbc);
-
-        // === Dodaj panele kroków do CardLayout ===
         stepPanel.add(bookStep, "BOOK");
         stepPanel.add(cardStep, "CARD");
         stepPanel.add(summaryStep, "SUMMARY");
@@ -136,8 +131,7 @@ public class ReserveBookDialog extends JDialog {
 
         CardLayout cardLayout = (CardLayout) stepPanel.getLayout();
 
-        // --- Krok 1 -> Krok 2 ---
-        btnNextToCard.addActionListener(e -> {
+        btnNextToCard.addActionListener(_ -> {
             selectedBook = bookList.getSelectedValue();
             if (selectedBook == null) {
                 JOptionPane.showMessageDialog(this, "Wybierz książkę z listy!", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -147,7 +141,7 @@ public class ReserveBookDialog extends JDialog {
         });
 
         // --- Krok 2: Szukanie klienta ---
-        btnFindClient.addActionListener(e -> {
+        btnFindClient.addActionListener(_ -> {
             String cardNumber = cardNumberField.getText().trim();
             Client client = clientController.findClientByCardNumber(cardNumber);
             if (client == null) {
@@ -167,7 +161,7 @@ public class ReserveBookDialog extends JDialog {
         });
 
         // --- Krok 2 -> Krok 3 (podsumowanie) ---
-        btnNextToSummary.addActionListener(e -> {
+        btnNextToSummary.addActionListener(_ -> {
             String dateFrom = dateFromField.getText().trim();
             String dateTo = dateToField.getText().trim();
 
@@ -185,7 +179,7 @@ public class ReserveBookDialog extends JDialog {
         });
 
         // --- Rezerwacja ---
-        btnReserve.addActionListener(e -> {
+        btnReserve.addActionListener(_ -> {
             try {
                 LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
                 LocalDate dateTo = LocalDate.parse(dateToField.getText().trim());
@@ -196,9 +190,6 @@ public class ReserveBookDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Błąd rezerwacji", JOptionPane.ERROR_MESSAGE);
             }
         });
-
-        // --- Anuluj ---
-        btnCancel.addActionListener(e -> dispose());
 
         setVisible(true);
     }

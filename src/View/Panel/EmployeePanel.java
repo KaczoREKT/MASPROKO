@@ -2,7 +2,6 @@ package View.Panel;
 
 import Controller.BookController;
 import Controller.ClientController;
-import Controller.ReservationController;
 import View.Dialogs.Employee.ShowAvailableBooksDialog;
 import View.Dialogs.Employee.ShowBooksDialog;
 import View.Dialogs.Employee.ShowReservationHistoryDialog;
@@ -16,7 +15,7 @@ public class EmployeePanel extends JPanel {
     protected JLabel welcomeLabel;
     protected JPanel workButtonsPanel;
 
-    public EmployeePanel(BookController bookController, ClientController clientController, ReservationController reservationController, String roleName) {
+    public EmployeePanel(BookController bookController, ClientController clientController, String roleName) {
         setLayout(new BorderLayout());
 
         // Nagłówek
@@ -33,15 +32,9 @@ public class EmployeePanel extends JPanel {
         JButton btnShowAvailableBooks = new JButton("Wyświetl dostępne książki");
         JButton btnShowReservationHistory = new JButton("Wyświetl historię rezerwacji klienta");
 
-        btnShowBooks.addActionListener(e -> {
-            new ShowBooksDialog(bookController);
-        });
-        btnShowAvailableBooks.addActionListener(e -> {
-            new ShowAvailableBooksDialog(bookController);
-        });
-        btnShowReservationHistory.addActionListener(e -> {
-            new ShowReservationHistoryDialog(clientController);
-        });
+        btnShowBooks.addActionListener(_ -> new ShowBooksDialog(bookController));
+        btnShowAvailableBooks.addActionListener(_ -> new ShowAvailableBooksDialog(bookController));
+        btnShowReservationHistory.addActionListener(_ -> new ShowReservationHistoryDialog(clientController));
         employeeButtonsPanel.add(btnShowBooks);
         employeeButtonsPanel.add(btnShowAvailableBooks);
         employeeButtonsPanel.add(btnShowReservationHistory);

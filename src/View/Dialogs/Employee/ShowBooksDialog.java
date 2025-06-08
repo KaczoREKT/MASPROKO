@@ -16,7 +16,6 @@ public class ShowBooksDialog extends JDialog {
 
         JPanel content = new JPanel(new BorderLayout(10,10));
 
-        // Panel górny: nagłówek + pole wyszukiwania
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
         JLabel label = new JLabel("Wszystkie książki w bibliotece:", SwingConstants.LEFT);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 16f));
@@ -28,14 +27,12 @@ public class ShowBooksDialog extends JDialog {
 
         content.add(topPanel, BorderLayout.NORTH);
 
-        // Panel środkowy: lista książek
         DefaultListModel<String> bookListModel = new DefaultListModel<>();
         JList<String> bookList = new JList<>(bookListModel);
         JScrollPane scrollPane = new JScrollPane(bookList);
 
-        List<Book> books = bookController.getBookList();
+        List<Book> books = bookController.getList();
 
-        // Funkcja do aktualizacji listy wg filtra
         Runnable updateList = () -> {
             String query = searchField.getText().trim().toLowerCase();
             bookListModel.clear();
@@ -44,6 +41,7 @@ public class ShowBooksDialog extends JDialog {
                             || b.getTitle().toLowerCase().contains(query)
                             || b.getAuthor().toLowerCase().contains(query)
                             || b.getGenre().toLowerCase().contains(query)
+                            || b.getStatus().name().toLowerCase().contains(query)
                     )
                     .toList();
             if (filtered.isEmpty()) {
@@ -55,10 +53,8 @@ public class ShowBooksDialog extends JDialog {
             }
         };
 
-        // Od razu pokaż całą listę
         updateList.run();
 
-        // Nasłuchiwanie wpisywania
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e) { updateList.run(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e) { updateList.run(); }

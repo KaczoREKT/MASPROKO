@@ -41,7 +41,7 @@ public class FireEmployeeDialog extends JDialog {
         content.add(buttonPanel, gbc);
 
         // --- Logika ---
-        btnFire.addActionListener(e -> {
+        btnFire.addActionListener(_ -> {
             Employee selectedEmployee = (Employee) employeeBox.getSelectedItem();
             if (selectedEmployee == null) {
                 JOptionPane.showMessageDialog(this, "Nie wybrano pracownika!", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -61,7 +61,7 @@ public class FireEmployeeDialog extends JDialog {
             }
         });
 
-        btnCancel.addActionListener(e -> dispose());
+        btnCancel.addActionListener(_ -> dispose());
 
         setContentPane(content);
         setVisible(true);

@@ -1,7 +1,6 @@
 package View.Dialogs.Receptionist;
 
 import Controller.ClientController;
-import Controller.ReservationController;
 import Model.Book;
 import Model.Client;
 import Model.Enum.BookStatus;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ReturnBookDialog extends JDialog {
-    public ReturnBookDialog(ClientController clientController, ReservationController reservationController) {
+    public ReturnBookDialog(ClientController clientController) {
         setTitle("Zwrot książki przez klienta");
         setModal(true);
         setSize(600, 400);
@@ -73,7 +72,7 @@ public class ReturnBookDialog extends JDialog {
             }
             // Wyszukaj klienta po karcie
             Client foundClient = null;
-            for (Client c : clientController.getClientList()) {
+            for (Client c : clientController.getList()) {
                 if (c.getClientCard() != null && cardNumber.equalsIgnoreCase(c.getClientCard().getPublicId())) {
                     foundClient = c;
                     break;
@@ -127,7 +126,7 @@ public class ReturnBookDialog extends JDialog {
                 }
                 boolean allReturned = selectedReservation.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.WYPOZYCZONA);
                 if (allReturned) {
-                    selectedReservation.setStatus(ReservationStatus.ZAKOŃCZONA);
+                    selectedReservation.setStatus(ReservationStatus.ZAKONCZONA);
                 }
 
                 JOptionPane.showMessageDialog(this, "Książki zostały zwrócone.");

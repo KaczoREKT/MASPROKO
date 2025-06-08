@@ -1,10 +1,7 @@
 package View;
 
 import Controller.*;
-import View.Panel.LibrarianPanel;
-import View.Panel.LoginPanel;
-import View.Panel.ManagerPanel;
-import View.Panel.ReceptionistPanel;
+import View.Panel.*;
 import Model.utils.ObjectPlus;
 
 import javax.swing.*;
@@ -16,11 +13,18 @@ import java.util.List;
 
 public class MainFrame extends JFrame {
     private final JButton btnLogout;
-    private final JButton btnShowExtents; // NOWY PRZYCISK
+    private final JButton btnShowExtents;
     private final JPanel cardsPanel;
     private final CardLayout cardLayout;
 
-    public MainFrame(EmployeeController employeeController, BookController bookController,  SectorController sectorController, ClientController clientController, ReservationController reservationController, LibrarianController librarianController, SortingJobController sortingJobController) {
+    public MainFrame(EmployeeController employeeController,
+                     BookController bookController,
+                     SectorController sectorController,
+                     ClientController clientController,
+                     ReservationController reservationController,
+                     LibrarianController librarianController,
+                     SortingJobController sortingJobController,
+                     FineController fineController) {
         setTitle("Aplikacja Biblioteka");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(640, 480);
@@ -31,7 +35,7 @@ public class MainFrame extends JFrame {
         // MENU
         JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         btnLogout = new JButton("Wyloguj");
-        btnShowExtents = new JButton("Ekstensje"); // <<<<<<<<<<<<<<<
+        btnShowExtents = new JButton("Ekstensje");
 
         menuPanel.add(btnLogout);
         menuPanel.add(btnShowExtents); // Dodaj do menu
@@ -43,39 +47,38 @@ public class MainFrame extends JFrame {
                 ObjectPlus.saveToFile("extents.bin");
             }
         });
-        // KARTY
+
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
         cardsPanel.add(new LoginPanel(this, employeeController), "Login");
         cardsPanel.add(new ReceptionistPanel(bookController, clientController, reservationController), "ReceptionistPanel");
-        cardsPanel.add(new LibrarianPanel(bookController, clientController, reservationController, sectorController), "LibrarianPanel");
-        cardsPanel.add(new ManagerPanel(bookController, clientController, reservationController, employeeController, librarianController, sectorController, sortingJobController), "ManagerPanel");
+        cardsPanel.add(new LibrarianPanel(bookController, clientController, sectorController), "LibrarianPanel");
+        cardsPanel.add(new ManagerPanel(bookController, clientController, employeeController, librarianController, sectorController, sortingJobController), "ManagerPanel");
+        cardsPanel.add(new AccountantPanel(bookController, clientController, fineController, employeeController), "AccountantPanel");
         add(cardsPanel, BorderLayout.CENTER);
 
-        // Domyślnie ukryj przycisk wylogowania
         btnLogout.setVisible(false);
 
-        // Obsługa wylogowania
-        btnLogout.addActionListener(e -> showPanel("Login"));
+        btnLogout.addActionListener(_ -> showPanel("Login"));
 
-        // Obsługa ekstensji – po kliknięciu pokazuje w konsoli
-        btnShowExtents.addActionListener(e -> showAllExtents());
+        btnShowExtents.addActionListener(_ -> showAllExtents());
 
         setVisible(true);
         showPanel("Login");
+
+        // Zapisywanie do ekstensji podczas wyłączania aplikacji
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> ObjectPlus.saveToFile("extents.bin")));
     }
 
-    // Ustawia widoczność przycisku w zależności od panelu
     public void showPanel(String name) {
         cardLayout.show(cardsPanel, name);
-        // Przycisk widoczny wszędzie poza logowaniem
         btnLogout.setVisible(!name.equals("Login"));
-        btnShowExtents.setVisible(!name.equals("Login")); // Ukryj też na logowaniu
+        btnShowExtents.setVisible(!name.equals("Login"));
     }
 
-    // Pokazuje ekstensje wszystkich klas (na konsoli)
     public void showAllExtents() {
         List<Class<?>> extentClasses = Arrays.asList(
+                Model.Accountant.class,
                 Model.Client.class,
                 Model.ClientCard.class,
                 Model.Reservation.class,
@@ -100,7 +103,6 @@ public class MainFrame extends JFrame {
             sb.append("--------------------------------\n");
         }
 
-        // Tworzenie okna dialogowego z tekstem
         JTextArea textArea = new JTextArea(sb.toString(), 25, 80);
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
         textArea.setEditable(false);

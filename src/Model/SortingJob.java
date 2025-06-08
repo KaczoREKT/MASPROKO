@@ -2,46 +2,24 @@ package Model;
 
 import Model.utils.AutoIdEntity;
 
+import java.io.Serial;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-/**
- * Klasa SortingJob – zadanie sortowania książek w danym sektorze.
- * Pola: startDate, endDate.
- * Relacje:
- * - jeden (SortingJob) do wielu (brak, w diagramie jednokierunkowo do Librarian i do Sector)
- * - relacja wiele-do-jednego z Librarian (każde zadanie jest przypisane do jednej osoby)
- * - relacja wiele-do-jednego z Sector (po jakim sektorze dana osoba sortuje)
- */
 public class SortingJob extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
 
     private Librarian librarian;
     private Sector sector;
 
-    public SortingJob(LocalDate startDate, LocalDate endDate) {
+    public SortingJob(LocalDateTime startDate, LocalDateTime endDate) {
         super();
         this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    // Gettery / settery
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -49,9 +27,6 @@ public class SortingJob extends AutoIdEntity {
         return librarian;
     }
 
-    /**
-     * Ustawia, który bibliotekarz (Librarian) ma to zadanie.
-     */
     public void setLibrarian(Librarian librarian) {
         if (this.librarian != null) {
             this.librarian.getSortingJobs().remove(this);
@@ -66,9 +41,6 @@ public class SortingJob extends AutoIdEntity {
         return sector;
     }
 
-    /**
-     * Ustawia, w którym sektorze realizowane jest to zadanie.
-     */
     public void setSector(Sector sector) {
         if (this.sector != null) {
             this.sector.getSortingJobs().remove(this);
@@ -86,7 +58,7 @@ public class SortingJob extends AutoIdEntity {
                 startDate,
                 endDate,
                 (librarian != null ? librarian.getFirstName() + " " + librarian.getLastName() : "brak"),
-                (sector != null ? sector.getPrefix() : "brak"));
+                (sector != null ? sector.getName() : "brak"));
     }
 
     @Override

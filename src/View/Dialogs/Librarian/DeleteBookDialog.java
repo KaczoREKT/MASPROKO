@@ -26,16 +26,14 @@ public class DeleteBookDialog extends JDialog {
 
         int row = 0;
 
-        // Sektor
         gbc.gridx = 0; gbc.gridy = row;
         content.add(new JLabel("Sektor:"), gbc);
 
-        java.util.List<Sector> sectors = sectorController.getAllSectors();
+        java.util.List<Sector> sectors = sectorController.getList();
         JComboBox<Sector> sectorBox = new SectorJComboBox(sectors);
         gbc.gridx = 1;
         content.add(sectorBox, gbc);
 
-        // Książka
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Książka:"), gbc);
 
@@ -43,13 +41,11 @@ public class DeleteBookDialog extends JDialog {
         gbc.gridx = 1;
         content.add(bookBox, gbc);
 
-        // Przycisk
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE; gbc.weightx = 1;
         JButton btnDelete = new JButton("Usuń");
         content.add(btnDelete, gbc);
 
-        // -- Logika GUI --
         Runnable updateBookList = () -> {
             Sector selectedSector = (Sector) sectorBox.getSelectedItem();
             bookBox.removeAllItems();
@@ -61,9 +57,9 @@ public class DeleteBookDialog extends JDialog {
         };
 
 
-        sectorBox.addActionListener(e -> updateBookList.run());
+        sectorBox.addActionListener(_ -> updateBookList.run());
 
-        btnDelete.addActionListener(e -> {
+        btnDelete.addActionListener(_ -> {
             Book selectedBook = (Book) bookBox.getSelectedItem();
 
             if (selectedBook == null) {
@@ -89,8 +85,6 @@ public class DeleteBookDialog extends JDialog {
             }
         });
 
-
-        // Wstępne wypełnienie listy książek
         if (sectorBox.getItemCount() > 0) {
             sectorBox.setSelectedIndex(0);
             updateBookList.run();

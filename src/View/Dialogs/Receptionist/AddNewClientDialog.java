@@ -63,7 +63,7 @@ public class AddNewClientDialog extends JDialog {
         JButton btnAdd = new JButton("Dodaj");
         content.add(btnAdd, gbc);
 
-        btnAdd.addActionListener(e -> {
+        btnAdd.addActionListener(_ -> {
             String firstName = firstNameField.getText().trim();
             String lastName = lastNameField.getText().trim();
             Gender gender = (Gender) genderBox.getSelectedItem();

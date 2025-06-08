@@ -81,7 +81,7 @@ public class RegisterEmployeeDialog extends JDialog {
         bonusField.setVisible(false);
 
         // Zmiana widoczności pól w zależności od wybranego typu pracownika
-        typeBox.addActionListener(e -> {
+        typeBox.addActionListener(_ -> {
             String selected = (String) typeBox.getSelectedItem();
             if ("Bibliotekarz".equals(selected)) {
                 specializationLabel.setVisible(true);
@@ -113,7 +113,7 @@ public class RegisterEmployeeDialog extends JDialog {
         content.add(btnPanel, gbc);
 
 
-        btnRegister.addActionListener(e -> {
+        btnRegister.addActionListener(_ -> {
             String firstName = firstNameField.getText().trim();
             String lastName = lastNameField.getText().trim();
             Gender gender = (Gender) genderBox.getSelectedItem();
@@ -161,7 +161,7 @@ public class RegisterEmployeeDialog extends JDialog {
             }
         });
 
-        btnCancel.addActionListener(e -> dispose());
+        btnCancel.addActionListener(_ -> dispose());
 
         setContentPane(content);
         setVisible(true);

@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Model.Enum.BookStatus;
+import Model.Enum.FineStatus;
 import Model.utils.ObjectPlus;
 
 import java.time.LocalDate;
@@ -16,32 +17,24 @@ public class ReservationController {
         if (dateFrom == null || dateTo == null) throw new Exception("Nieprawidłowa data.");
         if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
 
-        // Sprawdź, czy książka jest dostępna
         if (book.getStatus() == BookStatus.WYPOZYCZONA) {
             throw new Exception("Wybrana książka jest aktualnie wypożyczona.");
         }
 
-        // Sprawdź ważność karty klienta
         if (client.getClientCard() == null || client.getClientCard().getExpirationDate().isBefore(LocalDate.now())) {
             throw new Exception("Karta klienta jest nieważna.");
         }
         Set<Book> books = new HashSet<> (List.of(book));
-        // Tworzenie rezerwacji (zakładam, że konstruktor Reservation robi wszystko co trzeba)
         Reservation reservation = new Reservation(dateFrom, dateTo, books);
 
-        // Powiązania obustronne (jeśli nie robi tego konstruktor)
         client.addReservation(reservation);
-        for (Book b : books){
-            b.setReservation(reservation);
-        }
+        books.forEach(b -> b.setReservation(reservation));
     }
 
     public void changeReservation(Reservation selectedReservation, LocalDate dateFrom, LocalDate dateTo) throws Exception {
         if (selectedReservation == null) throw new Exception("Nie wybrano rezerwacji do zmiany!");
         if (dateFrom == null || dateTo == null) throw new Exception("Daty nie mogą być puste!");
         if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
-
-        // Możesz dodać dodatkową walidację, np. czy nowy termin nie koliduje z innymi rezerwacjami danej książki/klienta
 
         selectedReservation.setStartDate(dateFrom);
         selectedReservation.setEndDate(dateTo);
@@ -51,7 +44,7 @@ public class ReservationController {
         if (reservation == null) throw new Exception("Nie wybrano rezerwacji do anulowania!");
         reservation.cancel();
     }
-    // ReservationController.java
+
     public void generateFinesForExpiredReservations() {
         try {
             Iterable<Reservation> reservations = ObjectPlus.getExtent(Reservation.class);
@@ -60,15 +53,23 @@ public class ReservationController {
                 if (endDate.isBefore(LocalDate.now())) {
                     Client client = reservation.getClient();
                     if (client != null) {
-                        boolean alreadyFined = client.getFines().stream()
-                                .anyMatch(f -> f.getReason() != null && f.getReason().contains("rezerwacja " + reservation.getPublicId()));
-                        if (alreadyFined) continue;
+                        // Szukamy istniejącej kary za tę rezerwację
+                        Fine fineForThis = client.getFines().stream()
+                                .filter(f -> f.getReason() != null && f.getReason().contains("rezerwacja " + reservation.getPublicId()))
+                                .findFirst()
+                                .orElse(null);
 
                         long daysLate = java.time.temporal.ChronoUnit.DAYS.between(endDate, LocalDate.now());
                         if (daysLate > 0) {
-                            double price = daysLate * 0.50;
-                            Fine fine = new Fine(price, "Opóźnienie za rezerwacja " + reservation.getPublicId());
-                            fine.setClient(client);
+                            double newPrice = daysLate * 0.50;
+                            if (fineForThis == null) {
+                                // Nie było jeszcze kary — dodaj nową
+                                Fine fine = new Fine(newPrice, "Opóźnienie za rezerwacja " + reservation.getPublicId());
+                                fine.setClient(client);
+                            } else if (fineForThis.getStatus() == FineStatus.OPLACONO) {
+                                fineForThis.setPrice(newPrice);
+                            }
+
                         }
                     }
                 }
@@ -77,5 +78,6 @@ public class ReservationController {
             ex.printStackTrace();
         }
     }
+
 
 }

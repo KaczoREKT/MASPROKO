@@ -2,18 +2,16 @@ package Model;
 
 import Model.utils.AutoIdEntity;
 
+import java.io.Serial;
 import java.time.LocalDate;
 
-/**
- * Klasa ClientCard – przypisana do klienta (jedno do jednego).
- * Zawiera datę wygaśnięcia i flagę expired.
- */
 public class ClientCard extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
     private static long nextId = 1;
     private long id;
     private LocalDate expirationDate;
-    private boolean expired;
+    private final boolean expired;
     private Client client;
 
     public ClientCard(Client client) {
@@ -43,29 +41,15 @@ public class ClientCard extends AutoIdEntity {
         this.expirationDate = expirationDate;
     }
 
-    public boolean isExpired() {
-        return expired;
-    }
-
-    public void setExpired(boolean expired) {
-        this.expired = expired;
-    }
-
     public Client getClient() {
         return client;
     }
 
-    /**
-     * Ustawia powiązanie karty z klientem – relacja jeden-do-jednego.
-     */
     public void setClient(Client client) {
-        if (this.client != null) {
-            this.client.setClientCard(null);
-        }
+        if (this.client == client) return;
+        if (this.client != null) this.client.setClientCard(null);
         this.client = client;
-        if (client != null && client.getClientCard() != this) {
-            client.setClientCard(this);
-        }
+        if (client != null && client.getClientCard() != this) client.setClientCard(this);
     }
 
     @Override

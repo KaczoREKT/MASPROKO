@@ -33,7 +33,7 @@ public class CatalogBookDialog extends JDialog {
         add(new JLabel());
         add(btnAdd);
 
-        btnAdd.addActionListener(e -> {
+        btnAdd.addActionListener(_ -> {
             String title = titleField.getText().trim();
             String author = authorField.getText().trim();
             String genre = isbnField.getText().trim();
@@ -44,7 +44,7 @@ public class CatalogBookDialog extends JDialog {
             }
 
             char firstLetter = Character.toUpperCase(title.charAt(0));
-            List<Sector> sectors = sectorController.getAllSectors();
+            List<Sector> sectors = sectorController.getList();
 
             Sector matchedSector = null;
             for (Sector sector : sectors) {
@@ -59,7 +59,7 @@ public class CatalogBookDialog extends JDialog {
                 return;
             }
 
-            bookController.addBook(title, author, genre, matchedSector);
+            bookController.addBook(title, author, genre);
 
             JOptionPane.showMessageDialog(this, "Książka dodana do sektora: " + matchedSector.getName());
             dispose();

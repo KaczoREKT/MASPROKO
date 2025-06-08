@@ -18,25 +18,22 @@ public class ShowReservationHistoryDialog extends JDialog {
 
         JPanel content = new JPanel(new BorderLayout(10,10));
 
-        // Panel górny: wybór klienta
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(new JLabel("Wybierz klienta:"));
 
-        List<Client> clients = clientController.getClientList();
+        List<Client> clients = clientController.getList();
         JComboBox<Client> clientBox = new JComboBox<>(clients.toArray(new Client[0]));
         clientBox.setPreferredSize(new Dimension(300, 25));
         topPanel.add(clientBox);
 
         content.add(topPanel, BorderLayout.NORTH);
 
-        // Panel centralny: lista rezerwacji
         DefaultListModel<String> reservationListModel = new DefaultListModel<>();
         JList<String> reservationList = new JList<>(reservationListModel);
         JScrollPane scrollPane = new JScrollPane(reservationList);
 
         content.add(scrollPane, BorderLayout.CENTER);
 
-        // Logika – zmiana wyboru klienta od razu wyświetla rezerwacje
         clientBox.addActionListener(_ -> {
             Client selectedClient = (Client) clientBox.getSelectedItem();
             reservationListModel.clear();
@@ -51,7 +48,6 @@ public class ShowReservationHistoryDialog extends JDialog {
             }
         });
 
-        // Na start wyświetl rezerwacje pierwszego klienta (jeśli są)
         if (!clients.isEmpty()) {
             clientBox.setSelectedIndex(0);
         }

@@ -3,14 +3,10 @@ package Model;
 import Model.Enum.BookStatus;
 import Model.utils.AutoIdEntity;
 
-/**
- * Klasa Book – każda instancja to jedna książka.
- * Pola: id, title, genre, author, status (BookStatus).
- * Relacje:
- *   - relacja jeden-do-wielu z Rezerwacją (Reservation) – jedna książka może mieć wiele rezerwacji.
- *   - relacja wiele-do-jednego z Sector – jedna książka należy do dokładnie jednego sektora.
- */
+import java.io.Serial;
+
 public class Book extends AutoIdEntity {
+    @Serial
     private static final long serialVersionUID = 1L;
     private String title;
     private String genre;
@@ -28,8 +24,6 @@ public class Book extends AutoIdEntity {
         this.genre = genre;
         this.author = author;
     }
-
-    // Gettery / settery
 
     public String getTitle() {
         return title;
@@ -63,9 +57,6 @@ public class Book extends AutoIdEntity {
         this.status = status;
     }
 
-    /**
-     * Dodaje rezerwację do książki – relacja jeden-do-wielu (Book -> Reservation).
-     */
     public void setReservation(Reservation r) {
         if (this.reservation != null && r != null && this.reservation != r) {
             throw new IllegalStateException("Książka jest już zarezerwowana!");
@@ -85,9 +76,6 @@ public class Book extends AutoIdEntity {
         return sector;
     }
 
-    /**
-     * Ustawia sektora, do którego należy książka (relacja wiele-do-jednego).
-     */
     public void setSector(Sector sector) {
         if (this.sector != null) {
             this.sector.getBooks().remove(this);

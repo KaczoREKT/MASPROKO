@@ -3,17 +3,30 @@ package Controller;
 import Model.Sector;
 import Model.utils.ObjectPlus;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SectorController extends AbstractController<Sector> {
+    public SectorController() {
+        super(Sector.class);
+    }
 
-public class SectorController {
-    public List<Sector> getAllSectors() {
-        List<Sector> sectors = new ArrayList<>();
+    // Szuka sektora o danym zakresie znaków (np. 'E', 'F')
+    public Sector findSectorByRange(char e, char f) {
         try {
             for (Sector s : ObjectPlus.getExtent(Sector.class)) {
-                sectors.add(s);
+                if (s.getStartLetter() == e && s.getEndLetter() == f) {
+                    return s;
+                }
             }
-        } catch (Exception e) {}
-        return sectors;
+        } catch (Exception _) {}
+        return null;
+    }
+
+    // Usuwa sektor z ekstensji
+    public void deleteSector(Sector sectorGH) {
+        if (sectorGH == null) return;
+        try {
+            ObjectPlus.removeFromExtent(sectorGH);
+        } catch (Exception ex) {
+            // Możesz dodać obsługę błędu lub logowanie, jeśli chcesz
+        }
     }
 }

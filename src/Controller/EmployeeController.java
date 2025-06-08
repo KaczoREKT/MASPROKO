@@ -7,35 +7,24 @@ import Model.utils.ObjectPlus;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeController {
+public class EmployeeController extends AbstractController<Employee> {
+
+    public EmployeeController() {
+        super(Employee.class);
+    }
 
     public String loginEmployee(String id) {
-        for (Employee e : getAllEmployees()) {
-            if (String.valueOf(e.getPublicId()).equals(id)) {
-                return e.getClass().getSimpleName();
-            }
-        }
-        return null;
+        return getEmployeeList().stream()
+                .filter(e -> String.valueOf(e.getPublicId()).equals(id))
+                .map(e -> e.getClass().getSimpleName())
+                .findFirst()
+                .orElse(null);
     }
 
-    public List<Employee> getAllEmployees() {
-        List<Employee> result = new ArrayList<>();
-        List<Class<? extends Employee>> subClasses = List.of(Manager.class, Librarian.class, Receptionist.class);
-        for (Class<? extends Employee> c : subClasses) {
-            try {
-                for (Employee e : ObjectPlus.getExtent(c)) {
-                    result.add(e);
-                }
-            } catch (ClassNotFoundException ex) {
-
-            }
-        }
-        return result;
-    }
 
     public List<Employee> getEmployeeList() {
         List<Employee> employees = new ArrayList<>();
-        List<Class<? extends Employee>> subClasses = List.of(Manager.class, Librarian.class, Receptionist.class /*, inne podklasy*/);
+        List<Class<? extends Employee>> subClasses = List.of(Accountant.class, Manager.class, Librarian.class, Receptionist.class /*, inne podklasy*/);
 
         for (Class<? extends Employee> c : subClasses) {
             try {
@@ -49,20 +38,6 @@ public class EmployeeController {
         return employees;
     }
 
-    public List<String> getEmployeeIds() {
-        List<String> ids = new ArrayList<>();
-        List<Class<? extends Employee>> subClasses = List.of(Manager.class, Librarian.class, Receptionist.class);
-        for (Class<? extends Employee> c : subClasses) {
-            try {
-                for (Employee e : ObjectPlus.getExtent(c)) {
-                    ids.add(String.valueOf(e.getId()));
-                }
-            } catch (ClassNotFoundException ex) {
-                // Brak ekstensji tej klasy - ignorujemy
-            }
-        }
-        return ids;
-    }
     public void deleteEmployee(Employee employee) throws Exception {
         if (employee == null) throw new Exception("Brak pracownika do usunięcia!");
         ObjectPlus.removeFromExtent(employee);
@@ -76,4 +51,19 @@ public class EmployeeController {
     public Receptionist addReceptionist(String firstName, String lastName, Gender gender, double salary) {
         return new Receptionist(firstName, lastName, gender, salary);
     }
+
+    public void updateSalary(Employee selected, double newSalary) {
+        if (selected == null) {
+            throw new IllegalArgumentException("Nie wybrano pracownika.");
+        }
+        if (newSalary <= 0) {
+            throw new IllegalArgumentException("Pensja musi być większa od zera.");
+        }
+        selected.setSalary(newSalary);
+    }
+
+    public void setEmployeeSalary(Employee selected, double newSalary) {
+        updateSalary(selected, newSalary);
+    }
+
 }

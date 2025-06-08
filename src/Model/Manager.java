@@ -2,24 +2,16 @@ package Model;
 
 import Model.Enum.Gender;
 
-/**
- * Klasa Manager – dziedziczy po Employee, dodaje pole bonus.
- */
+import java.io.Serial;
+
 public class Manager extends Employee {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private double bonus;
+    private final double bonus;
 
     public Manager(String firstName, String lastName, Gender gender, double salary, double bonus) {
         super(firstName, lastName, gender, salary);
-        this.bonus = bonus;
-    }
-
-    public double getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(double bonus) {
         this.bonus = bonus;
     }
 

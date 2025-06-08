@@ -8,14 +8,13 @@ import Model.Reservation;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 public class ChangeReservationDialog extends JDialog {
     public ChangeReservationDialog(ClientController clientController, ReservationController reservationController) {
         setTitle("Zmiana rezerwacji");
         setModal(true);
-        setSize(480, 350);
+        setSize(500, 380);
         setLocationRelativeTo(null);
 
         JPanel content = new JPanel(new GridBagLayout());
@@ -49,18 +48,44 @@ public class ChangeReservationDialog extends JDialog {
         reservationBox.setEnabled(false);
         content.add(reservationBox, gbc);
 
-        // 5. Pola do zmiany dat
+        // 5. Pola do zmiany dat (ComboBoxy)
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.WEST;
         content.add(new JLabel("Data rozpoczęcia:"), gbc);
-        JTextField dateFromField = new JTextField(10);
-        gbc.gridx = 1; gbc.weightx = 0.7;
-        content.add(dateFromField, gbc);
 
-        gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
+        JPanel dateFromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        JComboBox<Integer> yearFromBox = new JComboBox<>();
+        JComboBox<Integer> monthFromBox = new JComboBox<>();
+        JComboBox<Integer> dayFromBox = new JComboBox<>();
+        int currentYear = LocalDate.now().getYear();
+        for (int y = currentYear; y <= currentYear + 2; y++) yearFromBox.addItem(y);
+        for (int m = 1; m <= 12; m++) monthFromBox.addItem(m);
+        fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem());
+        dateFromPanel.add(yearFromBox); dateFromPanel.add(new JLabel("r."));
+        dateFromPanel.add(monthFromBox); dateFromPanel.add(new JLabel("mies."));
+        dateFromPanel.add(dayFromBox); dateFromPanel.add(new JLabel("d."));
+        monthFromBox.addActionListener(e -> fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem()));
+        yearFromBox.addActionListener(e -> fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem()));
+        gbc.gridx = 1;
+        content.add(dateFromPanel, gbc);
+
+        // Data zakończenia
+        gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Data zakończenia:"), gbc);
-        JTextField dateToField = new JTextField(10);
-        gbc.gridx = 1; gbc.weightx = 0.7;
-        content.add(dateToField, gbc);
+
+        JPanel dateToPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        JComboBox<Integer> yearToBox = new JComboBox<>();
+        JComboBox<Integer> monthToBox = new JComboBox<>();
+        JComboBox<Integer> dayToBox = new JComboBox<>();
+        for (int y = currentYear; y <= currentYear + 2; y++) yearToBox.addItem(y);
+        for (int m = 1; m <= 12; m++) monthToBox.addItem(m);
+        fillDays(dayToBox, (int) yearToBox.getSelectedItem(), (int) monthToBox.getSelectedItem());
+        dateToPanel.add(yearToBox); dateToPanel.add(new JLabel("r."));
+        dateToPanel.add(monthToBox); dateToPanel.add(new JLabel("mies."));
+        dateToPanel.add(dayToBox); dateToPanel.add(new JLabel("d."));
+        monthToBox.addActionListener(e -> fillDays(dayToBox, (int) yearToBox.getSelectedItem(), (int) monthToBox.getSelectedItem()));
+        yearToBox.addActionListener(e -> fillDays(dayToBox, (int) yearToBox.getSelectedItem(), (int) monthToBox.getSelectedItem()));
+        gbc.gridx = 1;
+        content.add(dateToPanel, gbc);
 
         // 6. Przycisk "Zmień"
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.CENTER;
@@ -105,8 +130,18 @@ public class ChangeReservationDialog extends JDialog {
         reservationBox.addActionListener(e -> {
             Reservation selectedReservation = (Reservation) reservationBox.getSelectedItem();
             if (selectedReservation != null) {
-                dateFromField.setText(selectedReservation.getStartDate().toString());
-                dateToField.setText(selectedReservation.getEndDate().toString());
+                LocalDate from = selectedReservation.getStartDate();
+                LocalDate to = selectedReservation.getEndDate();
+                // Ustaw datę rozpoczęcia
+                yearFromBox.setSelectedItem(from.getYear());
+                monthFromBox.setSelectedItem(from.getMonthValue());
+                fillDays(dayFromBox, from.getYear(), from.getMonthValue());
+                dayFromBox.setSelectedItem(from.getDayOfMonth());
+                // Ustaw datę zakończenia
+                yearToBox.setSelectedItem(to.getYear());
+                monthToBox.setSelectedItem(to.getMonthValue());
+                fillDays(dayToBox, to.getYear(), to.getMonthValue());
+                dayToBox.setSelectedItem(to.getDayOfMonth());
                 btnChange.setEnabled(true);
             } else {
                 btnChange.setEnabled(false);
@@ -117,8 +152,16 @@ public class ChangeReservationDialog extends JDialog {
             Reservation selectedReservation = (Reservation) reservationBox.getSelectedItem();
             if (selectedReservation == null) return;
             try {
-                LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
-                LocalDate dateTo = LocalDate.parse(dateToField.getText().trim());
+                LocalDate dateFrom = LocalDate.of(
+                        (int) yearFromBox.getSelectedItem(),
+                        (int) monthFromBox.getSelectedItem(),
+                        (int) dayFromBox.getSelectedItem()
+                );
+                LocalDate dateTo = LocalDate.of(
+                        (int) yearToBox.getSelectedItem(),
+                        (int) monthToBox.getSelectedItem(),
+                        (int) dayToBox.getSelectedItem()
+                );
                 reservationController.changeReservation(selectedReservation, dateFrom, dateTo);
                 JOptionPane.showMessageDialog(this, "Zmieniono rezerwację.");
                 dispose();
@@ -131,5 +174,12 @@ public class ChangeReservationDialog extends JDialog {
 
         setContentPane(content);
         setVisible(true);
+    }
+
+    // Pomocnicza metoda do ustawiania dni miesiąca
+    private static void fillDays(JComboBox<Integer> dayBox, int year, int month) {
+        dayBox.removeAllItems();
+        int days = java.time.YearMonth.of(year, month).lengthOfMonth();
+        for (int d = 1; d <= days; d++) dayBox.addItem(d);
     }
 }

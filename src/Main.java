@@ -5,53 +5,38 @@ import View.MainFrame;
 import Model.utils.AutoIdEntity;
 import Model.utils.ObjectPlus;
 import Model.Sector;
-
 import java.io.*;
-import java.util.*;
 import Model.*;
+
 import static Model.utils.SampleData.addSampleData;
 
 public class Main {
     public void handleObjectPlus(){
         String file = "extents.bin";
-        List<Class<?>> extentClasses = Arrays.asList(
-                // Osoby i ich podklasy
-                Client.class,
-                ClientCard.class,
-                Reservation.class,
-                Fine.class,
-                // Pracownicy
-                Librarian.class,
-                Manager.class,
-                Receptionist.class,
-                SortingJob.class,
-                // Książki i sektory
-                Book.class,
-                Sector.class
-        );
 
-        // Próbujemy wczytać ekstensje z pliku
         File extFile = new File(file);
         if (extFile.exists()) {
             ObjectPlus.loadFromFile(file);
-            AutoIdEntity.recalculateNextId(Book.class);
-            AutoIdEntity.recalculateNextId(Client.class);
-            AutoIdEntity.recalculateNextId(Manager.class);
-            AutoIdEntity.recalculateNextId(ClientCard.class);
-            AutoIdEntity.recalculateNextId(Reservation.class);
-            AutoIdEntity.recalculateNextId(Receptionist.class);
-            AutoIdEntity.recalculateNextId(Manager.class);
-            AutoIdEntity.recalculateNextId(Librarian.class);
-            AutoIdEntity.recalculateNextId(SortingJob.class);
-            AutoIdEntity.recalculateNextId(Sector.class);
+            recalculateID();
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
             addSampleData();
             ObjectPlus.saveToFile(file);
+            recalculateID();
         }
     }
-    public void testFunctions(EmployeeController employeeController, ClientController clientController) {
-        System.out.println(employeeController.getEmployeeList());
+    public void recalculateID(){
+        AutoIdEntity.recalculateNextId(Book.class);
+        AutoIdEntity.recalculateNextId(Client.class);
+        AutoIdEntity.recalculateNextId(Manager.class);
+        AutoIdEntity.recalculateNextId(ClientCard.class);
+        AutoIdEntity.recalculateNextId(Reservation.class);
+        AutoIdEntity.recalculateNextId(Receptionist.class);
+        AutoIdEntity.recalculateNextId(Manager.class);
+        AutoIdEntity.recalculateNextId(Librarian.class);
+        AutoIdEntity.recalculateNextId(SortingJob.class);
+        AutoIdEntity.recalculateNextId(Sector.class);
+        AutoIdEntity.recalculateNextId(Accountant.class);
     }
     public static void main(String[] args) {
         // =============MAIN=============
@@ -66,12 +51,18 @@ public class Main {
         ReservationController reservationController = new ReservationController();
         LibrarianController librarianController = new LibrarianController();
         SortingJobController sortingJobController = new SortingJobController();
+        FineController fineController = new FineController();
         reservationController.generateFinesForExpiredReservations();
-        // =============TESTING=============
-        main.testFunctions(employeeController, clientController);
 
         // =============GUI=============
-        new MainFrame(employeeController, bookController, sectorController, clientController, reservationController, librarianController, sortingJobController);
+        new MainFrame(employeeController,
+                bookController,
+                sectorController,
+                clientController,
+                reservationController,
+                librarianController,
+                sortingJobController,
+                fineController);
 
     }
 }

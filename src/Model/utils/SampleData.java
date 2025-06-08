@@ -3,13 +3,14 @@ import Model.*;
 import Model.Enum.Gender;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class SampleData {
     public static void addSampleData() {
         // 1. Sektory
         List<Sector> sectors = new ArrayList<>();
-        for (char start = 'A'; start <= 'J'; start += 2) {
+        for (char start = 'A'; start <= 'Y'; start += 2) {
             sectors.add(new Sector(start, (char)(start+1)));
         }
 
@@ -50,6 +51,7 @@ public class SampleData {
         }
         new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 6000.00, 2000.00);
         new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3100.00);
+        new Accountant("Jareczek", "Miłosny", Gender.OTHER, 5000.00);
 
         // 4. Klienci i karty
         List<String> imiona = List.of(
@@ -135,10 +137,21 @@ public class SampleData {
             }
         }
 
-        // 6. Zadania sortowania
+        // 6. Zadania sortowania (SortingJob z godzinami)
         for (int i = 0; i < 10; i++) {
-            LocalDate from = LocalDate.of(2023, rand.nextInt(12)+1, rand.nextInt(20)+1);
-            LocalDate to = from.plusDays(rand.nextInt(6)+1);
+            // Losowa data (rok 2023, losowy miesiąc, losowy dzień)
+            int month = rand.nextInt(12) + 1;         // 1..12
+            int day = rand.nextInt(20) + 1;           // 1..20 (lepiej by było sprawdzić poprawność dnia w miesiącu)
+            int hourFrom = rand.nextInt(8) + 8;       // godziny 8..15, np. start 8-15
+            int minuteFrom = rand.nextInt(60);        // minuty 0..59
+
+            LocalDateTime from = LocalDateTime.of(2023, month, day, hourFrom, minuteFrom);
+
+            // Zakończenie po 1 do 6 godzinach (z losową minutą)
+            int durationHours = rand.nextInt(6) + 1;
+            int durationMinutes = rand.nextInt(60);
+            LocalDateTime to = from.plusHours(durationHours).plusMinutes(durationMinutes);
+
             SortingJob job = new SortingJob(from, to);
             job.setLibrarian(librarians.get(rand.nextInt(librarians.size())));
             job.setSector(sectors.get(rand.nextInt(sectors.size())));

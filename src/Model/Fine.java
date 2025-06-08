@@ -4,19 +4,16 @@ import Model.Enum.FineStatus;
 import Model.utils.AutoIdEntity;
 
 import java.io.Serial;
+import java.time.LocalDate;
 
-/**
- * Klasa Fine (mandat) wystawiana klientowi.
- * Pola: price (kwota), reason (powód), status (np. 0 = nieopłacony, 1 = opłacony itp.).
- * Relacja: wiele-do-jednego z Client.
- */
 public class Fine extends AutoIdEntity {
     @Serial
     private static final long serialVersionUID = 1L;
 
     private double price;
-    private String reason;
+    private final String reason;
     private FineStatus status = FineStatus.NIEOPLACONO;
+    private final LocalDate date;
 
     private Client client;
 
@@ -24,9 +21,8 @@ public class Fine extends AutoIdEntity {
         super();
         this.price = price;
         this.reason = reason;
+        this.date = LocalDate.now();
     }
-
-    // Gettery / settery
 
     public double getPrice() {
         return price;
@@ -40,9 +36,6 @@ public class Fine extends AutoIdEntity {
         return reason;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
 
     public FineStatus getStatus() {
         return status;
@@ -53,6 +46,10 @@ public class Fine extends AutoIdEntity {
      */
     public void setStatus(FineStatus status) {
         this.status = status;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     public Client getClient() {
@@ -75,11 +72,9 @@ public class Fine extends AutoIdEntity {
     @Override
     public String toString() {
         return String.format(
-                "Fine[price=%.2f, reason=%s, status=%s, client=%s]",
-                price, reason, status,
+                "Fine[price=%.2f, reason=%s, status=%s, date=%s, client=%s]",
+                price, reason, status, date,
                 client != null ? client.getPublicId() : "Brak"
         );
     }
-
-
 }

@@ -2,7 +2,6 @@ package View.Panel;
 
 import Controller.BookController;
 import Controller.ClientController;
-import Controller.ReservationController;
 import Controller.EmployeeController;
 import Controller.LibrarianController;
 import Controller.SectorController;
@@ -14,10 +13,10 @@ import View.Dialogs.Manager.AssignWorkDialog;
 import javax.swing.*;
 
 public class ManagerPanel extends EmployeePanel {
-    public ManagerPanel(BookController bookController, ClientController clientController, ReservationController reservationController,
+    public ManagerPanel(BookController bookController, ClientController clientController,
                         EmployeeController employeeController, LibrarianController librarianController, SectorController sectorController,
                         SortingJobController sortingJobController) {
-        super(bookController, clientController, reservationController, "Menedżerze!");
+        super(bookController, clientController, "Menedżerze!");
 
         JPanel workButtonsPanel = getWorkButtonsPanel();
 
@@ -25,9 +24,9 @@ public class ManagerPanel extends EmployeePanel {
         JButton btnFireEmployee = new JButton("Zwolnij pracownika");
         JButton btnAssignWork = new JButton("Przypisz zadanie");
 
-        btnRegisterEmployee.addActionListener(e -> new RegisterEmployeeDialog(employeeController));
-        btnFireEmployee.addActionListener(e -> new FireEmployeeDialog(employeeController));
-        btnAssignWork.addActionListener(e -> new AssignWorkDialog(librarianController, sectorController, sortingJobController));
+        btnRegisterEmployee.addActionListener(_-> new RegisterEmployeeDialog(employeeController));
+        btnFireEmployee.addActionListener(_ -> new FireEmployeeDialog(employeeController));
+        btnAssignWork.addActionListener(_ -> new AssignWorkDialog(librarianController, sectorController, sortingJobController));
 
         workButtonsPanel.add(btnRegisterEmployee);
         workButtonsPanel.add(btnFireEmployee);

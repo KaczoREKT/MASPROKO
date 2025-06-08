@@ -27,43 +27,37 @@ public class UpdateBookDialog extends JDialog {
 
         int row = 0;
 
-        // Sektor
         gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
         content.add(new JLabel("Sektor:"), gbc);
-        List<Sector> sectors = sectorController.getAllSectors();
+        List<Sector> sectors = sectorController.getList();
         JComboBox<Sector> sectorBox = new SectorJComboBox(sectors);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(sectorBox, gbc);
 
-        // Książka
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Książka:"), gbc);
         JComboBox<Book> bookBox = new BookJComboBox();
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(bookBox, gbc);
 
-        // Tytuł
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Tytuł:"), gbc);
         JTextField titleField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(titleField, gbc);
 
-        // Autor
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Autor:"), gbc);
         JTextField authorField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(authorField, gbc);
 
-        // Gatunek
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Gatunek:"), gbc);
         JTextField genreField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(genreField, gbc);
 
-        // Status
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Status:"), gbc);
         BookStatus[] allowedStatuses = {
@@ -74,13 +68,11 @@ public class UpdateBookDialog extends JDialog {
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(statusBox, gbc);
 
-        // Przycisk
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE; gbc.weightx = 1;
         JButton btnSave = new JButton("Zapisz");
         content.add(btnSave, gbc);
 
-        // --- LOGIKA WYBORU ---
 
         Runnable updateBookList = () -> {
             Sector selectedSector = (Sector) sectorBox.getSelectedItem();
@@ -109,14 +101,14 @@ public class UpdateBookDialog extends JDialog {
             }
         };
 
-        sectorBox.addActionListener(e -> {
+        sectorBox.addActionListener(_ -> {
             updateBookList.run();
             updateBookFields.run();
         });
 
-        bookBox.addActionListener(e -> updateBookFields.run());
+        bookBox.addActionListener(_ -> updateBookFields.run());
 
-        btnSave.addActionListener(e -> {
+        btnSave.addActionListener(_ -> {
             Book selectedBook = (Book) bookBox.getSelectedItem();
             if (selectedBook == null) {
                 JOptionPane.showMessageDialog(this, "Najpierw wybierz książkę!", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -134,12 +126,12 @@ public class UpdateBookDialog extends JDialog {
             }
             bookController.updateBook(selectedBook, newTitle, newAuthor, newGenre, newStatus);
 
+            updateBookList.run();
+            updateBookFields.run();
 
             JOptionPane.showMessageDialog(this, "Książka zaktualizowana!");
-            dispose();
         });
 
-        // Inicjalizacja
         if (sectorBox.getItemCount() > 0) {
             sectorBox.setSelectedIndex(0);
             updateBookList.run();

@@ -12,8 +12,8 @@ import View.Dialogs.Receptionist.ReturnBookDialog;
 import javax.swing.*;
 
 public class LibrarianPanel extends EmployeePanel {
-    public LibrarianPanel(BookController bookController, ClientController clientController, ReservationController reservationController, SectorController sectorController) {
-        super(bookController, clientController, reservationController, "Bibliotekarzu!");
+    public LibrarianPanel(BookController bookController, ClientController clientController, SectorController sectorController) {
+        super(bookController, clientController, "Bibliotekarzu!");
 
         // Dodaj swoje przyciski do panelu „Twoja praca”
         JPanel workButtonsPanel = getWorkButtonsPanel();

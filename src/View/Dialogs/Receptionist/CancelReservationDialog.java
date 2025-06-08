@@ -61,7 +61,7 @@ public class CancelReservationDialog extends JDialog {
         // LOGIKA
         final Client[] foundClient = {null};
 
-        btnFindClient.addActionListener(e -> {
+        btnFindClient.addActionListener(_ -> {
             String cardNumber = cardNumberField.getText().trim();
             Client client = clientController.findClientByCardNumber(cardNumber);
             foundClient[0] = client;
@@ -87,11 +87,9 @@ public class CancelReservationDialog extends JDialog {
             }
         });
 
-        reservationBox.addActionListener(e -> {
-            btnCancelReservation.setEnabled(reservationBox.getSelectedItem() != null);
-        });
+        reservationBox.addActionListener(_ -> btnCancelReservation.setEnabled(reservationBox.getSelectedItem() != null));
 
-        btnCancelReservation.addActionListener(e -> {
+        btnCancelReservation.addActionListener(_ -> {
             Reservation selectedReservation = (Reservation) reservationBox.getSelectedItem();
             if (selectedReservation == null) return;
             int confirm = JOptionPane.showConfirmDialog(
@@ -111,7 +109,7 @@ public class CancelReservationDialog extends JDialog {
             }
         });
 
-        btnClose.addActionListener(e -> dispose());
+        btnClose.addActionListener(_ -> dispose());
 
         setContentPane(content);
         setVisible(true);

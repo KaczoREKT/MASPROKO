@@ -8,21 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-public class BookController {
-    public List<Book> getBookList() {
-        List<Book> books = new ArrayList<>();
-        try {
-            for (Book b : ObjectPlus.getExtent(Book.class)) {
-                books.add(b);
-            }
-        } catch (Exception _) {}
-        return books;
+public class BookController extends AbstractController<Book> {
+    public BookController() {
+        super(Book.class);
     }
+
     public List<Book> getAvailableBooks() {
         try {
             Iterable<Book> iterable = ObjectPlus.getExtent(Book.class);
             return StreamSupport.stream(iterable.spliterator(), false)
-                    .filter(b -> b.getStatus() != BookStatus.WYPOZYCZONA)
+                    .filter(b -> b.getStatus() == BookStatus.DOSTEPNA)
                     .toList();
         } catch (Exception e) {
             return List.of();
@@ -33,15 +28,16 @@ public class BookController {
         List<Book> availableBooks = new ArrayList<>();
         if (sector != null) {
             for (Book b : sector.getBooks()) {
-                if (!(b.getStatus() == BookStatus.WYPOZYCZONA)) {
+                if (b.getStatus() == BookStatus.DOSTEPNA) {
                     availableBooks.add(b);
                 }
             }
         }
         return availableBooks;
     }
-    public void addBook(String title, String genre, String author, Sector sector) {
+    public void addBook(String title, String genre, String author) {
         Book book = new Book(title, genre, author);
+        Sector sector = matchSector(book);
         sector.addBook(book);
     }
     public void deleteBook(Book book) throws Exception {
@@ -61,5 +57,40 @@ public class BookController {
         selectedBook.setAuthor(newAuthor);
         selectedBook.setGenre(newGenre);
         selectedBook.setStatus(newStatus);
+
+        Sector correctSector = matchSector(selectedBook);
+
+        if (correctSector != null && correctSector != selectedBook.getSector()) {
+            Sector oldSector = selectedBook.getSector();
+            if (oldSector != null) oldSector.removeBook(selectedBook);
+            correctSector.addBook(selectedBook);
+        }
     }
+
+
+    public Book getBookById(long id) {
+        try {
+            for (Book b : ObjectPlus.getExtent(Book.class)) {
+                if (b.getId() == id) {
+                    return b;
+                }
+            }
+        } catch (Exception _) {
+        }
+        return null;
+    }
+    public Sector matchSector(Book book) {
+        if (book == null || book.getTitle() == null || book.getTitle().isEmpty()) return null;
+        try {
+            Iterable<Sector> sectors = ObjectPlus.getExtent(Sector.class);
+            for (Sector sector : sectors) {
+                if (sector.shouldContainBook(book)) {
+                    return sector;
+                }
+            }
+        } catch (Exception ignored) {}
+        return null; // Nie znaleziono sektora
+    }
+
+
 }

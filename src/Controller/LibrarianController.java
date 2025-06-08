@@ -1,20 +1,42 @@
 package Controller;
 
+import Model.Enum.Gender;
 import Model.Librarian;
 import Model.utils.ObjectPlus;
 
-import java.util.List;
-import java.util.stream.StreamSupport;
+public class LibrarianController extends AbstractController<Librarian> {
+    public LibrarianController() {
+        super(Librarian.class);
+    }
 
-public class LibrarianController {
+    public Librarian addLibrarian(String firstName, String lastName, Gender gender, int salary, String specialization) {
+        return new Librarian(firstName, lastName, gender, salary, specialization);
+    }
 
-    public List<Librarian> getLibrarianList() {
+    public void updateSalary(Librarian librarian, int newSalary) {
+        if (librarian != null) {
+            librarian.setSalary(newSalary);
+        }
+    }
+
+    public Librarian getLibrarianById(String publicId) {
         try {
-            Iterable<Librarian> iterable = ObjectPlus.getExtent(Librarian.class);
-            return StreamSupport.stream(iterable.spliterator(), false)
-                    .toList();
+            for (Librarian l : ObjectPlus.getExtent(Librarian.class)) {
+                if (l.getPublicId().equals(publicId)) {
+                    return l;
+                }
+            }
+        } catch (Exception _) {
+        }
+        return null;
+    }
+
+    public void deleteLibrarian(Librarian librarian) {
+        if (librarian == null) return;
+        try {
+            ObjectPlus.removeFromExtent(librarian);
         } catch (Exception e) {
-            return List.of();
+            // Możesz dodać obsługę błędu lub logowanie
         }
     }
 }
