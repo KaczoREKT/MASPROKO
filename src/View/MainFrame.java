@@ -24,7 +24,8 @@ public class MainFrame extends JFrame {
                      ReservationController reservationController,
                      LibrarianController librarianController,
                      SortingJobController sortingJobController,
-                     FineController fineController) {
+                     FineController fineController,
+                     LoanController loanController) {
         setTitle("Aplikacja Biblioteka");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(640, 480);

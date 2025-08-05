@@ -10,7 +10,7 @@ import java.util.*;
 public class Reservation extends AutoIdEntity {
     @Serial
     private static final long serialVersionUID = 1L;
-    private ReservationStatus status = ReservationStatus.TRWAJACA;
+    private ReservationStatus status = ReservationStatus.PENDING;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -67,7 +67,7 @@ public class Reservation extends AutoIdEntity {
     public void setStatus(ReservationStatus status) { this.status = status; }
 
     public void cancel() {
-        setStatus(ReservationStatus.ZAKONCZONA);
+        setStatus(ReservationStatus.ENDED);
         if (books != null) {
             books.forEach(b -> b.removeReservation(this));
         }

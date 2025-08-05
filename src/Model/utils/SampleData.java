@@ -39,8 +39,19 @@ public class SampleData {
             String genre = genres.get(rand.nextInt(genres.size()));
             String author = authors.get(rand.nextInt(authors.size()));
             Book book = new Book(title, genre, author);
-            Sector sector = sectors.get(rand.nextInt(sectors.size()));
-            book.setSector(sector);
+            Sector foundSector = null;
+            for (Sector s : sectors) {
+                if (s.shouldContainBook(book)) {
+                    foundSector = s;
+                    break;
+                }
+            }
+            if (foundSector != null) {
+                book.setSector(foundSector);
+            } else {
+                // Jeśli nie znajdzie sektora – zabezpieczenie, np. pierwszy z listy
+                book.setSector(sectors.getFirst());
+            }
             books.add(book);
         }
 

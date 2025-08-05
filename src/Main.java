@@ -52,6 +52,7 @@ public class Main {
         LibrarianController librarianController = new LibrarianController();
         SortingJobController sortingJobController = new SortingJobController();
         FineController fineController = new FineController();
+        LoanController loanController = new LoanController();
         reservationController.generateFinesForExpiredReservations();
 
         // =============GUI=============
@@ -62,7 +63,8 @@ public class Main {
                 reservationController,
                 librarianController,
                 sortingJobController,
-                fineController);
+                fineController,
+                loanController);
 
     }
 }

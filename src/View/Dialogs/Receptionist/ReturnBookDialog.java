@@ -126,7 +126,7 @@ public class ReturnBookDialog extends JDialog {
                 }
                 boolean allReturned = selectedReservation.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.WYPOZYCZONA);
                 if (allReturned) {
-                    selectedReservation.setStatus(ReservationStatus.ZAKONCZONA);
+                    selectedReservation.setStatus(ReservationStatus.ENDED);
                 }
 
                 JOptionPane.showMessageDialog(this, "Książki zostały zwrócone.");

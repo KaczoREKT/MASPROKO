@@ -1,7 +1,7 @@
 package Model.Enum;
 
 public enum ReservationStatus {
-    TRWAJACA,
-    ZAKONCZONA,
-    ANULOWANA
+    PENDING,
+    ENDED,
+    CANCELED
 }
