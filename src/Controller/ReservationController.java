@@ -12,20 +12,21 @@ import java.util.Set;
 
 public class ReservationController {
     public void reserveBook(List<Book> books, Client client, LocalDate dateFrom, LocalDate dateTo) throws Exception {
-        if (books == null || books.isEmpty()) throw new Exception("Nie wybrano książek.");
+        if (books == null) throw new Exception("Nie wybrano książki.");
         if (client == null) throw new Exception("Nie wybrano klienta.");
         if (dateFrom == null || dateTo == null) throw new Exception("Nieprawidłowa data.");
         if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
+
 
         if (client.getClientCard() == null || client.getClientCard().getExpirationDate().isBefore(LocalDate.now())) {
             throw new Exception("Karta klienta jest nieważna.");
         }
 
         Reservation reservation = new Reservation(dateFrom, dateTo, new HashSet<>(books));
+
         client.addReservation(reservation);
         books.forEach(b -> b.setReservation(reservation));
     }
-
 
     public void changeReservation(Reservation selectedReservation, LocalDate dateFrom, LocalDate dateTo) throws Exception {
         if (selectedReservation == null) throw new Exception("Nie wybrano rezerwacji do zmiany!");

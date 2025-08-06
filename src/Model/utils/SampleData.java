@@ -39,18 +39,16 @@ public class SampleData {
             String genre = genres.get(rand.nextInt(genres.size()));
             String author = authors.get(rand.nextInt(authors.size()));
             Book book = new Book(title, genre, author);
-            Sector foundSector = null;
+            Sector sector = null;
+            char firstLetter = Character.toUpperCase(title.charAt(0));
             for (Sector s : sectors) {
-                if (s.shouldContainBook(book)) {
-                    foundSector = s;
+                if (firstLetter >= s.getStartLetter() && firstLetter <= s.getEndLetter()) {
+                    sector = s;
                     break;
                 }
             }
-            if (foundSector != null) {
-                book.setSector(foundSector);
-            } else {
-                // Jeśli nie znajdzie sektora – zabezpieczenie, np. pierwszy z listy
-                book.setSector(sectors.getFirst());
+            if (sector != null) {
+                book.setSector(sector);
             }
             books.add(book);
         }

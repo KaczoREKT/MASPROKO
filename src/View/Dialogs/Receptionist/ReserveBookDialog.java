@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ReserveBookDialog extends JDialog {
-    private List<Book> selectedBooks = null;
+    private List<Book> books;
     private Client selectedClient = null;
 
     public ReserveBookDialog(BookController bookController, ClientController clientController, ReservationController reservationController) {
@@ -25,7 +25,7 @@ public class ReserveBookDialog extends JDialog {
 
         // ==== Krok 1: WYSZUKIWANIE i WYBÓR KSIĄŻKI ====
         JPanel bookStep = new JPanel(new BorderLayout(10, 10));
-        JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
+        JPanel searchPanel = new JPanel(new BorderLayout(5,5));
         searchPanel.add(new JLabel("Szukaj książki:"), BorderLayout.WEST);
         JTextField searchField = new JTextField();
         searchPanel.add(searchField, BorderLayout.CENTER);
@@ -33,7 +33,6 @@ public class ReserveBookDialog extends JDialog {
 
         DefaultListModel<Book> bookListModel = new DefaultListModel<>();
         JList<Book> bookList = new JList<>(bookListModel);
-        // MULTISELECT!
         bookList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane bookScroll = new JScrollPane(bookList);
         bookScroll.setPreferredSize(new Dimension(510, 120));
@@ -56,7 +55,7 @@ public class ReserveBookDialog extends JDialog {
                     )
                     .toList();
             if (filtered.isEmpty()) {
-                bookListModel.addElement(null); // lub dodać specjalny tekst: "Brak wyników"
+                bookListModel.addElement(null); // albo wyświetl tekst np. "Brak wyników"
             } else {
                 for (Book b : filtered) bookListModel.addElement(b);
             }
@@ -132,11 +131,10 @@ public class ReserveBookDialog extends JDialog {
 
         CardLayout cardLayout = (CardLayout) stepPanel.getLayout();
 
-        // --- Krok 1 -> Krok 2 ---
         btnNextToCard.addActionListener(_ -> {
-            selectedBooks = bookList.getSelectedValuesList();
-            if (selectedBooks == null || selectedBooks.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Wybierz co najmniej jedną książkę z listy!", "Błąd", JOptionPane.ERROR_MESSAGE);
+            books = bookList.getSelectedValuesList();
+            if (books.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Wybierz książkę z listy!", "Błąd", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             cardLayout.show(stepPanel, "CARD");
@@ -166,17 +164,12 @@ public class ReserveBookDialog extends JDialog {
         btnNextToSummary.addActionListener(_ -> {
             String dateFrom = dateFromField.getText().trim();
             String dateTo = dateToField.getText().trim();
-
-            String booksText = String.valueOf(
-                    selectedBooks.stream()
-                    .map(Object::toString)
-                    .toList());
-
+            String selectedBooksString = String.valueOf(books.stream().map(Object::toString).toList());
             summaryLabel.setText(String.format(
-                    "<html>Klient: %s %s<br/>Książki: <br/>%sData od: %s<br/>Data do: %s<br/>Email: %s<br/>Telefon: %s</html>",
+                    "<html>Klient: %s %s<br/>Książka: %s<br/>Data od: %s<br/>Data do: %s<br/>Email: %s<br/>Telefon: %s</html>",
                     selectedClient.getFirstName(),
                     selectedClient.getLastName(),
-                    booksText,
+                    selectedBooksString,
                     dateFrom,
                     dateTo,
                     selectedClient.getEmail(),
@@ -190,7 +183,7 @@ public class ReserveBookDialog extends JDialog {
             try {
                 LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
                 LocalDate dateTo = LocalDate.parse(dateToField.getText().trim());
-                reservationController.reserveBook(selectedBooks, selectedClient, dateFrom, dateTo);
+                reservationController.reserveBook(books, selectedClient, dateFrom, dateTo);
                 JOptionPane.showMessageDialog(this, "Rezerwacja zakończona sukcesem.");
                 dispose();
             } catch (Exception ex) {
