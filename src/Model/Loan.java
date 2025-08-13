@@ -1,11 +1,12 @@
 package Model;
 
 import Model.Enum.LoanStatus;
+import Model.utils.AutoIdEntity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class Loan {
+public class Loan extends AutoIdEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private LoanStatus loanStatus;
@@ -58,4 +59,19 @@ public class Loan {
     public void cancel(){
 
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Loan[id=%s, client: %s %s, books: %d, from: %s, to: %s, status: %s]",
+                getPublicId(),
+                (client != null ? client.getFirstName() : "brak"),
+                (client != null ? client.getLastName() : ""),
+                (books != null ? books.size() : 0),
+                startDate,
+                endDate,
+                loanStatus
+        );
+    }
+
 }

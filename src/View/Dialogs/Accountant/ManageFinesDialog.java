@@ -17,7 +17,6 @@ public class ManageFinesDialog extends JDialog {
 
         JPanel content = new JPanel(new BorderLayout(10, 10));
 
-        // Filtr
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(new JLabel("Filtruj:"));
         String[] filterOptions = {"Wszystkie", "Nieopłacone", "Opłacone"};
@@ -25,20 +24,17 @@ public class ManageFinesDialog extends JDialog {
         topPanel.add(filterBox);
         content.add(topPanel, BorderLayout.NORTH);
 
-        // Lista mandatów
         DefaultListModel<Fine> fineListModel = new DefaultListModel<>();
         JList<Fine> fineList = new JList<>(fineListModel);
         fineList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(fineList);
         content.add(scrollPane, BorderLayout.CENTER);
 
-        // Przycisk: Oznacz jako opłacony
         JButton btnMarkPaid = new JButton("Oznacz jako opłacony");
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.add(btnMarkPaid);
         content.add(btnPanel, BorderLayout.SOUTH);
 
-        // Logika filtrów i ładowania listy
         Runnable updateList = () -> {
             String filter = (String) filterBox.getSelectedItem();
             List<Fine> fines = fineController.getList();

@@ -28,7 +28,7 @@ public class BookControllerTest {
         System.out.println("Wszystkie książki: " + books);
 
         // 3. Aktualizuj dane książki
-        bookController.updateBook(book, "Pan Tadeusz (edycja)", "A. Mickiewicz", "Poemat", BookStatus.DOSTEPNA);
+        bookController.updateBook(book, "Pan Tadeusz (edycja)", "A. Mickiewicz", "Poemat", BookStatus.AVAILABLE);
         assert book.getTitle().equals("Pan Tadeusz (edycja)") : "Tytuł nie został zaktualizowany!";
         assert book.getAuthor().equals("A. Mickiewicz") : "Autor nie został zaktualizowany!";
 
@@ -38,7 +38,7 @@ public class BookControllerTest {
         System.out.println("Dostępne książki: " + available);
 
         // 5. Ustaw status WYPOZYCZONA i sprawdź dostępność
-        book.setStatus(BookStatus.WYPOZYCZONA);
+        book.setStatus(BookStatus.LOANED);
         available = bookController.getAvailableBooks();
         assert available.size() == 1 : "Powinna być jedna dostępna książka!";
         System.out.println("Dostępne po zmianie statusu: " + available);
@@ -54,7 +54,7 @@ public class BookControllerTest {
         assert exceptionThrown : "Brak wyjątku przy usuwaniu wypożyczonej książki!";
 
         // 7. Ustaw status DOSTEPNA i usuń książkę
-        book.setStatus(BookStatus.DOSTEPNA);
+        book.setStatus(BookStatus.AVAILABLE);
         try {
             bookController.deleteBook(book);
             books = bookController.getList();

@@ -1,4 +1,4 @@
-package View.Dialogs.Receptionist;
+package View.Dialogs.Librarian;
 
 import Controller.ClientController;
 import Model.Enum.Gender;
@@ -49,14 +49,12 @@ public class AddNewClientDialog extends JDialog {
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(emailField, gbc);
 
-        // Telefon
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Telefon:"), gbc);
         JTextField phoneField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(phoneField, gbc);
 
-        // Przycisk Dodaj
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE; gbc.weightx = 1;

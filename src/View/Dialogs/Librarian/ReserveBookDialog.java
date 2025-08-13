@@ -1,4 +1,4 @@
-package View.Dialogs.Receptionist;
+package View.Dialogs.Librarian;
 
 import Controller.BookController;
 import Controller.ClientController;

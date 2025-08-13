@@ -12,9 +12,11 @@ public class Book extends AutoIdEntity {
     private String genre;
     private String author;
 
-    private BookStatus status = BookStatus.DOSTEPNA;
+    private BookStatus status = BookStatus.AVAILABLE;
 
     private Reservation reservation;
+    private Loan loan;
+
 
     private Sector sector;
 
@@ -62,14 +64,22 @@ public class Book extends AutoIdEntity {
             throw new IllegalStateException("Książka jest już zarezerwowana!");
         }
         this.reservation = r;
-        setStatus(r != null ? BookStatus.WYPOZYCZONA : BookStatus.DOSTEPNA);
+        setStatus(r != null ? BookStatus.RESERVED : BookStatus.AVAILABLE);
     }
 
     public void removeReservation(Reservation r) {
         if (this.reservation == r) {
             this.reservation = null;
-            setStatus(BookStatus.DOSTEPNA);
+            setStatus(BookStatus.AVAILABLE);
         }
+    }
+
+    public void setLoan(Loan l){
+        if (this.loan == l){
+            throw new IllegalStateException("Książka jest już wypożyczona!");
+        }
+        this.loan = l;
+        setStatus(l != null ? BookStatus.LOANED : BookStatus.AVAILABLE);
     }
 
     public Sector getSector() {

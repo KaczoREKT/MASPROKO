@@ -1,4 +1,4 @@
-package View.Dialogs.Receptionist;
+package View.Dialogs.Librarian;
 
 import Controller.ClientController;
 import Model.Book;
@@ -121,10 +121,10 @@ public class ReturnBookDialog extends JDialog {
             }
             try {
                 for (Book b : selectedBooks) {
-                    b.setStatus(BookStatus.DOSTEPNA);
+                    b.setStatus(BookStatus.AVAILABLE);
                     b.setReservation(null);
                 }
-                boolean allReturned = selectedReservation.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.WYPOZYCZONA);
+                boolean allReturned = selectedReservation.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.LOANED);
                 if (allReturned) {
                     selectedReservation.setStatus(ReservationStatus.ENDED);
                 }

@@ -17,7 +17,7 @@ public class BookController extends AbstractController<Book> {
         try {
             Iterable<Book> iterable = ObjectPlus.getExtent(Book.class);
             return StreamSupport.stream(iterable.spliterator(), false)
-                    .filter(b -> b.getStatus() == BookStatus.DOSTEPNA)
+                    .filter(b -> b.getStatus() == BookStatus.AVAILABLE)
                     .toList();
         } catch (Exception e) {
             return List.of();
@@ -28,7 +28,7 @@ public class BookController extends AbstractController<Book> {
         List<Book> availableBooks = new ArrayList<>();
         if (sector != null) {
             for (Book b : sector.getBooks()) {
-                if (b.getStatus() == BookStatus.DOSTEPNA) {
+                if (b.getStatus() == BookStatus.AVAILABLE) {
                     availableBooks.add(b);
                 }
             }
@@ -44,7 +44,7 @@ public class BookController extends AbstractController<Book> {
         if (book == null) throw new IllegalArgumentException("Brak książki do usunięcia!");
 
         // TU sprawdzamy status!
-        if (book.getStatus() == BookStatus.WYPOZYCZONA) {
+        if (book.getStatus() == BookStatus.LOANED) {
             throw new Exception("Nie można usunąć książki, która jest wypożyczona.");
         }
         if (book.getSector() != null) {

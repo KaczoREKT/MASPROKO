@@ -18,12 +18,10 @@ public class EmployeePanel extends JPanel {
     public EmployeePanel(BookController bookController, ClientController clientController, String roleName) {
         setLayout(new BorderLayout());
 
-        // Nagłówek
         welcomeLabel = new JLabel("Witaj " + roleName, SwingConstants.CENTER);
         welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(Font.BOLD, 20f));
         add(welcomeLabel, BorderLayout.NORTH);
 
-        // Panel po lewej
         leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
         JPanel employeeButtonsPanel = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -45,7 +43,6 @@ public class EmployeePanel extends JPanel {
         leftPanel.add(leftLabel, BorderLayout.NORTH);
         leftPanel.add(employeeButtonsPanel, BorderLayout.CENTER);
 
-        // Panel po prawej
         rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
 
@@ -53,7 +50,6 @@ public class EmployeePanel extends JPanel {
         rightLabel.setFont(rightLabel.getFont().deriveFont(Font.PLAIN, 14f));
         rightPanel.add(rightLabel, BorderLayout.NORTH);
 
-        // TO JEST PANEL NA TWOJE PRZYCISKI!
         workButtonsPanel = new JPanel(new GridLayout(0, 1, 10, 10));
         rightPanel.add(workButtonsPanel, BorderLayout.CENTER);
 

@@ -13,6 +13,7 @@ public class Client extends Person {
     private String phoneNumber;
     private ClientCard clientCard;
     private final Set<Reservation> reservations = new HashSet<>();
+    private final Set<Loan> loans = new HashSet<>();
 
     private final Set<Fine> fines = new HashSet<>();
 
@@ -68,6 +69,11 @@ public class Client extends Person {
         if (r == null) return;
         reservations.add(r);
         if (r.getClient() != this) r.setClient(this);
+    }
+
+    public void addLoan(Loan l) {
+        if (l == null) return;
+        loans.add(l);
     }
 
 

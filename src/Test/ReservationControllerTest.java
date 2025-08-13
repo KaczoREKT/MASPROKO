@@ -54,14 +54,14 @@ public class ReservationControllerTest {
         }
 
         // 4. Sprawdzenie statusu książki po rezerwacji
-        assert book1.getStatus() == BookStatus.WYPOZYCZONA : "Status książki po rezerwacji powinien być WYPOZYCZONA!";
+        assert book1.getStatus() == BookStatus.RESERVED : "Status książki po rezerwacji powinien być WYPOZYCZONA!";
 
         // 5. Zakończenie rezerwacji i sprawdzenie, czy książki wracają do dostępnych
         Set<Reservation> reservations = client.getReservations();
         if (!reservations.isEmpty()) {
             Reservation r = reservations.iterator().next();
             r.cancel();  // Zakładamy, że ta metoda zwalnia wszystkie książki
-            assert book1.getStatus() != BookStatus.WYPOZYCZONA : "Książka powinna wrócić do dostępnych po anulowaniu!";
+            assert book1.getStatus() != BookStatus.RESERVED : "Książka powinna wrócić do dostępnych po anulowaniu!";
             System.out.println("Książka po anulowaniu rezerwacji: " + book1.getStatus());
         }
 
@@ -89,7 +89,7 @@ public class ReservationControllerTest {
         // 4. Sprawdź, czy kara się zaktualizuje gdy nadal NIEOPŁACONA
         var fine = client.getFines().iterator().next();
         double firstAmount = fine.getPrice();
-        expiredBook.setStatus(BookStatus.WYPOZYCZONA); // Trzyma status wypożyczonej
+        expiredBook.setStatus(BookStatus.RESERVED); // Trzyma status wypożyczonej
         reservationController.generateFinesForExpiredReservations();
         double newAmount = fine.getPrice();
         assert newAmount >= firstAmount : "Kara powinna rosnąć jeśli jest nieopłacona!";

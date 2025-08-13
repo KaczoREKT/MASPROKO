@@ -61,8 +61,8 @@ public class UpdateBookDialog extends JDialog {
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Status:"), gbc);
         BookStatus[] allowedStatuses = {
-                BookStatus.DOSTEPNA,
-                BookStatus.WSTRZYMANA
+                BookStatus.AVAILABLE,
+                BookStatus.CANCELED
         };
         JComboBox<BookStatus> statusBox = new JComboBox<>(allowedStatuses);
         gbc.gridx = 1; gbc.weightx = 0.7;
@@ -79,7 +79,7 @@ public class UpdateBookDialog extends JDialog {
             bookBox.removeAllItems();
             if (selectedSector != null) {
                 for (Book b : selectedSector.getBooks()) {
-                    if (!(b.getStatus() == BookStatus.WYPOZYCZONA)){
+                    if (!(b.getStatus() == BookStatus.LOANED)){
                         bookBox.addItem(b);
                     }
                 }

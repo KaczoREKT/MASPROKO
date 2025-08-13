@@ -3,7 +3,10 @@ package View.Panel;
 import Controller.BookController;
 import Controller.ClientController;
 import Controller.ReservationController;
-import View.Dialogs.Receptionist.*;
+import View.Dialogs.Librarian.AddNewClientDialog;
+import View.Dialogs.Librarian.CancelReservationDialog;
+import View.Dialogs.Librarian.ReserveBookDialog;
+import View.Dialogs.Librarian.ReturnBookDialog;
 
 import javax.swing.*;
 
@@ -25,7 +28,6 @@ public class ReceptionistPanel extends EmployeePanel {
 
         btnAddClient.addActionListener(_ -> new AddNewClientDialog(clientController));
         btnReserveBook.addActionListener(_ -> new ReserveBookDialog(bookController, clientController, reservationController));
-        btnChangeReservation.addActionListener(_ -> new ChangeReservationDialog(clientController, reservationController));
         btnCancelReservation.addActionListener(_ -> new CancelReservationDialog(clientController, reservationController));
         btnReturnBook.addActionListener(_ -> new ReturnBookDialog(clientController));
 
