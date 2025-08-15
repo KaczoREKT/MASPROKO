@@ -24,7 +24,7 @@ public class EmployeeController extends AbstractController<Employee> {
 
     public List<Employee> getEmployeeList() {
         List<Employee> employees = new ArrayList<>();
-        List<Class<? extends Employee>> subClasses = List.of(Accountant.class, Manager.class, Librarian.class, Receptionist.class /*, inne podklasy*/);
+        List<Class<? extends Employee>> subClasses = List.of(Accountant.class, Manager.class, Librarian.class);
 
         for (Class<? extends Employee> c : subClasses) {
             try {
@@ -48,8 +48,8 @@ public class EmployeeController extends AbstractController<Employee> {
     public Manager addManager(String firstName, String lastName, Gender gender, double salary, double bonus) {
         return new Manager(firstName, lastName, gender, salary, bonus);
     }
-    public Receptionist addReceptionist(String firstName, String lastName, Gender gender, double salary) {
-        return new Receptionist(firstName, lastName, gender, salary);
+    public Accountant addAccountant(String firstName, String lastName, Gender gender, double salary) {
+        return new Accountant(firstName, lastName, gender, salary);
     }
 
     public void updateSalary(Employee selected, double newSalary) {

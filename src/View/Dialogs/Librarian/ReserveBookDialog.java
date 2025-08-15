@@ -178,7 +178,6 @@ public class ReserveBookDialog extends JDialog {
             cardLayout.show(stepPanel, "SUMMARY");
         });
 
-        // --- Rezerwacja ---
         btnReserve.addActionListener(_ -> {
             try {
                 LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());

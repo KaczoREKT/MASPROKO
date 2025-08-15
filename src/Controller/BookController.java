@@ -43,7 +43,6 @@ public class BookController extends AbstractController<Book> {
     public void deleteBook(Book book) throws Exception {
         if (book == null) throw new IllegalArgumentException("Brak książki do usunięcia!");
 
-        // TU sprawdzamy status!
         if (book.getStatus() == BookStatus.LOANED) {
             throw new Exception("Nie można usunąć książki, która jest wypożyczona.");
         }
@@ -89,7 +88,7 @@ public class BookController extends AbstractController<Book> {
                 }
             }
         } catch (Exception ignored) {}
-        return null; // Nie znaleziono sektora
+        return null;
     }
 
 

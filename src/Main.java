@@ -32,7 +32,6 @@ public class Main {
         AutoIdEntity.recalculateNextId(ClientCard.class);
         AutoIdEntity.recalculateNextId(Loan.class);
         AutoIdEntity.recalculateNextId(Reservation.class);
-        AutoIdEntity.recalculateNextId(Receptionist.class);
         AutoIdEntity.recalculateNextId(Manager.class);
         AutoIdEntity.recalculateNextId(Librarian.class);
         AutoIdEntity.recalculateNextId(SortingJob.class);

@@ -59,7 +59,6 @@ public class SampleData {
             librarians.add(new Librarian("Librarian" + i, "Nowak", Gender.WOMAN, 3400 + 120*i, genres.get(rand.nextInt(genres.size()))));
         }
         new Manager("Krzysztof", "Wiśniewski", Gender.MAN, 6000.00, 2000.00);
-        new Receptionist("Magdalena", "Kowalczyk", Gender.WOMAN, 3100.00);
         new Accountant("Jareczek", "Miłosny", Gender.OTHER, 5000.00);
 
         // 4. Klienci i karty

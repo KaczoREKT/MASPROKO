@@ -4,7 +4,6 @@ import Controller.EmployeeController;
 import Model.Employee;
 import Model.Librarian;
 import Model.Manager;
-import Model.Receptionist;
 import Model.Enum.Gender;
 
 import java.util.List;
@@ -24,11 +23,6 @@ public class EmployeeControllerTest {
         assert manager != null : "Manager nie został dodany!";
         System.out.println("Dodany manager: " + manager);
 
-        // Dodaj recepcjonistkę
-        Receptionist receptionist = employeeController.addReceptionist("Ola", "Recepcyjna", Gender.WOMAN, 3500);
-        assert receptionist != null : "Recepcjonistka nie została dodana!";
-        System.out.println("Dodana recepcjonistka: " + receptionist);
-
         // Sprawdź listę wszystkich pracowników
         List<Employee> employees = employeeController.getEmployeeList();
         assert employees.size() >= 3 : "Lista pracowników powinna mieć co najmniej 3 osoby!";
@@ -44,13 +38,6 @@ public class EmployeeControllerTest {
         String foundType = employeeController.loginEmployee(String.valueOf(librarian.getPublicId()));
         assert foundType.equals("Librarian") : "Niepoprawny typ zwrócony przez loginEmployee!";
         System.out.println("loginEmployee znalazł typ: " + foundType);
-
-        // Usuń pracownika i sprawdź, czy został usunięty
-        int countBefore = employees.size();
-        employeeController.deleteEmployee(receptionist);
-        List<Employee> afterDelete = employeeController.getEmployeeList();
-        assert afterDelete.size() == countBefore - 1 : "Nie usunięto pracownika!";
-        System.out.println("Usunięto pracownika, nowa lista: " + afterDelete);
 
         System.out.println("EmployeeControllerTest OK\n");
     }

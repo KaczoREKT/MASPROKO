@@ -25,7 +25,7 @@ public class RegisterEmployeeDialog extends JDialog {
         // Typ pracownika
         gbc.gridx = 0; gbc.gridy = row;
         content.add(new JLabel("Stanowisko:"), gbc);
-        String[] employeeTypes = {"Bibliotekarz", "Recepcjonistka", "Menedżer"};
+        String[] employeeTypes = {"Bibliotekarz", "Księgowy", "Menedżer"};
         JComboBox<String> typeBox = new JComboBox<>(employeeTypes);
         gbc.gridx = 1;
         content.add(typeBox, gbc);
@@ -152,7 +152,7 @@ public class RegisterEmployeeDialog extends JDialog {
                     }
                     newEmployee = employeeController.addManager(firstName, lastName, gender, salary, bonus);
                 } else { // Recepcjonistka
-                    newEmployee = employeeController.addReceptionist(firstName, lastName, gender, salary);
+                    newEmployee = employeeController.addAccountant(firstName, lastName, gender, salary);
                 }
                 JOptionPane.showMessageDialog(this, "Zarejestrowano nowego pracownika:\n" + newEmployee);
                 dispose();

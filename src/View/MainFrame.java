@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
                      LoanController loanController) {
         setTitle("Aplikacja Biblioteka");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(640, 480);
+        setSize(1920, 1080);
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
@@ -53,7 +53,6 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
         cardsPanel.add(new LoginPanel(this, employeeController), "Login");
-        cardsPanel.add(new ReceptionistPanel(bookController, clientController, reservationController), "ReceptionistPanel");
         cardsPanel.add(new LibrarianPanel(bookController, clientController, sectorController, reservationController, loanController), "LibrarianPanel");
         cardsPanel.add(new ManagerPanel(bookController, clientController, employeeController, librarianController, sectorController, sortingJobController), "ManagerPanel");
         cardsPanel.add(new AccountantPanel(bookController, clientController, fineController, employeeController), "AccountantPanel");
@@ -88,7 +87,6 @@ public class MainFrame extends JFrame {
                 Model.Fine.class,
                 Model.Librarian.class,
                 Model.Manager.class,
-                Model.Receptionist.class,
                 Model.SortingJob.class,
                 Model.Book.class,
                 Model.Sector.class
