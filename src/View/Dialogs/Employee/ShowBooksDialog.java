@@ -7,63 +7,80 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ShowBooksDialog extends JDialog {
-    public ShowBooksDialog(BookController bookController) {
-        setTitle("Lista wszystkich książek");
-        setModal(true);
-        setSize(700, 400);
-        setLocationRelativeTo(null);
+public class ShowBooksDialog {
 
-        JPanel content = new JPanel(new BorderLayout(10,10));
+    private JPanel mainPanel;
+    private JTable bookTable;
+    private JTextField searchField;
+
+    public ShowBooksDialog(BookController bookController) {
+        mainPanel = new JPanel(new BorderLayout(10,10));
 
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
         JLabel label = new JLabel("Wszystkie książki w bibliotece:", SwingConstants.LEFT);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 16f));
         topPanel.add(label, BorderLayout.WEST);
 
-        JTextField searchField = new JTextField();
+        searchField = new JTextField();
         searchField.setToolTipText("Szukaj po tytule, autorze lub gatunku...");
         topPanel.add(searchField, BorderLayout.CENTER);
 
-        content.add(topPanel, BorderLayout.NORTH);
-
-        DefaultListModel<String> bookListModel = new DefaultListModel<>();
-        JList<String> bookList = new JList<>(bookListModel);
-        JScrollPane scrollPane = new JScrollPane(bookList);
+        mainPanel.add(topPanel, BorderLayout.NORTH);
 
         List<Book> books = bookController.getList();
 
-        Runnable updateList = () -> {
-            String query = searchField.getText().trim().toLowerCase();
-            bookListModel.clear();
-            List<Book> filtered = books.stream()
-                    .filter(b -> query.isEmpty()
-                            || b.getTitle().toLowerCase().contains(query)
-                            || b.getAuthor().toLowerCase().contains(query)
-                            || b.getGenre().toLowerCase().contains(query)
-                            || b.getStatus().name().toLowerCase().contains(query)
-                    )
-                    .toList();
-            if (filtered.isEmpty()) {
-                bookListModel.addElement("Brak książek spełniających kryteria.");
-            } else {
-                for (Book b : filtered) {
-                    bookListModel.addElement(b.toString());
-                }
-            }
-        };
+        // Tworzymy model danych do tabeli
+        String[] columnNames = {"ID", "Tytuł", "Gatunek", "Autor", "Status"};
+        Object[][] rowData = books.stream()
+                .map(b -> new Object[]{
+                        b.getPublicId(),
+                        b.getTitle(),
+                        b.getGenre(),
+                        b.getAuthor(),
+                        b.getStatus().name()
+                })
+                .toArray(Object[][]::new);
 
-        updateList.run();
+        bookTable = new JTable(rowData, columnNames);
+        JScrollPane scrollPane = new JScrollPane(bookTable);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Filtrowanie po wpisaniu frazy w searchField
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { updateList.run(); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { updateList.run(); }
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { updateList.run(); }
+            private void updateTable() {
+                String query = searchField.getText().trim().toLowerCase();
+                List<Book> filtered = books.stream()
+                        .filter(b -> query.isEmpty()
+                                || b.getTitle().toLowerCase().contains(query)
+                                || b.getAuthor().toLowerCase().contains(query)
+                                || b.getGenre().toLowerCase().contains(query)
+                                || b.getStatus().name().toLowerCase().contains(query))
+                        .toList();
+
+                Object[][] filteredRows;
+                if (filtered.isEmpty()) {
+                    filteredRows = new Object[][]{{"Brak książek spełniających kryteria.", "", "", "", ""}};
+                } else {
+                    filteredRows = filtered.stream()
+                            .map(b -> new Object[]{
+                                    b.getPublicId(),
+                                    b.getTitle(),
+                                    b.getGenre(),
+                                    b.getAuthor(),
+                                    b.getStatus().name()
+                            })
+                            .toArray(Object[][]::new);
+                }
+
+                bookTable.setModel(new javax.swing.table.DefaultTableModel(filteredRows, columnNames));
+            }
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { updateTable(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { updateTable(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { updateTable(); }
         });
+    }
 
-        content.add(scrollPane, BorderLayout.CENTER);
-
-        setContentPane(content);
-        setVisible(true);
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 }

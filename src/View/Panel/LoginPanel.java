@@ -9,21 +9,62 @@ import java.awt.*;
 public class LoginPanel extends JPanel {
 
     public LoginPanel(MainFrame frame, EmployeeController employeeController) {
-        // panel zewnętrzny: centrowanie i oddech wokół formularza
-        setLayout(new BorderLayout());
-        JPanel inner = new JPanel(new GridBagLayout());
-        inner.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24)); // marginesy
-        add(inner, BorderLayout.CENTER);
+        setLayout(new GridBagLayout()); // centrowanie całości
+
+        JPanel formPanel = new JPanel();
+        formPanel.setOpaque(true);
+        formPanel.setLayout(new GridBagLayout());
+        formPanel.setBackground(new Color(236, 239, 244)); // lekko ciemniejsze, jasnoszare tło panelu
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(189, 195, 199), 2, true),
+                BorderFactory.createEmptyBorder(32, 32, 32, 32)
+        ));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.insets = new Insets(12, 12, 12, 12);
+
+        // Nagłówek
+        JLabel title = new JLabel("Logowanie do biblioteki");
+        title.setFont(title.getFont().deriveFont(Font.BOLD, 26f));
+        title.setForeground(new Color(44, 62, 80));
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets.bottom = 30;
+        formPanel.add(title, gbc);
 
+        // Etykieta
         JLabel label = new JLabel("Podaj swoje ID:");
-        JTextField idField = new JTextField(20); // dłuższe pole, ale elastyczne
-        JButton loginBtn = new JButton("Zaloguj");
+        label.setFont(label.getFont().deriveFont(17f));
+        label.setForeground(new Color(68, 68, 68));
+        gbc.gridy = 1; gbc.gridwidth = 1; gbc.insets.bottom = 8; gbc.anchor = GridBagConstraints.LINE_END;
+        formPanel.add(label, gbc);
 
-        // Logika przycisku bez zmian
+        // Pole tekstowe
+        JTextField idField = new JTextField(20);
+        idField.setFont(idField.getFont().deriveFont(17f));
+        idField.setBackground(Color.WHITE);
+        idField.setForeground(Color.BLACK);
+        idField.setMargin(new Insets(6, 8, 6, 8));
+        idField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(180, 180, 200), 1, true),
+                BorderFactory.createEmptyBorder(2,8,2,8))
+        );
+        gbc.gridx = 1; gbc.anchor = GridBagConstraints.LINE_START;
+        formPanel.add(idField, gbc);
+
+        // Przycisk
+        JButton loginBtn = new JButton("Zaloguj");
+        loginBtn.setFont(loginBtn.getFont().deriveFont(Font.BOLD, 18f));
+        loginBtn.setBackground(new Color(69, 124, 255));
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.setFocusPainted(false);
+        loginBtn.setBorder(BorderFactory.createEmptyBorder(10, 28, 10, 28));
+        loginBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets.top = 20; gbc.insets.bottom = 0;
+        formPanel.add(loginBtn, gbc);
+
+        // Akcja przycisku (to co masz)
         loginBtn.addActionListener(_ -> {
             String id = idField.getText().trim();
             if (!id.isEmpty()) {
@@ -48,48 +89,8 @@ public class LoginPanel extends JPanel {
             }
         });
 
-        // wiersz 0: etykieta
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0;                 // etykieta nie rozszerza się
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        inner.add(label, gbc);
-
-        // wiersz 0: pole tekstowe
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1;                 // pole rośnie w poziomie
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        inner.add(idField, gbc);
-
-        // wiersz 1: przycisk pod spodem, wyśrodkowany
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        inner.add(loginBtn, gbc);
-
-        // pozwól całemu panelowi „oddychać” w pionie
-        // dodając sprężynę nad i pod formularzem
-        JPanel topGlue = new JPanel();
-        JPanel bottomGlue = new JPanel();
-        topGlue.setOpaque(false);
-        bottomGlue.setOpaque(false);
-        add(topGlue, BorderLayout.NORTH);
-        add(bottomGlue, BorderLayout.SOUTH);
-    }
-
-    // (opcjonalnie) statyczna metoda do podbicia czcionek dla HiDPI
-    public static void scaleUIFont(float size) {
-        UIDefaults d = UIManager.getLookAndFeelDefaults();
-        d.entrySet().stream()
-                .filter(e -> e.getKey().toString().endsWith(".font"))
-                .forEach(e -> UIManager.put(e.getKey(),
-                        ((Font) e.getValue()).deriveFont(size)));
+        // Centruj całość
+        add(formPanel, new GridBagConstraints());
+        setBackground(new Color(246, 248, 255)); // jasne tło aplikacji
     }
 }

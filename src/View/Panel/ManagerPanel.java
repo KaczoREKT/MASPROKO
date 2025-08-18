@@ -13,23 +13,26 @@ import View.Dialogs.Manager.AssignWorkDialog;
 import javax.swing.*;
 
 public class ManagerPanel extends EmployeePanel {
+
     public ManagerPanel(BookController bookController, ClientController clientController,
-                        EmployeeController employeeController, LibrarianController librarianController, SectorController sectorController,
-                        SortingJobController sortingJobController) {
+                        EmployeeController employeeController, LibrarianController librarianController,
+                        SectorController sectorController, SortingJobController sortingJobController) {
+
         super(bookController, clientController, "Menedżerze!");
 
-        JPanel workButtonsPanel = getWorkButtonsPanel();
+        // Tworzymy elementy menu dla menedżera
+        JMenuItem btnRegisterEmployee = new JMenuItem("Zarejestruj pracownika");
+        btnRegisterEmployee.addActionListener(_ -> new RegisterEmployeeDialog(employeeController));
 
-        JButton btnRegisterEmployee = new JButton("Zarejestruj pracownika");
-        JButton btnFireEmployee = new JButton("Zwolnij pracownika");
-        JButton btnAssignWork = new JButton("Przypisz zadanie");
-
-        btnRegisterEmployee.addActionListener(_-> new RegisterEmployeeDialog(employeeController));
+        JMenuItem btnFireEmployee = new JMenuItem("Zwolnij pracownika");
         btnFireEmployee.addActionListener(_ -> new FireEmployeeDialog(employeeController));
+
+        JMenuItem btnAssignWork = new JMenuItem("Przypisz zadanie");
         btnAssignWork.addActionListener(_ -> new AssignWorkDialog(librarianController, sectorController, sortingJobController));
 
-        workButtonsPanel.add(btnRegisterEmployee);
-        workButtonsPanel.add(btnFireEmployee);
-        workButtonsPanel.add(btnAssignWork);
+        // Dodajemy wszystkie elementy do dropdown menu
+        addToDropdownMenu(btnRegisterEmployee);
+        addToDropdownMenu(btnFireEmployee);
+        addToDropdownMenu(btnAssignWork);
     }
 }
