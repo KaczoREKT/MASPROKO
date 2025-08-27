@@ -61,6 +61,8 @@ public class Client extends Person {
         return reservations;
     }
 
+    public Set<Loan> getLoans() { return loans; }
+
     public Set<Fine> getFines() {
         return fines;
     }

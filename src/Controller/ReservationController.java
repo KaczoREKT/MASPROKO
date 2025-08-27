@@ -76,5 +76,11 @@ public class ReservationController {
         }
     }
 
+    public List<Reservation> getActiveReservations(Client client) {
+        Set<Reservation> reservations = client.getReservations();
+        return reservations.stream()
+                .filter(r -> r.getBooks().stream().anyMatch(b -> b.getStatus().name().equals(BookStatus.LOANED.name())))
+                .toList();
+    }
 
 }

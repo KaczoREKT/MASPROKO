@@ -41,7 +41,7 @@ public class LibrarianPanel extends EmployeePanel {
         btnCancelReservation.addActionListener(_ -> new CancelReservationDialog(clientController, reservationController));
 
         JMenuItem btnReturnBook = new JMenuItem("Zwróć książkę");
-        btnReturnBook.addActionListener(_ -> new ReturnBookDialog(clientController));
+        btnReturnBook.addActionListener(_ -> new ReturnBookDialog(clientController, loanController));
 
         // Dodajemy wszystkie elementy do dropdown menu
         addToDropdownMenu(btnAddBook);

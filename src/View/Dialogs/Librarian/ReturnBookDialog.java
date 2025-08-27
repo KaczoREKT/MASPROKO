@@ -1,19 +1,18 @@
 package View.Dialogs.Librarian;
 
 import Controller.ClientController;
+import Controller.LoanController;
 import Model.Book;
 import Model.Client;
 import Model.Enum.BookStatus;
-import Model.Enum.ReservationStatus;
-import Model.Reservation;
-
+import Model.Enum.LoanStatus;
+import Model.Loan;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Set;
 
 public class ReturnBookDialog extends JDialog {
-    public ReturnBookDialog(ClientController clientController) {
+    public ReturnBookDialog(ClientController clientController, LoanController loanController) {
         setTitle("Zwrot książki przez klienta");
         setModal(true);
         setSize(600, 400);
@@ -36,11 +35,11 @@ public class ReturnBookDialog extends JDialog {
 
         // --- Sekcje jak wcześniej ---
         JPanel reservationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel resLabel = new JLabel("Rezerwacja:");
+        JLabel resLabel = new JLabel("Wypożyczenie:");
         reservationPanel.add(resLabel);
-        JComboBox<Reservation> reservationBox = new JComboBox<>();
-        reservationBox.setPreferredSize(new Dimension(250, 25));
-        reservationPanel.add(reservationBox);
+        JComboBox<Loan> loanBox = new JComboBox<>();
+        loanBox.setPreferredSize(new Dimension(250, 25));
+        reservationPanel.add(loanBox);
         content.add(reservationPanel);
 
         // Książki do zwrotu
@@ -78,40 +77,37 @@ public class ReturnBookDialog extends JDialog {
                     break;
                 }
             }
-            reservationBox.removeAllItems();
+            loanBox.removeAllItems();
             bookListModel.clear();
             if (foundClient == null) {
                 JOptionPane.showMessageDialog(this, "Nie znaleziono klienta o podanym numerze karty.", "Brak klienta", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            Set<Reservation> reservations = foundClient.getReservations();
-            List<Reservation> activeReservations = reservations.stream()
-                    .filter(r -> r.getBooks().stream().anyMatch(b -> b.getStatus().name().equals("WYPOZYCZONA")))
-                    .toList();
-            for (Reservation r : activeReservations) reservationBox.addItem(r);
-            if (activeReservations.isEmpty()) {
-                reservationBox.addItem(null);
+            List<Loan> pendingLoans = loanController.getPendingLoans(foundClient);
+            for (Loan l : pendingLoans) loanBox.addItem(l);
+            if (pendingLoans.isEmpty()) {
+                loanBox.addItem(null);
             } else {
-                reservationBox.setSelectedIndex(0);
+                loanBox.setSelectedIndex(0);
             }
         });
 
         // Po zmianie rezerwacji: pokaż książki do zwrotu
-        reservationBox.addActionListener(_ -> {
+        loanBox.addActionListener(_ -> {
             bookListModel.clear();
-            Object selected = reservationBox.getSelectedItem();
-            if (selected instanceof Reservation selectedReservation) {
-                for (Book b : selectedReservation.getBooks()) {
-                    if (b.getStatus().name().equals("WYPOZYCZONA")) bookListModel.addElement(b);
+            Object selected = loanBox.getSelectedItem();
+            if (selected instanceof Loan selectedLoan) {
+                for (Book b : selectedLoan.getBooks()) {
+                    if (b.getStatus().name().equals(BookStatus.LOANED.name())) bookListModel.addElement(b);
                 }
             }
         });
 
         // Obsługa zwrotu – identycznie jak dotychczas
         btnReturn.addActionListener(_ -> {
-            Object selected = reservationBox.getSelectedItem();
-            if (!(selected instanceof Reservation selectedReservation)) {
-                JOptionPane.showMessageDialog(this, "Wybierz rezerwację i książki do zwrotu.", "Błąd", JOptionPane.ERROR_MESSAGE);
+            Object selected = loanBox.getSelectedItem();
+            if (!(selected instanceof Loan selectedLoan)) {
+                JOptionPane.showMessageDialog(this, "Wybierz wypożyczenie i książki do zwrotu.", "Błąd", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             List<Book> selectedBooks = bookList.getSelectedValuesList();
@@ -124,9 +120,9 @@ public class ReturnBookDialog extends JDialog {
                     b.setStatus(BookStatus.AVAILABLE);
                     b.setReservation(null);
                 }
-                boolean allReturned = selectedReservation.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.LOANED);
+                boolean allReturned = selectedLoan.getBooks().stream().allMatch(book -> book.getStatus() != BookStatus.LOANED);
                 if (allReturned) {
-                    selectedReservation.setStatus(ReservationStatus.ENDED);
+                    selectedLoan.setStatus(LoanStatus.ENDED);
                 }
 
                 JOptionPane.showMessageDialog(this, "Książki zostały zwrócone.");
