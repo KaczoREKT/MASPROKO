@@ -2,15 +2,17 @@ package View.Panel;
 
 import Controller.*;
 import View.Dialogs.Librarian.*;
+import View.MainFrame;
+
 import javax.swing.*;
 
 public class LibrarianPanel extends EmployeePanel {
 
-    public LibrarianPanel(BookController bookController, ClientController clientController,
+    public LibrarianPanel(MainFrame mainFrame, BookController bookController, ClientController clientController,
                           SectorController sectorController, ReservationController reservationController,
                           LoanController loanController) {
 
-        super(bookController, clientController, "Bibliotekarzu!");
+        super(mainFrame, bookController, clientController, "Bibliotekarzu!");
 
         // Tworzymy elementy menu dla bibliotekarz
         JMenuItem btnAddBook = new JMenuItem("Katalogowanie nowej książki");

@@ -4,15 +4,16 @@ import Controller.*;
 import View.Dialogs.Accountant.ShowFinancialReportDialog;
 import View.Dialogs.Accountant.ManageFinesDialog;
 import View.Dialogs.Accountant.ManageSalariesDialog;
+import View.MainFrame;
 
 import javax.swing.*;
 
 public class AccountantPanel extends EmployeePanel {
 
-    public AccountantPanel(BookController bookController, ClientController clientController,
+    public AccountantPanel(MainFrame mainFrame, BookController bookController, ClientController clientController,
                            FineController fineController, EmployeeController employeeController) {
 
-        super(bookController, clientController, "Księgowy!");
+        super(mainFrame, bookController, clientController, "Księgowy!");
 
         // Tworzymy elementy menu dla księgowego
         JMenuItem btnShowFines = new JMenuItem("Zarządzaj karami");

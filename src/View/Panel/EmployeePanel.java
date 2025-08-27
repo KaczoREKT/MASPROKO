@@ -2,20 +2,27 @@ package View.Panel;
 
 import Controller.BookController;
 import Controller.ClientController;
+import Model.utils.ObjectPlus;
 import View.Dialogs.Employee.ShowAvailableBooksDialog;
 import View.Dialogs.Employee.ShowBooksDialog;
 import View.Dialogs.Employee.ShowReservationHistoryDialog;
+import View.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmployeePanel extends JPanel {
 
+    private final MainFrame mainFrame;
     private JPanel resultsPanel;
     private JPopupMenu roleSpecificMenu;
     private JButton dropdownButton;
 
-    public EmployeePanel(BookController bookController, ClientController clientController, String roleName) {
+    public EmployeePanel(MainFrame mainFrame, BookController bookController, ClientController clientController, String roleName) {
+        this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
         setBackground(new Color(246, 248, 255)); // spójne jasne tło
 
@@ -71,8 +78,13 @@ public class EmployeePanel extends JPanel {
         // --- Panel z przyciskiem wylogowania i ekstensjami ---
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         actionsPanel.setOpaque(false);
+
         JButton btnLogout = createSecondaryButton("Wyloguj");
+        btnLogout.addActionListener(_ -> logout());
+
         JButton btnExtensions = createSecondaryButton("Ekstensje");
+        btnExtensions.addActionListener(_ -> showAllExtents());
+
         actionsPanel.add(btnExtensions);
         actionsPanel.add(Box.createHorizontalStrut(22));
         actionsPanel.add(btnLogout);
@@ -93,11 +105,12 @@ public class EmployeePanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(209, 209, 219), 1, true),
                 BorderFactory.createEmptyBorder(0,0,0,0)
         ));
-        resultsPanel.setPreferredSize(new Dimension(800, 400));
 
         // --- Rozmieszczenie w głównym panelu ---
-        add(welcomeLabel, BorderLayout.NORTH);
-        add(cardPanel, BorderLayout.NORTH);
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(welcomeLabel, BorderLayout.NORTH);
+        topPanel.add(cardPanel, BorderLayout.CENTER);
+        add(topPanel, BorderLayout.NORTH);
         add(resultsPanel, BorderLayout.CENTER);
     }
 
@@ -142,6 +155,81 @@ public class EmployeePanel extends JPanel {
         resultsPanel.repaint();
     }
 
-    // Usuń tę metodę, bo już nie będzie potrzebna
-    // public JPanel getWorkButtonsPanel() { ... }
+    public void showAllExtents() {
+        java.util.List<Class<?>> extentClasses = Arrays.asList(
+                Model.Accountant.class,
+                Model.Client.class,
+                Model.ClientCard.class,
+                Model.Reservation.class,
+                Model.Loan.class,
+                Model.Fine.class,
+                Model.Librarian.class,
+                Model.Manager.class,
+                Model.SortingJob.class,
+                Model.Book.class,
+                Model.Sector.class
+        );
+
+        List<String> classNames = extentClasses.stream()
+                .map(Class::getSimpleName)
+                .collect(Collectors.toList());
+        classNames.add(0, "Wszystkie");
+
+        JComboBox<String> comboBox = new JComboBox<>(classNames.toArray(new String[0]));
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                comboBox,
+                "Wybierz klasę",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (result != JOptionPane.OK_OPTION) {
+            return; // użytkownik anulował
+        }
+
+        String selected = (String) comboBox.getSelectedItem();
+        StringBuilder sb = new StringBuilder();
+
+        if ("Wszystkie".equals(selected)) {
+            sb.append("=== EKSTENSJE WSZYSTKICH KLAS ===\n");
+            for (Class<?> clazz : extentClasses) {
+                appendExtentInfo(sb, clazz);
+                sb.append("--------------------------------\n");
+            }
+        } else {
+            int idx = classNames.indexOf(selected) - 1;
+            if (idx >= 0 && idx < extentClasses.size()) {
+                appendExtentInfo(sb, extentClasses.get(idx));
+            }
+        }
+
+        JTextArea textArea = new JTextArea(sb.toString(), 25, 80);
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        JOptionPane.showMessageDialog(this, scrollPane, "Ekstensje", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void appendExtentInfo(StringBuilder sb, Class<?> clazz) {
+        try {
+            sb.append("Extent of the class: ").append(clazz.getSimpleName()).append("\n");
+            sb.append(ObjectPlus.getExtentString(clazz));
+        } catch (Exception e) {
+            sb.append("[INFO] Brak ekstensji dla klasy ").append(clazz.getSimpleName()).append("\n");
+        }
+    }
+    private void logout() {
+        int option = JOptionPane.showConfirmDialog(
+                this,
+                "Czy na pewno chcesz się wylogować?",
+                "Potwierdzenie wylogowania",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            clearResults(); // Wyczyść panel wyników
+            mainFrame.showPanel("Login"); // Powróć do panelu logowania
+        }
+    }
 }

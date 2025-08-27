@@ -5,6 +5,9 @@ import Model.ClientCard;
 import Model.Enum.Gender;
 import Model.utils.ObjectPlus;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ClientController extends AbstractController<Client> {
     public ClientController() {
         super(Client.class);
@@ -18,6 +21,13 @@ public class ClientController extends AbstractController<Client> {
         new ClientCard(client);
         return client;
     }
+
+    public List<String> getClientsFirstName(){
+        return getList().stream()
+                .map(Client::getFirstName)
+                .collect(Collectors.toList());
+    }
+
 
     public Client findClientByCardNumber(String cardNumber) {
         return getList().stream()

@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainFrame extends JFrame {
-    private final JButton btnLogout;
-    private final JButton btnShowExtents;
     private final JPanel cardsPanel;
     private final CardLayout cardLayout;
 
@@ -34,15 +32,6 @@ public class MainFrame extends JFrame {
 
         setLayout(new BorderLayout());
 
-        // MENU
-        JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        btnLogout = new JButton("Wyloguj");
-        btnShowExtents = new JButton("Ekstensje");
-
-        menuPanel.add(btnLogout);
-        menuPanel.add(btnShowExtents); // Dodaj do menu
-
-        add(menuPanel, BorderLayout.NORTH);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -53,16 +42,10 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         cardsPanel = new JPanel(cardLayout);
         cardsPanel.add(new LoginPanel(this, employeeController), "Login");
-        cardsPanel.add(new LibrarianPanel(bookController, clientController, sectorController, reservationController, loanController), "LibrarianPanel");
-        cardsPanel.add(new ManagerPanel(bookController, clientController, employeeController, librarianController, sectorController, sortingJobController), "ManagerPanel");
-        cardsPanel.add(new AccountantPanel(bookController, clientController, fineController, employeeController), "AccountantPanel");
+        cardsPanel.add(new LibrarianPanel(this, bookController, clientController, sectorController, reservationController, loanController), "LibrarianPanel");
+        cardsPanel.add(new ManagerPanel(this, bookController, clientController, employeeController, librarianController, sectorController, sortingJobController), "ManagerPanel");
+        cardsPanel.add(new AccountantPanel(this, bookController, clientController, fineController, employeeController), "AccountantPanel");
         add(cardsPanel, BorderLayout.CENTER);
-
-        btnLogout.setVisible(false);
-
-        btnLogout.addActionListener(_ -> showPanel("Login"));
-
-        btnShowExtents.addActionListener(_ -> showAllExtents());
 
         setVisible(true);
         showPanel("Login");
@@ -73,72 +56,5 @@ public class MainFrame extends JFrame {
 
     public void showPanel(String name) {
         cardLayout.show(cardsPanel, name);
-        btnLogout.setVisible(!name.equals("Login"));
-        btnShowExtents.setVisible(!name.equals("Login"));
     }
-
-    public void showAllExtents() {
-        List<Class<?>> extentClasses = Arrays.asList(
-                Model.Accountant.class,
-                Model.Client.class,
-                Model.ClientCard.class,
-                Model.Reservation.class,
-                Model.Loan.class,
-                Model.Fine.class,
-                Model.Librarian.class,
-                Model.Manager.class,
-                Model.SortingJob.class,
-                Model.Book.class,
-                Model.Sector.class
-        );
-
-        List<String> classNames = extentClasses.stream()
-                .map(Class::getSimpleName)
-                .collect(Collectors.toList());
-        classNames.add(0, "Wszystkie");
-
-        JComboBox<String> comboBox = new JComboBox<>(classNames.toArray(new String[0]));
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                comboBox,
-                "Wybierz klasę",
-                JOptionPane.OK_CANCEL_OPTION
-        );
-
-        if (result != JOptionPane.OK_OPTION) {
-            return; // użytkownik anulował
-        }
-
-        String selected = (String) comboBox.getSelectedItem();
-        StringBuilder sb = new StringBuilder();
-
-        if ("Wszystkie".equals(selected)) {
-            sb.append("=== EKSTENSJE WSZYSTKICH KLAS ===\n");
-            for (Class<?> clazz : extentClasses) {
-                appendExtentInfo(sb, clazz);
-                sb.append("--------------------------------\n");
-            }
-        } else {
-            int idx = classNames.indexOf(selected) - 1;
-            if (idx >= 0 && idx < extentClasses.size()) {
-                appendExtentInfo(sb, extentClasses.get(idx));
-            }
-        }
-
-        JTextArea textArea = new JTextArea(sb.toString(), 25, 80);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        JOptionPane.showMessageDialog(this, scrollPane, "Ekstensje", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void appendExtentInfo(StringBuilder sb, Class<?> clazz) {
-        try {
-            sb.append("Extent of the class: ").append(clazz.getSimpleName()).append("\n");
-            sb.append(ObjectPlus.getExtentString(clazz));
-        } catch (Exception e) {
-            sb.append("[INFO] Brak ekstensji dla klasy ").append(clazz.getSimpleName()).append("\n");
-        }
-    }
-
 }
