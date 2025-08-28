@@ -183,7 +183,7 @@ public class ReserveBookDialog extends JDialog {
                 LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
                 LocalDate dateTo = LocalDate.parse(dateToField.getText().trim());
                 reservationController.reserveBook(books, selectedClient, dateFrom, dateTo);
-                JOptionPane.showMessageDialog(this, "Rezerwacja zakończona sukcesem.");
+                JOptionPane.showMessageDialog(this, "Wypożyczenie zakończone sukcesem.");
                 dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Błąd rezerwacji", JOptionPane.ERROR_MESSAGE);
