@@ -26,38 +26,6 @@ public class ReservationController {
             throw new Exception("Karta klienta jest nieważna.");
         }
 
-        // 1) Limit aktywnych rezerwacji = 2
-        long activeReservations = client.getReservations().stream()
-                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
-                .count();
-        if (activeReservations >= 2) {
-            throw new Exception("Klient może posiadać maksymalnie 2 aktywne rezerwacje. Obecnie jest ich " + activeReservations + ".");
-        }
-
-        // 2) Limit aktywnych wypożyczeń = 2
-        long activeLoans = client.getLoans().stream()
-                .filter(l -> l.getStatus() != LoanStatus.ENDED) // dopasuj do własnej nazwy statusu zwrócone/zakończone
-                .count();
-        if (activeLoans >= 2) {
-            throw new Exception("Klient może posiadać maksymalnie 2 aktywne wypożyczenia.");
-        }
-
-        // 3) Limit łącznej liczby książek (rezerwacje + wypożyczenia) <= 5
-        int reservedBooks = client.getReservations().stream()
-                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
-                .mapToInt(r -> r.getBooks().size())
-                .sum();
-
-        int loanedBooks = client.getLoans().stream()
-                .filter(l -> l.getStatus() != LoanStatus.ENDED)
-                .mapToInt(l -> l.getBooks().size())
-                .sum();
-
-        int incoming = books.size();
-        if (reservedBooks + loanedBooks + incoming > 5) {
-            throw new Exception("Łączna liczba zarezerwowanych i wypożyczonych książek nie może przekraczać 5.");
-        }
-
         // 5) Utworzenie rezerwacji i powiązania z klientem oraz książkami
         Set<Book> set = new HashSet<>(books);
         Reservation reservation = new Reservation(dateFrom, dateTo, set);

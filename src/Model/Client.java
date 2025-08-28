@@ -1,6 +1,8 @@
 package Model;
 
 import Model.Enum.Gender;
+import Model.Enum.LoanStatus;
+import Model.Enum.ReservationStatus;
 import Model.utils.AutoIdEntity;
 
 import java.io.Serial;
@@ -67,16 +69,71 @@ public class Client extends Person {
         return fines;
     }
 
+    // --- POMOCNICZE: aktywność i zliczanie książek ---
+    private long countActiveReservations() {
+        return reservations.stream()
+                .filter(r -> r.getStatus() != ReservationStatus.ENDED) // dopasuj do swoich statusów
+                .count();
+    }
+
+    private long countActiveLoans() {
+        return loans.stream()
+                .filter(l -> l.getStatus() != LoanStatus.ENDED) // dopasuj do swoich statusów
+                .count();
+    }
+
+    private int countActiveReservedBooks() {
+        return reservations.stream()
+                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
+                .mapToInt(r -> r.getBooks() != null ? r.getBooks().size() : 0)
+                .sum();
+    }
+
+    private int countActiveLoanedBooks() {
+        return loans.stream()
+                .filter(l -> l.getStatus() != LoanStatus.ENDED)
+                .mapToInt(l -> l.getBooks() != null ? l.getBooks().size() : 0)
+                .sum();
+    }
+
+    private void ensureLimitsBeforeAdding(int incomingBooks, boolean addingReservation) {
+        // 1) limit rezerwacji
+        if (addingReservation) {
+            if (countActiveReservations() >= 2) {
+                throw new IllegalStateException("Klient może posiadać maksymalnie 2 aktywne rezerwacje.");
+            }
+        } else {
+            // 2) limit wypożyczeń
+            if (countActiveLoans() >= 2) {
+                throw new IllegalStateException("Klient może posiadać maksymalnie 2 aktywne wypożyczenia.");
+            }
+        }
+        // 3) łączny limit książek
+        int totalBooks = countActiveReservedBooks() + countActiveLoanedBooks() + incomingBooks;
+        if (totalBooks > 5) {
+            throw new IllegalStateException("Łączna liczba zarezerwowanych i wypożyczonych książek nie może przekraczać 5.");
+        }
+    }
+
+    // --- METODY DODAWANIA Z WALIDACJĄ NIEZMIENNIKÓW ---
     public void addReservation(Reservation r) {
         if (r == null) return;
+        int incoming = (r.getBooks() != null) ? r.getBooks().size() : 0;
+        ensureLimitsBeforeAdding(incoming, true);
+
         reservations.add(r);
         if (r.getClient() != this) r.setClient(this);
     }
 
     public void addLoan(Loan l) {
         if (l == null) return;
+        int incoming = (l.getBooks() != null) ? l.getBooks().size() : 0;
+        ensureLimitsBeforeAdding(incoming, false);
+
         loans.add(l);
+        if (l.getClient() != this) l.setClient(this);
     }
+
 
 
     public void addFine(Fine f) {

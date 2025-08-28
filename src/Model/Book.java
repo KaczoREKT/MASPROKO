@@ -59,6 +59,11 @@ public class Book extends AutoIdEntity {
         this.status = status;
     }
 
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
     public void setReservation(Reservation r) {
         if (this.reservation != null && r != null && this.reservation != r) {
             throw new IllegalStateException("Książka jest już zarezerwowana!");
@@ -72,6 +77,10 @@ public class Book extends AutoIdEntity {
             this.reservation = null;
             setStatus(BookStatus.AVAILABLE);
         }
+    }
+
+    public Loan getLoan() {
+        return loan;
     }
 
     public void setLoan(Loan l){
