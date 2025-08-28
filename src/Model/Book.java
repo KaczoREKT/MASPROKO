@@ -82,6 +82,13 @@ public class Book extends AutoIdEntity {
         setStatus(l != null ? BookStatus.LOANED : BookStatus.AVAILABLE);
     }
 
+    public void removeLoan(Loan l){
+        if (this.loan == l){
+            this.loan = null;
+            setStatus(BookStatus.AVAILABLE);
+        }
+    }
+
     public Sector getSector() {
         return sector;
     }

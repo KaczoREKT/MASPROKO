@@ -18,7 +18,7 @@ public class LoanBooksDialog extends JDialog {
     private Client selectedClient = null;
 
     public LoanBooksDialog(BookController bookController, ClientController clientController, LoanController loanController) {
-        setTitle("Rezerwacja książki");
+        setTitle("Wypożyczenie książek");
         setModal(true);
         setSize(550, 380);
         setLocationRelativeTo(null);
@@ -107,13 +107,13 @@ public class LoanBooksDialog extends JDialog {
         row = 0;
 
         summaryStep.add(new JLabel("Data rozpoczęcia:"), gbc);
-        JTextField dateFromField = new JTextField(LocalDateTime.now().toString(), 10);
+        JTextField dateFromField = new JTextField(LocalDate.now().toString(), 10);
         gbc.gridx = 1;
         summaryStep.add(dateFromField, gbc);
 
         gbc.gridy = ++row; gbc.gridx = 0;
         summaryStep.add(new JLabel("Data zakończenia:"), gbc);
-        JTextField dateToField = new JTextField(LocalDateTime.now().plusWeeks(2).toString(), 10);
+        JTextField dateToField = new JTextField(LocalDate.now().plusWeeks(2).toString(), 10);
         gbc.gridx = 1;
         summaryStep.add(dateToField, gbc);
 
@@ -183,10 +183,10 @@ public class LoanBooksDialog extends JDialog {
         // --- Rezerwacja ---
         btnReserve.addActionListener(_ -> {
             try {
-                LocalDateTime dateFrom = LocalDateTime.parse(dateFromField.getText().trim());
-                LocalDateTime dateTo = LocalDateTime.parse(dateToField.getText().trim());
+                LocalDate dateFrom = LocalDate.parse(dateFromField.getText().trim());
+                LocalDate dateTo = LocalDate.parse(dateToField.getText().trim());
                 loanController.loanBook(books, selectedClient, dateFrom, dateTo);
-                JOptionPane.showMessageDialog(this, "Rezerwacja zakończona sukcesem.");
+                JOptionPane.showMessageDialog(this, "Wypożyczenie zakończone sukcesem.");
                 dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Błąd rezerwacji", JOptionPane.ERROR_MESSAGE);

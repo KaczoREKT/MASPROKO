@@ -73,8 +73,6 @@ public class Reservation extends AutoIdEntity {
         }
     }
 
-
-
     @Override
     public String toString() {
         return String.format(

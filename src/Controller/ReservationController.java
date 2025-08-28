@@ -3,6 +3,8 @@ package Controller;
 import Model.*;
 import Model.Enum.BookStatus;
 import Model.Enum.FineStatus;
+import Model.Enum.LoanStatus;
+import Model.Enum.ReservationStatus;
 import Model.utils.ObjectPlus;
 
 import java.time.LocalDate;
@@ -11,21 +13,61 @@ import java.util.List;
 import java.util.Set;
 
 public class ReservationController {
+
     public void reserveBook(List<Book> books, Client client, LocalDate dateFrom, LocalDate dateTo) throws Exception {
-        if (books == null) throw new Exception("Nie wybrano książki.");
+        // Walidacje podstawowe
+        if (books == null || books.isEmpty()) throw new Exception("Nie wybrano książki.");
         if (client == null) throw new Exception("Nie wybrano klienta.");
         if (dateFrom == null || dateTo == null) throw new Exception("Nieprawidłowa data.");
         if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
 
-
+        // Ważność karty
         if (client.getClientCard() == null || client.getClientCard().getExpirationDate().isBefore(LocalDate.now())) {
             throw new Exception("Karta klienta jest nieważna.");
         }
 
-        Reservation reservation = new Reservation(dateFrom, dateTo, new HashSet<>(books));
+        // 1) Limit aktywnych rezerwacji = 2
+        long activeReservations = client.getReservations().stream()
+                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
+                .count();
+        if (activeReservations >= 2) {
+            throw new Exception("Klient może posiadać maksymalnie 2 aktywne rezerwacje. Obecnie jest ich " + activeReservations + ".");
+        }
 
-        client.addReservation(reservation);
-        books.forEach(b -> b.setReservation(reservation));
+        // 2) Limit aktywnych wypożyczeń = 2
+        long activeLoans = client.getLoans().stream()
+                .filter(l -> l.getStatus() != LoanStatus.ENDED) // dopasuj do własnej nazwy statusu zwrócone/zakończone
+                .count();
+        if (activeLoans >= 2) {
+            throw new Exception("Klient może posiadać maksymalnie 2 aktywne wypożyczenia.");
+        }
+
+        // 3) Limit łącznej liczby książek (rezerwacje + wypożyczenia) <= 5
+        int reservedBooks = client.getReservations().stream()
+                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
+                .mapToInt(r -> r.getBooks().size())
+                .sum();
+
+        int loanedBooks = client.getLoans().stream()
+                .filter(l -> l.getStatus() != LoanStatus.ENDED)
+                .mapToInt(l -> l.getBooks().size())
+                .sum();
+
+        int incoming = books.size();
+        if (reservedBooks + loanedBooks + incoming > 5) {
+            throw new Exception("Łączna liczba zarezerwowanych i wypożyczonych książek nie może przekraczać 5.");
+        }
+
+        // 5) Utworzenie rezerwacji i powiązania z klientem oraz książkami
+        Set<Book> set = new HashSet<>(books);
+        Reservation reservation = new Reservation(dateFrom, dateTo, set);
+        reservation.setClient(client); // podłączy obustronnie zgodnie z logiką w encjach
+
+        // W Reservation(Book) konstruktor wywołuje book.setReservation(this), ale jeżeli nie,
+        // to zapewnijmy powiązanie:
+        for (Book b : set) {
+            b.setReservation(reservation);
+        }
     }
 
     public void changeReservation(Reservation selectedReservation, LocalDate dateFrom, LocalDate dateTo) throws Exception {
@@ -42,6 +84,7 @@ public class ReservationController {
         reservation.cancel();
     }
 
+
     public void generateFinesForExpiredReservations() {
         try {
             Iterable<Reservation> reservations = ObjectPlus.getExtent(Reservation.class);
@@ -55,7 +98,6 @@ public class ReservationController {
                                 .filter(f -> f.getReason() != null && f.getReason().contains("rezerwacja " + reservation.getPublicId()))
                                 .findFirst()
                                 .orElse(null);
-
                         long daysLate = java.time.temporal.ChronoUnit.DAYS.between(endDate, LocalDate.now());
                         if (daysLate > 0) {
                             double newPrice = daysLate * 0.50;
@@ -66,7 +108,6 @@ public class ReservationController {
                             } else if (fineForThis.getStatus() == FineStatus.OPLACONO) {
                                 fineForThis.setPrice(newPrice);
                             }
-
                         }
                     }
                 }
@@ -76,11 +117,10 @@ public class ReservationController {
         }
     }
 
+    // "Aktywne" = nie ENDED. Alternatywnie można przyjąć: aktywne to takie, które mają PENDING/CONFIRMED itp.
     public List<Reservation> getActiveReservations(Client client) {
-        Set<Reservation> reservations = client.getReservations();
-        return reservations.stream()
-                .filter(r -> r.getBooks().stream().anyMatch(b -> b.getStatus().name().equals(BookStatus.LOANED.name())))
+        return client.getReservations().stream()
+                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
                 .toList();
     }
-
 }
