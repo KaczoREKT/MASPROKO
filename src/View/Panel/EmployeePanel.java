@@ -41,8 +41,6 @@ public class EmployeePanel extends JPanel {
                 BorderFactory.createEmptyBorder(24, 30, 24, 30)
         ));
 
-
-        // --- Panel przycisków „operacje" ---
         JPanel operationsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 0));
         operationsPanel.setOpaque(false);
 
@@ -231,5 +229,11 @@ public class EmployeePanel extends JPanel {
             clearResults(); // Wyczyść panel wyników
             mainFrame.showPanel("Login"); // Powróć do panelu logowania
         }
+    }
+
+    public JMenuItem createMenuItem(String text, java.awt.event.ActionListener listener) {
+        JMenuItem menuItem = new JMenuItem(text);
+        menuItem.addActionListener(listener);
+        return menuItem;
     }
 }

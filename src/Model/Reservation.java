@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Enum.BookStatus;
 import Model.Enum.ReservationStatus;
 import Model.utils.AutoIdEntity;
 
@@ -66,11 +67,15 @@ public class Reservation extends AutoIdEntity {
 
     public void setStatus(ReservationStatus status) { this.status = status; }
 
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(endDate);
+    }
     public void cancel() {
         setStatus(ReservationStatus.ENDED);
         if (books != null) {
             books.forEach(b -> b.removeReservation(this));
         }
+
     }
 
     @Override

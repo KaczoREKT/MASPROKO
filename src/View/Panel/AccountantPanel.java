@@ -10,22 +10,23 @@ import javax.swing.*;
 
 public class AccountantPanel extends EmployeePanel {
 
-    public AccountantPanel(MainFrame mainFrame, BookController bookController, ClientController clientController,
-                           FineController fineController, EmployeeController employeeController) {
+    public AccountantPanel(MainFrame mainFrame,
+                           BookController bookController,
+                           ClientController clientController,
+                           FineController fineController,
+                           EmployeeController employeeController) {
 
         super(mainFrame, bookController, clientController, "Księgowy!");
 
-        // Tworzymy elementy menu dla księgowego
-        JMenuItem btnShowFines = new JMenuItem("Zarządzaj karami");
-        btnShowFines.addActionListener(_ -> new ManageFinesDialog(fineController));
+        JMenuItem btnShowFines = createMenuItem("Zarządzaj karami",
+                _ -> new ManageFinesDialog(fineController));
 
-        JMenuItem btnShowReport = new JMenuItem("Generuj Raport Finansowy (30 dni)");
-        btnShowReport.addActionListener(_ -> new ShowFinancialReportDialog(fineController));
+        JMenuItem btnShowReport = createMenuItem("Generuj Raport Finansowy (30 dni)",
+                _ -> new ShowFinancialReportDialog(fineController));
 
-        JMenuItem btnShowSalaries = new JMenuItem("Zarządzaj pensją pracowników");
-        btnShowSalaries.addActionListener(_ -> new ManageSalariesDialog(employeeController));
+        JMenuItem btnShowSalaries = createMenuItem("Zarządzaj pensją pracowników",
+                _ -> new ManageSalariesDialog(employeeController));
 
-        // Dodajemy wszystkie elementy do dropdown menu
         addToDropdownMenu(btnShowFines);
         addToDropdownMenu(btnShowReport);
         addToDropdownMenu(btnShowSalaries);

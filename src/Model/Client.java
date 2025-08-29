@@ -69,16 +69,15 @@ public class Client extends Person {
         return fines;
     }
 
-    // --- POMOCNICZE: aktywność i zliczanie książek ---
     private long countActiveReservations() {
         return reservations.stream()
-                .filter(r -> r.getStatus() != ReservationStatus.ENDED) // dopasuj do swoich statusów
+                .filter(r -> r.getStatus() == ReservationStatus.PENDING)
                 .count();
     }
 
     private long countActiveLoans() {
         return loans.stream()
-                .filter(l -> l.getStatus() != LoanStatus.ENDED) // dopasuj do swoich statusów
+                .filter(l -> l.getStatus() == LoanStatus.PENDING)
                 .count();
     }
 
@@ -96,19 +95,16 @@ public class Client extends Person {
                 .sum();
     }
 
-    private void ensureLimitsBeforeAdding(int incomingBooks, boolean addingReservation) {
-        // 1) limit rezerwacji
+    public void ensureLimitsBeforeAdding(int incomingBooks, boolean addingReservation) {
         if (addingReservation) {
             if (countActiveReservations() >= 2) {
                 throw new IllegalStateException("Klient może posiadać maksymalnie 2 aktywne rezerwacje.");
             }
         } else {
-            // 2) limit wypożyczeń
             if (countActiveLoans() >= 2) {
                 throw new IllegalStateException("Klient może posiadać maksymalnie 2 aktywne wypożyczenia.");
             }
         }
-        // 3) łączny limit książek
         int totalBooks = countActiveReservedBooks() + countActiveLoanedBooks() + incomingBooks;
         if (totalBooks > 5) {
             throw new IllegalStateException("Łączna liczba zarezerwowanych i wypożyczonych książek nie może przekraczać 5.");
@@ -160,6 +156,16 @@ public class Client extends Person {
             sb.append(joined).append("]");
         } else {
             sb.append(", reservations=[]");
+        }
+        if (!loans.isEmpty()) {
+            sb.append(", loans=[");
+            String joined = loans.stream()
+                    .map(AutoIdEntity::getPublicId)
+                    .reduce((a, b) -> a + ", " + b)
+                    .orElse("");
+            sb.append(joined).append("]");
+        } else {
+            sb.append(", loans=[]");
         }
         return sb.toString();
     }

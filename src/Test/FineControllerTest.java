@@ -23,7 +23,7 @@ public class FineControllerTest {
 
         // 1. Zaznacz jako opłacony
         fineController.markFineAsPaid(fine);
-        assert fine.getStatus() == FineStatus.OPLACONO : "Status mandatu nie zmienił się na OPLACONO!";
+        assert fine.getStatus() == FineStatus.PAID : "Status mandatu nie zmienił się na OPLACONO!";
         System.out.println("Mandat po opłaceniu: " + fine);
 
         // 2. Dodaj jeszcze kilka mandatów (różne daty)
@@ -33,8 +33,8 @@ public class FineControllerTest {
         fine3.setClient(client);
 
         // Ustaw daty na przeszłe i bieżące (na potrzeby sumowania)
-        fine2.setStatus(FineStatus.NIEOPLACONO);
-        fine3.setStatus(FineStatus.NIEOPLACONO);
+        fine2.setStatus(FineStatus.UNPAID);
+        fine3.setStatus(FineStatus.UNPAID);
 
         // 3. Test sumowania NIEOPLACONYCH mandatów z ostatnich 30 dni
         // (ustaw datę ręcznie, jeśli masz pole date w klasie Fine, np. fine3.setDate(LocalDate.now().minusDays(5)))
@@ -54,7 +54,7 @@ public class FineControllerTest {
 
         // 6. Próba opłacenia już opłaconego mandatu
         fineController.markFineAsPaid(fine);
-        assert fine.getStatus() == FineStatus.OPLACONO : "Status mandatu zmienił się mimo, że był już opłacony!";
+        assert fine.getStatus() == FineStatus.PAID : "Status mandatu zmienił się mimo, że był już opłacony!";
         System.out.println("Mandat już opłacony: " + fine);
 
         System.out.println("FineControllerTest OK\n");

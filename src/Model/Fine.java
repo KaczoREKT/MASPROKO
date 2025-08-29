@@ -12,7 +12,7 @@ public class Fine extends AutoIdEntity {
 
     private double price;
     private final String reason;
-    private FineStatus status = FineStatus.NIEOPLACONO;
+    private FineStatus status = FineStatus.UNPAID;
     private final LocalDate date;
 
     private Client client;

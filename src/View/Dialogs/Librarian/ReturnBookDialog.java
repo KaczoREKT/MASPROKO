@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ReturnBookDialog extends JDialog {
     public ReturnBookDialog(ClientController clientController, LoanController loanController) {
-        setTitle("Zwrot książki przez klienta");
+        setTitle("Zwrot książek");
         setModal(true);
         setSize(600, 400);
         setLocationRelativeTo(null);
@@ -33,7 +33,6 @@ public class ReturnBookDialog extends JDialog {
 
         content.add(cardPanel);
 
-        // --- Sekcje jak wcześniej ---
         JPanel reservationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel resLabel = new JLabel("Wypożyczenie:");
         reservationPanel.add(resLabel);
@@ -42,7 +41,6 @@ public class ReturnBookDialog extends JDialog {
         reservationPanel.add(loanBox);
         content.add(reservationPanel);
 
-        // Książki do zwrotu
         DefaultListModel<Book> bookListModel = new DefaultListModel<>();
         JList<Book> bookList = new JList<>(bookListModel);
         bookList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -54,7 +52,6 @@ public class ReturnBookDialog extends JDialog {
         bookPanel.add(bookScroll, BorderLayout.CENTER);
         content.add(bookPanel);
 
-        // Przyciski
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnReturn = new JButton("Zwróć");
         JButton btnCancel = new JButton("Anuluj");
@@ -62,7 +59,6 @@ public class ReturnBookDialog extends JDialog {
         btnPanel.add(btnCancel);
         content.add(btnPanel);
 
-        // --- Logika: wyszukiwanie po numerze karty ---
         btnFind.addActionListener(_ -> {
             String cardNumber = cardField.getText().trim();
             if (cardNumber.isEmpty()) {
@@ -92,7 +88,6 @@ public class ReturnBookDialog extends JDialog {
             }
         });
 
-        // Po zmianie rezerwacji: pokaż książki do zwrotu
         loanBox.addActionListener(_ -> {
             bookListModel.clear();
             Object selected = loanBox.getSelectedItem();
@@ -103,7 +98,6 @@ public class ReturnBookDialog extends JDialog {
             }
         });
 
-        // Obsługa zwrotu – identycznie jak dotychczas
         btnReturn.addActionListener(_ -> {
             Object selected = loanBox.getSelectedItem();
             if (!(selected instanceof Loan selectedLoan)) {

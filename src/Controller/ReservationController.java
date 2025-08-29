@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 public class ReservationController {
 
@@ -26,16 +27,12 @@ public class ReservationController {
             throw new Exception("Karta klienta jest nieważna.");
         }
 
-        // 5) Utworzenie rezerwacji i powiązania z klientem oraz książkami
-        Set<Book> set = new HashSet<>(books);
-        Reservation reservation = new Reservation(dateFrom, dateTo, set);
-        reservation.setClient(client); // podłączy obustronnie zgodnie z logiką w encjach
+        Set<Book> bookSet = new HashSet<>(books);
+        client.ensureLimitsBeforeAdding(bookSet.size(), true);
 
-        // W Reservation(Book) konstruktor wywołuje book.setReservation(this), ale jeżeli nie,
-        // to zapewnijmy powiązanie:
-        for (Book b : set) {
-            b.setReservation(reservation);
-        }
+        Reservation reservation = new Reservation(dateFrom, dateTo, bookSet);
+        reservation.setClient(client);
+
     }
 
     public void changeReservation(Reservation selectedReservation, LocalDate dateFrom, LocalDate dateTo) throws Exception {
@@ -53,42 +50,17 @@ public class ReservationController {
     }
 
 
-    public void generateFinesForExpiredReservations() {
-        try {
-            Iterable<Reservation> reservations = ObjectPlus.getExtent(Reservation.class);
-            for (Reservation reservation : reservations) {
-                LocalDate endDate = reservation.getEndDate();
-                if (endDate.isBefore(LocalDate.now())) {
-                    Client client = reservation.getClient();
-                    if (client != null) {
-                        // Szukamy istniejącej kary za tę rezerwację
-                        Fine fineForThis = client.getFines().stream()
-                                .filter(f -> f.getReason() != null && f.getReason().contains("rezerwacja " + reservation.getPublicId()))
-                                .findFirst()
-                                .orElse(null);
-                        long daysLate = java.time.temporal.ChronoUnit.DAYS.between(endDate, LocalDate.now());
-                        if (daysLate > 0) {
-                            double newPrice = daysLate * 0.50;
-                            if (fineForThis == null) {
-                                // Nie było jeszcze kary — dodaj nową
-                                Fine fine = new Fine(newPrice, "Opóźnienie za rezerwacja " + reservation.getPublicId());
-                                fine.setClient(client);
-                            } else if (fineForThis.getStatus() == FineStatus.OPLACONO) {
-                                fineForThis.setPrice(newPrice);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
-    // "Aktywne" = nie ENDED. Alternatywnie można przyjąć: aktywne to takie, które mają PENDING/CONFIRMED itp.
-    public List<Reservation> getActiveReservations(Client client) {
-        return client.getReservations().stream()
-                .filter(r -> r.getStatus() != ReservationStatus.ENDED)
-                .toList();
+
+    public void cancelExpiredReservations() {
+        try {
+            Iterable<Reservation> iterable = ObjectPlus.getExtent(Reservation.class);
+            StreamSupport.stream(iterable.spliterator(), false)
+                    .filter(r -> r.getStatus() == ReservationStatus.PENDING)
+                    .filter(r -> r.getStartDate() != null)
+                    .filter(Reservation::isExpired)
+                    .forEach(Reservation::cancel);
+        } catch (Exception e) {
+        }
     }
 }

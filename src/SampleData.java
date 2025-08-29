@@ -1,5 +1,3 @@
-package Model.utils;
-
 import Model.*;
 import Model.Enum.BookStatus;
 import Model.Enum.Gender;
@@ -96,7 +94,6 @@ public class SampleData {
             // Rezerwacje: 0..2, z poszanowaniem budżetu książek (≤5 razem z loans)
             int desiredReservations = rand.nextInt(3); // 0..2
             for (int r = 0; r < desiredReservations; r++) {
-                if (!canAddReservation(client)) break;
 
                 int remainingBookCap = remainingBookCapacity(client);
                 if (remainingBookCap <= 0) break;
@@ -148,8 +145,6 @@ public class SampleData {
             // Wypożyczenia: 0..2, z budżetem książek
             int desiredLoans = rand.nextInt(3); // 0..2
             for (int l = 0; l < desiredLoans; l++) {
-                if (!canAddLoan(client)) break;
-
                 int remainingBookCap = remainingBookCapacity(client);
                 if (remainingBookCap <= 0) break;
 
@@ -187,17 +182,8 @@ public class SampleData {
                     b.setStatus(BookStatus.LOANED);
                 }
 
-                // Część zakończ jako ENDED, by urozmaicić dane
                 if (rand.nextInt(5) == 0) { // 20%
-                    loan.setStatus(LoanStatus.ENDED);
-                    for (Book b : picked) {
-                        b.setLoan(null);
-                        if (b.getReservation() == null) {
-                            b.setStatus(BookStatus.AVAILABLE);
-                        } else {
-                            b.setStatus(BookStatus.RESERVED);
-                        }
-                    }
+                    loan.cancel();
                 }
             }
         }
@@ -240,7 +226,6 @@ public class SampleData {
             }
         }
 
-        // 9) Debug
         System.out.println("[DEBUG] Sektory: " + sectors.size());
         System.out.println("[DEBUG] Książki: " + books.size());
         System.out.println("[DEBUG] Bibliotekarze: " + librarians.size());
@@ -251,16 +236,6 @@ public class SampleData {
 
     private static <T> T losuj(List<T> list, Random rand) {
         return list.get(rand.nextInt(list.size()));
-    }
-
-    // === Limity (PENDING = aktywne) ===
-
-    private static boolean canAddReservation(Client c) {
-        return c.getReservations().stream().filter(r -> r.getStatus() == ReservationStatus.PENDING).count() < 2;
-    }
-
-    private static boolean canAddLoan(Client c) {
-        return c.getLoans().stream().filter(l -> l.getStatus() == LoanStatus.PENDING).count() < 2;
     }
 
     private static int remainingBookCapacity(Client c) {

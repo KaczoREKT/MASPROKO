@@ -14,43 +14,39 @@ public class LibrarianPanel extends EmployeePanel {
 
         super(mainFrame, bookController, clientController, "Bibliotekarzu!");
 
-        // Tworzymy elementy menu dla bibliotekarz
-        JMenuItem btnAddBook = new JMenuItem("Katalogowanie nowej książki");
-        btnAddBook.addActionListener(_ -> new CatalogBookDialog(bookController, sectorController));
+        JMenuItem btnAddClient = createMenuItem("Dodaj klienta",
+                e -> new AddNewClientDialog(clientController));
+        
+        JMenuItem btnAddBook = createMenuItem("Katalogowanie nowej książki",
+                e -> new CatalogBookDialog(bookController, sectorController));
 
-        JMenuItem btnUpdateBook = new JMenuItem("Aktualizacja danych książki");
-        btnUpdateBook.addActionListener(_ -> new UpdateBookDialog(sectorController, bookController));
+        JMenuItem btnUpdateBook = createMenuItem("Aktualizacja danych książki",
+                e -> new UpdateBookDialog(sectorController, bookController));
+        
+        JMenuItem btnDeleteBook = createMenuItem("Usunięcie książki",
+                e -> new DeleteBookDialog(sectorController, bookController));
+        
+        JMenuItem btnReserveBook = createMenuItem("Utwórz Rezerwację",
+                e -> new ReserveBookDialog(bookController, clientController, reservationController));
 
-        JMenuItem btnDeleteBook = new JMenuItem("Usunięcie książki");
-        btnDeleteBook.addActionListener(_ -> new DeleteBookDialog(sectorController, bookController));
+        JMenuItem btnCancelReservation = createMenuItem("Anuluj rezerwację",
+                e -> new CancelReservationDialog(clientController, reservationController));
 
-        JMenuItem btnAddClient = new JMenuItem("Dodaj klienta");
-        btnAddClient.addActionListener(_ -> new AddNewClientDialog(clientController));
+        JMenuItem btnLoanBooks = createMenuItem("Wypożyczenie książek",
+                e -> new LoanBooksDialog(bookController, clientController, loanController));
 
-        JMenuItem btnReserveBook = new JMenuItem("Rezerwuj książkę");
-        if (bookController.getAvailableBooks().isEmpty()) {
-            btnReserveBook.setEnabled(false);
-            btnReserveBook.setToolTipText("Brak dostępnych książek do rezerwacji.");
-        }
-        btnReserveBook.addActionListener(_ -> new ReserveBookDialog(bookController, clientController, reservationController));
+        JMenuItem btnReturnBook = createMenuItem("Zwrot książek",
+                e -> new ReturnBookDialog(clientController, loanController));
 
-        JMenuItem btnLoanBooks = new JMenuItem("Wypożyczenie książek");
-        btnLoanBooks.addActionListener(_ -> new LoanBooksDialog(bookController, clientController, loanController));
-
-        JMenuItem btnCancelReservation = new JMenuItem("Anuluj rezerwację");
-        btnCancelReservation.addActionListener(_ -> new CancelReservationDialog(clientController, reservationController));
-
-        JMenuItem btnReturnBook = new JMenuItem("Zwróć książkę");
-        btnReturnBook.addActionListener(_ -> new ReturnBookDialog(clientController, loanController));
-
-        // Dodajemy wszystkie elementy do dropdown menu
+        addToDropdownMenu(btnAddClient);
         addToDropdownMenu(btnAddBook);
         addToDropdownMenu(btnUpdateBook);
         addToDropdownMenu(btnDeleteBook);
-        addToDropdownMenu(btnAddClient);
         addToDropdownMenu(btnReserveBook);
-        addToDropdownMenu(btnLoanBooks);
         addToDropdownMenu(btnCancelReservation);
+        addToDropdownMenu(btnLoanBooks);
         addToDropdownMenu(btnReturnBook);
     }
+
+
 }

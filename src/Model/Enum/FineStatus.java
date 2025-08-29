@@ -1,6 +1,7 @@
 package Model.Enum;
 
 public enum FineStatus {
-    NIEOPLACONO, OPLACONO
+    UNPAID,
+    PAID
 }
 

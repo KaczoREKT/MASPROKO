@@ -13,7 +13,7 @@ public class FineController extends AbstractController<Fine> {
     // Oznacz jako opłacony
     public void markFineAsPaid(Fine selected) {
         if (selected != null) {
-            selected.setStatus(FineStatus.OPLACONO);
+            selected.setStatus(FineStatus.PAID);
         }
     }
 

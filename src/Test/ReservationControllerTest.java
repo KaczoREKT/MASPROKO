@@ -77,31 +77,6 @@ public class ReservationControllerTest {
             System.out.println("Błąd przy dodawaniu przeterminowanej rezerwacji: " + e.getMessage());
         }
 
-        // 2. Wywołaj generowanie kar
-        reservationController.generateFinesForExpiredReservations();
-
-        // 3. Sprawdź, czy kara została dodana
-        boolean fineAdded = client.getFines().stream()
-                .anyMatch(f -> f.getReason().contains("rezerwacja"));
-        assert fineAdded : "Nie wygenerowano kary za przeterminowaną rezerwację!";
-        System.out.println("Kara wygenerowana: " + client.getFines());
-
-        // 4. Sprawdź, czy kara się zaktualizuje gdy nadal NIEOPŁACONA
-        var fine = client.getFines().iterator().next();
-        double firstAmount = fine.getPrice();
-        expiredBook.setStatus(BookStatus.RESERVED); // Trzyma status wypożyczonej
-        reservationController.generateFinesForExpiredReservations();
-        double newAmount = fine.getPrice();
-        assert newAmount >= firstAmount : "Kara powinna rosnąć jeśli jest nieopłacona!";
-        System.out.println("Zaktualizowana kara: " + fine);
-
-        // 5. Oznacz karę jako OPLACONĄ i sprawdź, że się nie aktualizuje
-        fine.setStatus(Model.Enum.FineStatus.OPLACONO);
-        double paidAmount = fine.getPrice();
-        reservationController.generateFinesForExpiredReservations();
-        assert fine.getPrice() == paidAmount : "Kara nie powinna rosnąć po opłaceniu!";
-        System.out.println("Kara po opłaceniu (nie powinna rosnąć): " + fine);
-
         System.out.println("ReservationControllerTest OK\n");
     }
 }

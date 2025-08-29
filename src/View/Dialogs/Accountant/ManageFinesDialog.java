@@ -40,9 +40,9 @@ public class ManageFinesDialog extends JDialog {
             List<Fine> fines = fineController.getList();
             List<Fine> filtered = fines.stream().filter(f -> {
                 if ("Nieopłacone".equals(filter))
-                    return f.getStatus() == FineStatus.NIEOPLACONO;
+                    return f.getStatus() == FineStatus.UNPAID;
                 if ("Opłacone".equals(filter))
-                    return f.getStatus() == FineStatus.OPLACONO;
+                    return f.getStatus() == FineStatus.PAID;
                 return true;
             }).toList();
 
@@ -59,7 +59,7 @@ public class ManageFinesDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "Wybierz mandat.", "Błąd", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            if (fine.getStatus() == FineStatus.OPLACONO) {
+            if (fine.getStatus() == FineStatus.PAID) {
                 JOptionPane.showMessageDialog(this, "Mandat już opłacony.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }

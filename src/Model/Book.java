@@ -114,11 +114,12 @@ public class Book extends AutoIdEntity {
 
     @Override
     public String toString() {
-        return String.format("Book[id=%s, title=%s, genre=%s, author=%s, status=%s]",
+        return String.format("Book[id=%s, title=%s, genre=%s, author=%s, status=%s, reservation=%s]",
                 getPublicId(),
                 title,
                 genre,
                 author,
-                status);
+                status,
+                reservation != null ? reservation.getPublicId() : "brak");
     }
 }

@@ -8,8 +8,6 @@ import Model.Sector;
 import java.io.*;
 import Model.*;
 
-import static Model.utils.SampleData.addSampleData;
-
 public class Main {
     public void handleObjectPlus(){
         String file = "extents.bin";
@@ -20,7 +18,7 @@ public class Main {
             recalculateID();
         } else {
             System.out.println("[INFO] Tworzę dane przykładowe, plik nie istnieje: " + file);
-            addSampleData();
+            SampleData.addSampleData();
             recalculateID();
             ObjectPlus.saveToFile(file);
         }
@@ -53,7 +51,8 @@ public class Main {
         SortingJobController sortingJobController = new SortingJobController();
         FineController fineController = new FineController();
         LoanController loanController = new LoanController();
-        reservationController.generateFinesForExpiredReservations();
+        loanController.generateFinesForExpiredLoans();
+        reservationController.cancelExpiredReservations();
 
         // =============GUI=============
         new MainFrame(employeeController,
@@ -65,6 +64,5 @@ public class Main {
                 sortingJobController,
                 fineController,
                 loanController);
-
     }
 }

@@ -111,7 +111,7 @@ public class ReserveBookDialog extends JDialog {
 
         gbc.gridy = ++row; gbc.gridx = 0;
         summaryStep.add(new JLabel("Data zakończenia:"), gbc);
-        JTextField dateToField = new JTextField(LocalDate.now().plusWeeks(2).toString(), 10);
+        JTextField dateToField = new JTextField(LocalDate.now().plusDays(3).toString(), 10);
         gbc.gridx = 1;
         summaryStep.add(dateToField, gbc);
 

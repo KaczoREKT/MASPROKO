@@ -59,10 +59,15 @@ public class Loan extends AutoIdEntity {
     }
 
     public void cancel(){
-        setStatus(LoanStatus.CANCELED);
+        setStatus(LoanStatus.ENDED);
         if (books != null) {
             books.forEach(b -> b.removeLoan(this));
         }
+    }
+
+    @Override
+    public String getPrefix() {
+        return "LO";
     }
 
     @Override
