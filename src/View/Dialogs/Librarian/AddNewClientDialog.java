@@ -21,28 +21,24 @@ public class AddNewClientDialog extends JDialog {
 
         int row = 0;
 
-        // Imię
         gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
         content.add(new JLabel("Imię:"), gbc);
         JTextField firstNameField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(firstNameField, gbc);
 
-        // Nazwisko
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Nazwisko:"), gbc);
         JTextField lastNameField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(lastNameField, gbc);
 
-        // Płeć
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("Płeć:"), gbc);
         JComboBox<Gender> genderBox = new JComboBox<>(Gender.values());
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(genderBox, gbc);
 
-        // Email
         gbc.gridy = ++row; gbc.gridx = 0; gbc.weightx = 0.3;
         content.add(new JLabel("E-mail:"), gbc);
         JTextField emailField = new JTextField(15);

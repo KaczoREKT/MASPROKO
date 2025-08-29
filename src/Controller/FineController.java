@@ -10,21 +10,18 @@ public class FineController extends AbstractController<Fine> {
         super(Fine.class);
     }
 
-    // Oznacz jako opłacony
     public void markFineAsPaid(Fine selected) {
         if (selected != null) {
             selected.setStatus(FineStatus.PAID);
         }
     }
 
-    // Usuń mandat (karę)
     public void deleteFine(Fine selected) {
         if (selected != null) {
             Model.utils.ObjectPlus.removeFromExtent(selected);
         }
     }
 
-    // Suma mandatów z ostatnich 30 dni (opłaconych lub nie)
     public double getTotalFinesInLast30Days() {
         LocalDate today = LocalDate.now();
         LocalDate thirtyDaysAgo = today.minusDays(30);

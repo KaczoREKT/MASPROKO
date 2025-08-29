@@ -22,7 +22,6 @@ public class RegisterEmployeeDialog extends JDialog {
         gbc.weightx = 1;
         int row = 0;
 
-        // Typ pracownika
         gbc.gridx = 0; gbc.gridy = row;
         content.add(new JLabel("Stanowisko:"), gbc);
         String[] employeeTypes = {"Bibliotekarz", "Księgowy", "Menedżer"};
@@ -30,35 +29,30 @@ public class RegisterEmployeeDialog extends JDialog {
         gbc.gridx = 1;
         content.add(typeBox, gbc);
 
-        // Imię
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Imię:"), gbc);
         JTextField firstNameField = new JTextField(15);
         gbc.gridx = 1;
         content.add(firstNameField, gbc);
 
-        // Nazwisko
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Nazwisko:"), gbc);
         JTextField lastNameField = new JTextField(15);
         gbc.gridx = 1;
         content.add(lastNameField, gbc);
 
-        // Płeć
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Płeć:"), gbc);
         JComboBox<Gender> genderBox = new JComboBox<>(Gender.values());
         gbc.gridx = 1;
         content.add(genderBox, gbc);
 
-        // Pensja
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Pensja:"), gbc);
         JTextField salaryField = new JTextField(10);
         gbc.gridx = 1;
         content.add(salaryField, gbc);
 
-        // Pole specjalizacja (tylko dla bibliotekarza)
         gbc.gridy = ++row; gbc.gridx = 0;
         JLabel specializationLabel = new JLabel("Specjalizacja:");
         content.add(specializationLabel, gbc);
@@ -66,7 +60,6 @@ public class RegisterEmployeeDialog extends JDialog {
         gbc.gridx = 1;
         content.add(specializationField, gbc);
 
-        // Pole premia (tylko dla managera)
         gbc.gridy = ++row; gbc.gridx = 0;
         JLabel bonusLabel = new JLabel("Premia:");
         content.add(bonusLabel, gbc);
@@ -74,13 +67,11 @@ public class RegisterEmployeeDialog extends JDialog {
         gbc.gridx = 1;
         content.add(bonusField, gbc);
 
-        // Ukryj na start
         specializationLabel.setVisible(true);
         specializationField.setVisible(true);
         bonusLabel.setVisible(false);
         bonusField.setVisible(false);
 
-        // Zmiana widoczności pól w zależności od wybranego typu pracownika
         typeBox.addActionListener(_ -> {
             String selected = (String) typeBox.getSelectedItem();
             if ("Bibliotekarz".equals(selected)) {
@@ -103,7 +94,6 @@ public class RegisterEmployeeDialog extends JDialog {
             content.repaint();
         });
 
-        // Przycisk Zarejestruj
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         JButton btnRegister = new JButton("Zarejestruj");
@@ -151,7 +141,7 @@ public class RegisterEmployeeDialog extends JDialog {
                         return;
                     }
                     newEmployee = employeeController.addManager(firstName, lastName, gender, salary, bonus);
-                } else { // Recepcjonistka
+                } else {
                     newEmployee = employeeController.addAccountant(firstName, lastName, gender, salary);
                 }
                 JOptionPane.showMessageDialog(this, "Zarejestrowano nowego pracownika:\n" + newEmployee);

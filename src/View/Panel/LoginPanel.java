@@ -9,12 +9,12 @@ import java.awt.*;
 public class LoginPanel extends JPanel {
 
     public LoginPanel(MainFrame frame, EmployeeController employeeController) {
-        setLayout(new GridBagLayout()); // centrowanie całości
+        setLayout(new GridBagLayout());
 
         JPanel formPanel = new JPanel();
         formPanel.setOpaque(true);
         formPanel.setLayout(new GridBagLayout());
-        formPanel.setBackground(new Color(236, 239, 244)); // lekko ciemniejsze, jasnoszare tło panelu
+        formPanel.setBackground(new Color(236, 239, 244));
         formPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 195, 199), 2, true),
                 BorderFactory.createEmptyBorder(32, 32, 32, 32)
@@ -23,7 +23,6 @@ public class LoginPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(12, 12, 12, 12);
 
-        // Nagłówek
         JLabel title = new JLabel("Logowanie do biblioteki");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 26f));
         title.setForeground(new Color(44, 62, 80));
@@ -32,14 +31,12 @@ public class LoginPanel extends JPanel {
         gbc.insets.bottom = 30;
         formPanel.add(title, gbc);
 
-        // Etykieta
         JLabel label = new JLabel("Podaj swoje ID:");
         label.setFont(label.getFont().deriveFont(17f));
         label.setForeground(new Color(68, 68, 68));
         gbc.gridy = 1; gbc.gridwidth = 1; gbc.insets.bottom = 8; gbc.anchor = GridBagConstraints.LINE_END;
         formPanel.add(label, gbc);
 
-        // Pole tekstowe
         JTextField idField = new JTextField(20);
         idField.setFont(idField.getFont().deriveFont(17f));
         idField.setBackground(Color.WHITE);
@@ -52,7 +49,6 @@ public class LoginPanel extends JPanel {
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.LINE_START;
         formPanel.add(idField, gbc);
 
-        // Przycisk
         JButton loginBtn = new JButton("Zaloguj");
         loginBtn.setFont(loginBtn.getFont().deriveFont(Font.BOLD, 18f));
         loginBtn.setBackground(new Color(69, 124, 255));
@@ -64,7 +60,6 @@ public class LoginPanel extends JPanel {
         gbc.insets.top = 20; gbc.insets.bottom = 0;
         formPanel.add(loginBtn, gbc);
 
-        // Akcja przycisku (to co masz)
         loginBtn.addActionListener(_ -> {
             String id = idField.getText().trim();
             if (!id.isEmpty()) {
@@ -89,7 +84,6 @@ public class LoginPanel extends JPanel {
             }
         });
 
-        // Centruj całość
         add(formPanel, new GridBagConstraints());
         setBackground(new Color(246, 248, 255)); // jasne tło aplikacji
     }

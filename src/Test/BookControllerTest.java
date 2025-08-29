@@ -13,7 +13,7 @@ public class BookControllerTest {
         BookController bookController = new BookController();
 
         // 1. Dodaj sektor i książkę
-        Sector sector = new Sector('A', 'B');
+        Sector sector = new Sector('A', 'Z');
         bookController.addBook("Pan Tadeusz", "Epos", "Adam Mickiewicz");
 
         List<Book> books = bookController.getList();

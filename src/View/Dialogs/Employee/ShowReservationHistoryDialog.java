@@ -31,7 +31,6 @@ public class ShowReservationHistoryDialog {
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // Inicjalizacja tabeli z pustymi danymi
         String[] columnNames = {"ID", "Od", "Do", "Status", "Książki"};
         Object[][] emptyData = {{"Wybierz klienta aby zobaczyć rezerwacje.", "", "", "", ""}};
 
@@ -56,7 +55,6 @@ public class ShowReservationHistoryDialog {
             } else {
                 rowData = reservations.stream()
                         .map(r -> {
-                            // Lista tytułów książek w rezerwacji
                             String books = r.getBooks().stream()
                                     .map(Book::getTitle)
                                     .collect(Collectors.joining(", "));

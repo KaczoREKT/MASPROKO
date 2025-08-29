@@ -22,7 +22,6 @@ public class FireEmployeeDialog extends JDialog {
         gbc.weightx = 1;
         int row = 0;
 
-        // 1. Lista pracowników
         gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3; gbc.gridwidth = 1;
         content.add(new JLabel("Pracownik:"), gbc);
 
@@ -31,7 +30,6 @@ public class FireEmployeeDialog extends JDialog {
         gbc.gridx = 1; gbc.weightx = 0.7; gbc.gridwidth = 1;
         content.add(employeeBox, gbc);
 
-        // 2. Panel z przyciskami (jeden panel, oba przyciski obok siebie)
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         JButton btnFire = new JButton("Zwolnij");
@@ -40,7 +38,6 @@ public class FireEmployeeDialog extends JDialog {
         buttonPanel.add(btnCancel);
         content.add(buttonPanel, gbc);
 
-        // --- Logika ---
         btnFire.addActionListener(_ -> {
             Employee selectedEmployee = (Employee) employeeBox.getSelectedItem();
             if (selectedEmployee == null) {

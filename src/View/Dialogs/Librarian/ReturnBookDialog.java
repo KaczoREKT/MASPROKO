@@ -22,7 +22,6 @@ public class ReturnBookDialog extends JDialog {
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
 
-        // --- Wyszukiwanie po numerze karty ---
         JPanel cardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         cardPanel.add(new JLabel("Numer karty klienta:"));
         JTextField cardField = new JTextField(16);

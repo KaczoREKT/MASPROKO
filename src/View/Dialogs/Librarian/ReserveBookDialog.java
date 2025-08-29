@@ -23,7 +23,6 @@ public class ReserveBookDialog extends JDialog {
 
         JPanel stepPanel = new JPanel(new CardLayout());
 
-        // ==== Krok 1: WYSZUKIWANIE i WYBÓR KSIĄŻKI ====
         JPanel bookStep = new JPanel(new BorderLayout(10, 10));
         JPanel searchPanel = new JPanel(new BorderLayout(5,5));
         searchPanel.add(new JLabel("Szukaj książki:"), BorderLayout.WEST);
@@ -55,7 +54,7 @@ public class ReserveBookDialog extends JDialog {
                     )
                     .toList();
             if (filtered.isEmpty()) {
-                bookListModel.addElement(null); // albo wyświetl tekst np. "Brak wyników"
+                bookListModel.addElement(null);
             } else {
                 for (Book b : filtered) bookListModel.addElement(b);
             }
@@ -67,7 +66,6 @@ public class ReserveBookDialog extends JDialog {
             public void changedUpdate(javax.swing.event.DocumentEvent e) { updateBookList.run(); }
         });
 
-        // ==== Krok 2: NUMER KARTY KLIENTA ====
         JPanel cardStep = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -95,7 +93,6 @@ public class ReserveBookDialog extends JDialog {
         btnNextToSummary.setEnabled(false);
         cardStep.add(btnNextToSummary, gbc);
 
-        // ==== Krok 3: PODSUMOWANIE ====
         JPanel summaryStep = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -140,7 +137,6 @@ public class ReserveBookDialog extends JDialog {
             cardLayout.show(stepPanel, "CARD");
         });
 
-        // --- Krok 2: Szukanie klienta ---
         btnFindClient.addActionListener(_ -> {
             String cardNumber = cardNumberField.getText().trim();
             Client client = clientController.findClientByCardNumber(cardNumber);
@@ -160,7 +156,6 @@ public class ReserveBookDialog extends JDialog {
             }
         });
 
-        // --- Krok 2 -> Krok 3 (podsumowanie) ---
         btnNextToSummary.addActionListener(_ -> {
             String dateFrom = dateFromField.getText().trim();
             String dateTo = dateToField.getText().trim();

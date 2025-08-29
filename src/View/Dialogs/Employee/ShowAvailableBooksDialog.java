@@ -29,7 +29,6 @@ public class ShowAvailableBooksDialog {
 
         List<Book> books = bookController.getAvailableBooks();
 
-        // Tworzymy model danych do tabeli
         String[] columnNames = { "ID", "Tytuł", "Gatunek", "Autor", "Status" };
         Object[][] rowData = books.stream()
                 .map(b -> new Object[]{
@@ -45,7 +44,6 @@ public class ShowAvailableBooksDialog {
 
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Filtrowanie po wpisaniu frazy w searchField
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             private void updateTable() {
                 String query = searchField.getText().trim().toLowerCase();

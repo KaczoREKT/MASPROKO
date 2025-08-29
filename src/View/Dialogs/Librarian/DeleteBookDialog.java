@@ -73,7 +73,6 @@ public class DeleteBookDialog extends JDialog {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    // Wywołanie logiki w kontrolerze!
                     bookController.deleteBook(selectedBook);
 
                     updateBookList.run();

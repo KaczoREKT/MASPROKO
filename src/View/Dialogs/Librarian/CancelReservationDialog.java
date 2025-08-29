@@ -24,41 +24,34 @@ public class CancelReservationDialog extends JDialog {
         gbc.weightx = 1;
         int row = 0;
 
-        // 1. Numer karty klienta
         gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.3;
         content.add(new JLabel("Numer karty klienta:"), gbc);
         JTextField cardNumberField = new JTextField(15);
         gbc.gridx = 1; gbc.weightx = 0.7;
         content.add(cardNumberField, gbc);
 
-        // 2. Przycisk "Znajdź klienta"
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         JButton btnFindClient = new JButton("Znajdź klienta");
         content.add(btnFindClient, gbc);
 
-        // 3. Info o kliencie
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2;
         JLabel clientInfoLabel = new JLabel("Brak klienta.");
         content.add(clientInfoLabel, gbc);
 
-        // 4. Lista rezerwacji klienta
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2;
         JComboBox<Reservation> reservationBox = new JComboBox<>();
         reservationBox.setEnabled(false);
         content.add(reservationBox, gbc);
 
-        // 5. Przycisk "Anuluj rezerwację"
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.CENTER;
         JButton btnCancelReservation = new JButton("Anuluj rezerwację");
         btnCancelReservation.setEnabled(false);
         content.add(btnCancelReservation, gbc);
 
-        // 6. Przycisk "Zamknij"
         gbc.gridx = 1;
         JButton btnClose = new JButton("Zamknij");
         content.add(btnClose, gbc);
 
-        // LOGIKA
         final Client[] foundClient = {null};
 
         btnFindClient.addActionListener(_ -> {

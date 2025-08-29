@@ -26,13 +26,11 @@ public class EmployeePanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(246, 248, 255)); // spójne jasne tło
 
-        // --- Nagłówek powitalny ---
         JLabel welcomeLabel = new JLabel("Witaj " + roleName, SwingConstants.CENTER);
         welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(Font.BOLD, 28f));
         welcomeLabel.setForeground(new Color(44, 62, 80));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(32,0,18,0));
 
-        // --- Główny panel „card" na przyciski ---
         JPanel cardPanel = new JPanel(new BorderLayout());
         cardPanel.setOpaque(true);
         cardPanel.setBackground(Color.WHITE);
@@ -65,7 +63,6 @@ public class EmployeePanel extends JPanel {
         operationsPanel.add(btnShowAvailableBooks);
         operationsPanel.add(btnShowReservationHistory);
 
-        // --- Dropdown menu dla funkcji specyficznych dla roli ---
         roleSpecificMenu = new JPopupMenu();
         dropdownButton = createPrimaryButton("Więcej ▼");
         dropdownButton.addActionListener(e -> {
@@ -73,7 +70,6 @@ public class EmployeePanel extends JPanel {
         });
         operationsPanel.add(dropdownButton);
 
-        // --- Panel z przyciskiem wylogowania i ekstensjami ---
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         actionsPanel.setOpaque(false);
 
@@ -87,7 +83,6 @@ public class EmployeePanel extends JPanel {
         actionsPanel.add(Box.createHorizontalStrut(22));
         actionsPanel.add(btnLogout);
 
-        // --- Połącz przyciski: główne i akcje ---
         JPanel allButtonsPanel = new JPanel(new BorderLayout());
         allButtonsPanel.setOpaque(false);
         allButtonsPanel.add(operationsPanel, BorderLayout.CENTER);
@@ -95,7 +90,6 @@ public class EmployeePanel extends JPanel {
 
         cardPanel.add(allButtonsPanel, BorderLayout.CENTER);
 
-        // --- Panel wyników ---
         resultsPanel = new JPanel(new BorderLayout());
         resultsPanel.setOpaque(true);
         resultsPanel.setBackground(Color.WHITE);
@@ -104,7 +98,6 @@ public class EmployeePanel extends JPanel {
                 BorderFactory.createEmptyBorder(0,0,0,0)
         ));
 
-        // --- Rozmieszczenie w głównym panelu ---
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(welcomeLabel, BorderLayout.NORTH);
         topPanel.add(cardPanel, BorderLayout.CENTER);
@@ -112,7 +105,6 @@ public class EmployeePanel extends JPanel {
         add(resultsPanel, BorderLayout.CENTER);
     }
 
-    // --- Funkcje pomocnicze dla stylowych przycisków ---
     private JButton createPrimaryButton(String text) {
         JButton btn = new JButton(text);
         btn.setFont(btn.getFont().deriveFont(Font.BOLD, 16f));
@@ -135,7 +127,6 @@ public class EmployeePanel extends JPanel {
         return btn;
     }
 
-    // --- Metoda do dodawania elementów do dropdown menu ---
     public void addToDropdownMenu(JMenuItem menuItem) {
         roleSpecificMenu.add(menuItem);
     }

@@ -41,9 +41,6 @@ public class Fine extends AutoIdEntity {
         return status;
     }
 
-    /**
-     * Ustawia status mandatu (np. 0 = nieopłacony, 1 = opłacony).
-     */
     public void setStatus(FineStatus status) {
         this.status = status;
     }
@@ -56,9 +53,6 @@ public class Fine extends AutoIdEntity {
         return client;
     }
 
-    /**
-     * Relacja Fine -> Client (wiele-do-jednego).
-     */
     public void setClient(Client client) {
         if (this.client != null) {
             this.client.getFines().remove(this);

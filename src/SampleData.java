@@ -111,7 +111,6 @@ public class SampleData {
                 Set<Book> picked = new HashSet<>(candidates.subList(0, Math.min(howMany, candidates.size())));
                 if (picked.isEmpty()) break;
 
-                // data
                 boolean makeEnded = rand.nextBoolean(); // część skończona
                 LocalDate from, to;
                 if (makeEnded) {
@@ -142,15 +141,11 @@ public class SampleData {
                 }
             }
 
-            // Wypożyczenia: 0..2, z budżetem książek
             int desiredLoans = rand.nextInt(3); // 0..2
             for (int l = 0; l < desiredLoans; l++) {
                 int remainingBookCap = remainingBookCapacity(client);
                 if (remainingBookCap <= 0) break;
 
-                // Kandydaci do wypożyczenia:
-                // - wolne AVAILABLE
-                // - lub z rezerwacji TEGO klienta (PENDING)
                 List<Book> candidates = books.stream()
                         .filter(b -> b.getLoan() == null)
                         .filter(b -> (b.getReservation() == null && b.getStatus() == BookStatus.AVAILABLE)

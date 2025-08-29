@@ -32,7 +32,6 @@ public class AssignWorkDialog extends JDialog {
         gbc.weightx = 1;
         int row = 0;
 
-        // Bibliotekarz
         gbc.gridx = 0; gbc.gridy = row;
         content.add(new JLabel("Bibliotekarz:"), gbc);
 
@@ -41,7 +40,6 @@ public class AssignWorkDialog extends JDialog {
         gbc.gridx = 1;
         content.add(librarianBox, gbc);
 
-        // Sektor
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Sektor:"), gbc);
 
@@ -50,35 +48,34 @@ public class AssignWorkDialog extends JDialog {
         gbc.gridx = 1;
         content.add(sectorBox, gbc);
 
-        // ==== DATA ROZPOCZĘCIA ====
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Data rozpoczęcia:"), gbc);
         JPanel dateFromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
-        // Rok
+
         JComboBox<Integer> yearFromBox = new JComboBox<>();
         int currentYear = LocalDate.now().getYear();
         for (int y = currentYear; y <= currentYear + 2; y++) yearFromBox.addItem(y);
         dateFromPanel.add(yearFromBox);
         dateFromPanel.add(new JLabel("r."));
-        // Miesiąc
+
         JComboBox<Integer> monthFromBox = new JComboBox<>();
         for (int m = 1; m <= 12; m++) monthFromBox.addItem(m);
         dateFromPanel.add(monthFromBox);
         dateFromPanel.add(new JLabel("mies."));
-        // Dzień (dynamicznie zmieniamy!)
+
         JComboBox<Integer> dayFromBox = new JComboBox<>();
         fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem());
         dateFromPanel.add(dayFromBox);
         dateFromPanel.add(new JLabel("d."));
 
-        // Obsługa dynamicznej zmiany liczby dni
+
         monthFromBox.addActionListener(_ -> fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem()));
         yearFromBox.addActionListener(_ -> fillDays(dayFromBox, (int) yearFromBox.getSelectedItem(), (int) monthFromBox.getSelectedItem()));
 
         gbc.gridx = 1;
         content.add(dateFromPanel, gbc);
 
-        // Godzina rozpoczęcia
+
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Godzina rozpoczęcia:"), gbc);
         JPanel timeFromPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
@@ -92,7 +89,7 @@ public class AssignWorkDialog extends JDialog {
         gbc.gridx = 1;
         content.add(timeFromPanel, gbc);
 
-        // ==== DATA ZAKOŃCZENIA ====
+
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Data zakończenia:"), gbc);
         JPanel dateToPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
@@ -115,7 +112,7 @@ public class AssignWorkDialog extends JDialog {
         gbc.gridx = 1;
         content.add(dateToPanel, gbc);
 
-        // Godzina zakończenia
+
         gbc.gridy = ++row; gbc.gridx = 0;
         content.add(new JLabel("Godzina zakończenia:"), gbc);
         JPanel timeToPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
@@ -129,7 +126,7 @@ public class AssignWorkDialog extends JDialog {
         gbc.gridx = 1;
         content.add(timeToPanel, gbc);
 
-        // Przycisk
+
         gbc.gridy = ++row; gbc.gridx = 0; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
@@ -142,7 +139,7 @@ public class AssignWorkDialog extends JDialog {
         btnPanel.add(btnCancel);
         content.add(btnPanel, gbc);
 
-        // LOGIKA przycisków
+
         btnAssign.addActionListener(_ -> {
             Librarian librarian = (Librarian) librarianBox.getSelectedItem();
             Sector sector = (Sector) sectorBox.getSelectedItem();
@@ -183,7 +180,6 @@ public class AssignWorkDialog extends JDialog {
         setVisible(true);
     }
 
-    // Pomocnicza metoda do uzupełniania dni miesiąca
     private static void fillDays(JComboBox<Integer> dayBox, int year, int month) {
         dayBox.removeAllItems();
         int days = YearMonth.of(year, month).lengthOfMonth();

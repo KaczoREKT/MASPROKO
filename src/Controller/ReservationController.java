@@ -16,13 +16,11 @@ import java.util.stream.StreamSupport;
 public class ReservationController {
 
     public void reserveBook(List<Book> books, Client client, LocalDate dateFrom, LocalDate dateTo) throws Exception {
-        // Walidacje podstawowe
         if (books == null || books.isEmpty()) throw new Exception("Nie wybrano książki.");
         if (client == null) throw new Exception("Nie wybrano klienta.");
         if (dateFrom == null || dateTo == null) throw new Exception("Nieprawidłowa data.");
         if (dateTo.isBefore(dateFrom)) throw new Exception("Data zakończenia przed datą rozpoczęcia!");
 
-        // Ważność karty
         if (client.getClientCard() == null || client.getClientCard().getExpirationDate().isBefore(LocalDate.now())) {
             throw new Exception("Karta klienta jest nieważna.");
         }
@@ -48,8 +46,6 @@ public class ReservationController {
         if (reservation == null) throw new Exception("Nie wybrano rezerwacji do anulowania!");
         reservation.cancel();
     }
-
-
 
 
     public void cancelExpiredReservations() {

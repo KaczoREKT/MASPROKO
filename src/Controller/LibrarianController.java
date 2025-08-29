@@ -36,7 +36,6 @@ public class LibrarianController extends AbstractController<Librarian> {
         try {
             ObjectPlus.removeFromExtent(librarian);
         } catch (Exception e) {
-            // Możesz dodać obsługę błędu lub logowanie
         }
     }
 }
