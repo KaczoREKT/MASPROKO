@@ -160,8 +160,17 @@ public class SampleData {
                 Set<Book> picked = new HashSet<>(candidates.subList(0, Math.min(howMany, candidates.size())));
                 if (picked.isEmpty()) break;
 
-                LocalDate start = LocalDate.now().minusDays(rand.nextInt(3));
-                LocalDate end = start.plusDays(rand.nextInt(21) + 7);
+                LocalDate start = LocalDate.now().minusDays(rand.nextInt(10)); // start do 10 dni temu
+                LocalDate end;
+
+                if (rand.nextInt(10) < 3) { // ~30% będzie przeterminowane
+                    end = LocalDate.now().minusDays(1 + rand.nextInt(14));
+                    if (!end.isAfter(start)) {
+                        start = end.minusDays(rand.nextInt(7) + 1);
+                    }
+                } else {
+                    end = start.plusDays(rand.nextInt(22) + 7);
+                }
 
                 Loan loan = new Loan(start, end, LoanStatus.PENDING, picked, client);
                 client.addLoan(loan);
@@ -226,7 +235,6 @@ public class SampleData {
         System.out.println("[DEBUG] Bibliotekarze: " + librarians.size());
         System.out.println("[DEBUG] Klienci: " + clients.size());
         System.out.println("[DEBUG] Karty: " + cards.size());
-        System.out.println("[DEBUG] Dane wygenerowane zgodnie z limitami (2 PENDING rezerwacje, 2 PENDING wypożyczenia, ≤5 książek).");
     }
 
     private static <T> T losuj(List<T> list, Random rand) {

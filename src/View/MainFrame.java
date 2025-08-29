@@ -3,14 +3,10 @@ package View;
 import Controller.*;
 import View.Panel.*;
 import Model.utils.ObjectPlus;
-import java.util.stream.Collectors;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainFrame extends JFrame {
     private final JPanel cardsPanel;

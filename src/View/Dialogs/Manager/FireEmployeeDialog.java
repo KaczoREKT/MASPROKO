@@ -2,6 +2,7 @@ package View.Dialogs.Manager;
 
 import Controller.EmployeeController;
 import Model.Employee;
+import Model.Manager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class FireEmployeeDialog extends JDialog {
         content.add(new JLabel("Pracownik:"), gbc);
 
         List<Employee> employees = employeeController.getEmployeeList();
+        employees.removeIf(e -> e instanceof Manager);
         JComboBox<Employee> employeeBox = new JComboBox<>(employees.toArray(new Employee[0]));
         gbc.gridx = 1; gbc.weightx = 0.7; gbc.gridwidth = 1;
         content.add(employeeBox, gbc);

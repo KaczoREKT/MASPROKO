@@ -35,7 +35,7 @@ public class LibrarianController extends AbstractController<Librarian> {
         if (librarian == null) return;
         try {
             ObjectPlus.removeFromExtent(librarian);
-        } catch (Exception e) {
+        } catch (Exception _) {
         }
     }
 }

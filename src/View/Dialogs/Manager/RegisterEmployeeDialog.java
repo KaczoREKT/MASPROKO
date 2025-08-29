@@ -133,7 +133,7 @@ public class RegisterEmployeeDialog extends JDialog {
                     newEmployee = employeeController.addLibrarian(firstName, lastName, gender, salary, specialization);
                 } else if ("Menedżer".equals(type)) {
                     String bonusStr = bonusField.getText().trim();
-                    double bonus = 0;
+                    double bonus;
                     try {
                         bonus = Double.parseDouble(bonusStr);
                     } catch (Exception ex) {

@@ -66,4 +66,27 @@ public class EmployeeController extends AbstractController<Employee> {
         updateSalary(selected, newSalary);
     }
 
+
+    public double getTotalMonthlyPayroll() {
+        try {
+            Iterable<Accountant> accountants = ObjectPlus.getExtent(Accountant.class);
+            Iterable<Librarian> librarians = ObjectPlus.getExtent(Librarian.class);
+            Iterable<Manager> managers = ObjectPlus.getExtent(Manager.class);
+
+            double sum = 0.0;
+
+            for (Accountant e : accountants) {
+                if (e != null) sum += e.getSalary();
+            }
+            for (Librarian e : librarians) {
+                if (e != null) sum += e.getSalary();
+            }
+            for (Manager e : managers) {
+                if (e != null) sum += e.getSalary();
+            }
+            return sum;
+        } catch (Exception ex) {
+            return 0.0;
+        }
+    }
 }

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class LoanController extends AbstractController<Loan> {
@@ -76,24 +77,34 @@ public class LoanController extends AbstractController<Loan> {
         try {
             Iterable<Loan> loans = ObjectPlus.getExtent(Loan.class);
             for (Loan loan : loans) {
+                if (loan == null) continue;
                 LocalDate endDate = loan.getEndDate();
-                if (endDate.isBefore(LocalDate.now())) {
-                    Client client = loan.getClient();
-                    if (client != null) {
-                        Fine fineForThis = client.getFines().stream()
-                                .filter(f -> f.getReason() != null && f.getReason().contains("Opóźnienie za wypożyczenie " + loan.getPublicId()))
-                                .findFirst()
-                                .orElse(null);
-                        long daysLate = ChronoUnit.DAYS.between(endDate, LocalDate.now());
-                        if (daysLate > 0) {
-                            double newPrice = daysLate * 0.50;
-                            if (fineForThis == null) {
-                                Fine fine = new Fine(newPrice, "Opóźnienie za wypożyczenie " + loan.getPublicId());
-                                fine.setClient(client);
-                            } else if (fineForThis.getStatus() == FineStatus.PAID) {
-                                fineForThis.setPrice(newPrice);
-                            }
-                        }
+                if (endDate == null) continue;
+                if (!LocalDate.now().isAfter(endDate)) continue;
+                Client client = loan.getClient();
+                if (client == null) continue;
+                String reason = "Opóźnienie za wypożyczenie " + loan.getPublicId();
+
+                Optional<Fine> anyForThis = client.getFines().stream()
+                        .filter(f -> reason.equals(f.getReason()))
+                        .findFirst();
+
+                if (anyForThis.isPresent() && anyForThis.get().getStatus() == FineStatus.PAID) {
+                    continue;
+                }
+
+                long daysLate = ChronoUnit.DAYS.between(endDate, LocalDate.now());
+                if (daysLate <= 0) continue;
+
+                double newPrice = daysLate * 0.50d;
+
+                if (anyForThis.isEmpty()) {
+                    Fine fine = new Fine(newPrice, reason);
+                    fine.setClient(client);
+                } else {
+                    Fine fine = anyForThis.get();
+                    if (fine.getStatus() != FineStatus.PAID) {
+                        fine.setPrice(newPrice);
                     }
                 }
             }
@@ -101,4 +112,5 @@ public class LoanController extends AbstractController<Loan> {
             ex.printStackTrace();
         }
     }
+
 }

@@ -1,15 +1,16 @@
 package View.Dialogs.Accountant;
 
 import Controller.FineController;
+import Controller.EmployeeController;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ShowFinancialReportDialog extends JDialog {
-    public ShowFinancialReportDialog(FineController fineController) {
-        setTitle("Raport finansowy za kary");
+    public ShowFinancialReportDialog(FineController fineController, EmployeeController employeeController) {
+        setTitle("Raport finansowy (30 dni)");
         setModal(true);
-        setSize(500, 280);
+        setSize(520, 320);
         setLocationRelativeTo(null);
 
         JPanel content = new JPanel(new GridBagLayout());
@@ -20,9 +21,14 @@ public class ShowFinancialReportDialog extends JDialog {
         gbc.gridy = 0;
 
         content.add(new JLabel("Za ostatni miesiąc (30 dni):"), gbc);
+
         gbc.gridy++;
-        double amount = fineController.getTotalFinesInLast30Days();
-        content.add(new JLabel(String.format("Łączna suma wpłat za mandaty: %.2f PLN", amount)), gbc);
+        double finesAmount = fineController.getTotalFinesInLast30Days();
+        content.add(new JLabel(String.format("Łączna suma wpłat za mandaty: %.2f PLN", finesAmount)), gbc);
+
+        gbc.gridy++;
+        double payroll = employeeController.getTotalMonthlyPayroll();
+        content.add(new JLabel(String.format("Łączny koszt wypłat pracowników (mies.): %.2f PLN", payroll)), gbc);
 
         setContentPane(content);
         setVisible(true);

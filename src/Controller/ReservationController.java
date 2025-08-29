@@ -1,9 +1,6 @@
 package Controller;
 
 import Model.*;
-import Model.Enum.BookStatus;
-import Model.Enum.FineStatus;
-import Model.Enum.LoanStatus;
 import Model.Enum.ReservationStatus;
 import Model.utils.ObjectPlus;
 
@@ -56,7 +53,7 @@ public class ReservationController {
                     .filter(r -> r.getStartDate() != null)
                     .filter(Reservation::isExpired)
                     .forEach(Reservation::cancel);
-        } catch (Exception e) {
+        } catch (Exception _) {
         }
     }
 }

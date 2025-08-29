@@ -23,7 +23,7 @@ public class SectorController extends AbstractController<Sector> {
         if (sectorGH == null) return;
         try {
             ObjectPlus.removeFromExtent(sectorGH);
-        } catch (Exception ex) {
+        } catch (Exception _) {
         }
     }
 }

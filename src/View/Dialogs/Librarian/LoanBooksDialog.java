@@ -3,14 +3,12 @@ package View.Dialogs.Librarian;
 import Controller.BookController;
 import Controller.ClientController;
 import Controller.LoanController;
-import Controller.ReservationController;
 import Model.Book;
 import Model.Client;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class LoanBooksDialog extends JDialog {

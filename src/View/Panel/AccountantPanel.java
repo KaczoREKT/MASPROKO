@@ -22,7 +22,7 @@ public class AccountantPanel extends EmployeePanel {
                 _ -> new ManageFinesDialog(fineController));
 
         JMenuItem btnShowReport = createMenuItem("Generuj Raport Finansowy (30 dni)",
-                _ -> new ShowFinancialReportDialog(fineController));
+                _ -> new ShowFinancialReportDialog(fineController, employeeController));
 
         JMenuItem btnShowSalaries = createMenuItem("Zarządzaj pensją pracowników",
                 _ -> new ManageSalariesDialog(employeeController));

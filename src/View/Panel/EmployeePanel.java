@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class EmployeePanel extends JPanel {
 
     private final MainFrame mainFrame;
-    private JPanel resultsPanel;
-    private JPopupMenu roleSpecificMenu;
-    private JButton dropdownButton;
+    private final JPanel resultsPanel;
+    private final JPopupMenu roleSpecificMenu;
+    private final JButton dropdownButton;
 
     public EmployeePanel(MainFrame mainFrame, BookController bookController, ClientController clientController, String roleName) {
         this.mainFrame = mainFrame;
@@ -65,9 +65,7 @@ public class EmployeePanel extends JPanel {
 
         roleSpecificMenu = new JPopupMenu();
         dropdownButton = createPrimaryButton("Więcej ▼");
-        dropdownButton.addActionListener(e -> {
-            roleSpecificMenu.show(dropdownButton, 0, dropdownButton.getHeight());
-        });
+        dropdownButton.addActionListener(_ -> roleSpecificMenu.show(dropdownButton, 0, dropdownButton.getHeight()));
         operationsPanel.add(dropdownButton);
 
         JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
@@ -162,7 +160,7 @@ public class EmployeePanel extends JPanel {
         List<String> classNames = extentClasses.stream()
                 .map(Class::getSimpleName)
                 .collect(Collectors.toList());
-        classNames.add(0, "Wszystkie");
+        classNames.addFirst("Wszystkie");
 
         JComboBox<String> comboBox = new JComboBox<>(classNames.toArray(new String[0]));
         int result = JOptionPane.showConfirmDialog(

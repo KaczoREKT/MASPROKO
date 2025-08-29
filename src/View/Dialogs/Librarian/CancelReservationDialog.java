@@ -13,7 +13,7 @@ public class CancelReservationDialog extends JDialog {
     public CancelReservationDialog(ClientController clientController, ReservationController reservationController) {
         setTitle("Anulowanie rezerwacji");
         setModal(true);
-        setSize(480, 250);
+        setSize(480, 310);
         setLocationRelativeTo(null);
 
         JPanel content = new JPanel(new GridBagLayout());
